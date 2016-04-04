@@ -1,7 +1,0 @@
-public class Assignment3_3 {
-	
-	public static void main(String[] args) {
-		Toy toy  = new Toy();
-		System.out.println(toy.toString());
-	}
-}
