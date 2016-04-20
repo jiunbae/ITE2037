@@ -1,5 +1,3 @@
 *.out
-log/
-test/
-.metadata/
-.recommenders/
+.metadata
+.recommenders
