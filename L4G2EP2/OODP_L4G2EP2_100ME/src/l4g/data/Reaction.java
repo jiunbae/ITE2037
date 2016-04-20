@@ -79,10 +79,14 @@ public class Reaction
 	public final int objectID;
 
 	/**
-	 * 이 사건이 발생한 위치를 가져옵니다.
-	 * 유일하게 subject와 object의 위치가 다른 포착(Spot) 사건의 경우 이 값은 subject의 위치로 지정됩니다.
+	 * 이 사건을 발생시킨 subject의 위치를 가져옵니다.
 	 */
-	public final Point_Immutable location;
+	public final Point_Immutable location_subject;
+
+	/**
+	 * 이 사건을 '당한' object의 위치를 가져옵니다.
+	 */
+	public final Point_Immutable location_object;
 
 	/**
 	 * 주의: 이 클래스의 인스턴스는 여러분이 굳이 새로 만들 필요가 없습니다.
@@ -90,11 +94,27 @@ public class Reaction
 	 * 그냥 그 인스턴스 자체를 여러분의 필드에 할당해 담아도 됩니다.
 	 * 읽기 전용이라 다음 턴엔 어차피 새 인스턴스 만들어서 사용하기 때문입니다.
 	 */
-	public Reaction(int subjectID, TypeCode type, int objectID, Point_Immutable location)
+	public Reaction(int ID, TypeCode type, Point_Immutable location)
+	{
+		this.subjectID = ID;
+		this.type = type;
+		this.objectID = ID;
+		this.location_subject = location;
+		this.location_object = location;
+	}
+
+	/**
+	 * 주의: 이 클래스의 인스턴스는 여러분이 굳이 새로 만들 필요가 없습니다.
+	 * 만약 어떤 사건에 대한 사본을 소장하고 싶은 경우엔
+	 * 그냥 그 인스턴스 자체를 여러분의 필드에 할당해 담아도 됩니다.
+	 * 읽기 전용이라 다음 턴엔 어차피 새 인스턴스 만들어서 사용하기 때문입니다.
+	 */
+	public Reaction(int subjectID, TypeCode type, int objectID, Point_Immutable location_subject, Point_Immutable location_object)
 	{
 		this.subjectID = subjectID;
 		this.type = type;
 		this.objectID = objectID;
-		this.location = location;
+		this.location_subject = location_subject;
+		this.location_object = location_object;
 	}
 }

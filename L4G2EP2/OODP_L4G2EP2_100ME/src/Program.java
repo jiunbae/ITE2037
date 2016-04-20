@@ -1,17 +1,26 @@
 import java.awt.Color;
+import java.io.IOException;
 
 import l4g.Classroom;
 import l4g.Grader;
 import l4g.Presenter_Mode3;
 import l4g.common.Classroom_Settings;
+import l4g.common.Constants;
 import l4g.common.GameNumberManager;
+import l4g.bots.*;
 import l4g.customplayers.*;
+import l4g.customplayers.Bot_CorpseBomb;
+import l4g.customplayers.Bot_HornDone;
+import l4g.customplayers.Bot_Loner;
+import l4g.customplayers.Bot_Predator;
+import l4g.customplayers.Bot_Scout;
+import l4g.customplayers.Bot_Seeker;
 import loot.GameFrameSettings;
-
+import TEST.TEST;
 
 public class Program
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		//settings는 강의실 설정(게임 한 판 설정)을 위한 여러 필드들을 가지고 있습니다.
 		Classroom_Settings settings = new Classroom_Settings();
@@ -32,7 +41,7 @@ public class Program
 		 *			엔터 키를 입력받을 때까지 게임을 일시 정지합니다. 
 		 * 			게임이 끝나면 모든 플레이어의 학점을 출력합니다.
 		 * 
-		 * mode값이 2면 콘솔 창을 사용하여 임의의 게임 번호들을 통해 게임 10,000판을 진행하며
+		 * mode값이 2면 콘솔 창을 사용하여 임의의 게임 번호들을 통해 게임 1,000판을 진행하며
 		 * 			게임이 모두 끝나면 각 부문별 순위 및 기록을 출력한 다음
 		 * 			첫 플레이어(아마도 여러분이 만든 그 플레이어)의 기록을 출력합니다.
 		 * 
@@ -44,7 +53,7 @@ public class Program
 		 * 새로운 mode는 작은 축제가 진행됨에 따라 추가로 제공됩니다.
 		 */
 		
-		int mode = 3;
+		int mode = 2;
 		
 		/*
 		 * 직접 만든 플레이어를 등록하는 부분입니다.
@@ -57,8 +66,34 @@ public class Program
 		 */
 		
 		// settings.custom_player_classes.add(Player_YOURNAMEHERE.class);
-		settings.custom_player_classes.add(DEJAVA.class);
 		
+		final int nCor = 0;
+		final int nHorn = 5;
+		final int nLoner = 5;
+		final int nPred = 20;
+		final int nScout = 70;
+		final int nSeeker = 0;
+
+		settings.custom_player_classes.add(TEJAVA.class);
+		settings.custom_player_classes.add(Player_v8.class);
+		
+		for(int i = 0; i < nCor; i++)
+			settings.custom_player_classes.add(Bot_CorpseBomb.class);
+		for(int i = 0; i < nHorn; i++)
+			settings.custom_player_classes.add(Bot_HornDone.class);
+		for(int i = 0; i < nLoner; i++)
+			settings.custom_player_classes.add(Bot_Loner.class);
+		for(int i = 0; i < nPred; i++)
+			settings.custom_player_classes.add(Bot_Predator.class);
+		for(int i = 0; i < nScout; i++)
+			settings.custom_player_classes.add(Bot_Scout.class);
+		for(int i = 0; i < nSeeker; i++)
+			settings.custom_player_classes.add(Bot_Seeker.class);
+		
+
+		Constants.Total_Players = nCor + nHorn + nLoner +nPred+nScout + nSeeker + 1+1;
+
+		String filename = Constants.Total_Players+ "=" +nCor + "-" + nHorn + "-" + nLoner + "-" + nPred + "-" + nScout + "-" + nSeeker +  ".log";
 		/*
 		 * 정규 게임에서 NPC(학점 산정에 영향을 주지 않는 플레이어) 수를 설정하는 부분입니다.
 		 * 여러분의 플레이어를 테스트할 땐 이 필드의 값은 그냥 0으로 두세요. 
@@ -72,7 +107,7 @@ public class Program
 		 * 주의: 게임 번호는 long 형식이므로 상수값 뒤에 L을 꼭 붙여 주세요.
 		 */
 		settings.game_number = -1L;
-		
+		//3030565014768577043L
 		/*
 		 * 게임에 참여할 '무법자 Bot 플레이어 수'의 최대값을 변경할 수 있습니다.
 		 * 0 이하로 두면 무법자는 게임에 참여하지 않습니다.
@@ -181,26 +216,35 @@ public class Program
 		
 		if ( mode == 2 )
 		{
-			GameNumberManager numbers = new GameNumberManager(10000);
+			GameNumberManager numbers = new GameNumberManager(1000);
 			numbers.Create(-1);
 			
 			Grader grader = new Grader();
-			
-			settings.use_console_mode = false;
+
+			settings.print_decisions = false;
+			settings.print_actions = false;
+			settings.print_reactions = false;
+			settings.print_playerInfos = false;
+			settings.print_scores_at_each_turns = false;
+			settings.use_console_mode = true;
+			settings.print_scores_at_the_end = true;
 
 			Classroom classroom = null;
 			
-			for ( int iGame = 0; iGame < 10000; ++iGame )
+			TEST test  = new TEST();
+			for ( int iGame = 0; iGame< 100; ++iGame )
 			{
-				if ( iGame % 1000 == 0 )
-					System.out.println(iGame + " / 10000 games completed...");
+				if ( iGame % 100 == 0 )
+					System.out.println(iGame + " / 1000 games completed...");
 				settings.game_number = numbers.data[iGame];
 				classroom = new Classroom(settings);
 				classroom.Initialize();
+				classroom.test = test;
 				classroom.Start();
 				grader.Update(classroom);
 			}
-
+			test.org();
+			test.show(filename);
 			System.out.println("Done.");
 			
 			grader.PrintResults(classroom);
@@ -210,11 +254,11 @@ public class Program
 		if ( mode == 3 )
 		{
 			settings.print_first_player_only = true;
-			settings.print_decisions = false;
-			settings.print_actions = false;
-			settings.print_reactions = false;
-			settings.print_playerInfos = false;
-			settings.print_scores_at_each_turns = false;
+			settings.print_decisions = true;
+			settings.print_actions = true;
+			settings.print_reactions = true;
+			settings.print_playerInfos = true;
+			settings.print_scores_at_each_turns = true;
 			settings.print_scores_at_the_end = true;
 			
 			GameFrameSettings gfs = new GameFrameSettings();

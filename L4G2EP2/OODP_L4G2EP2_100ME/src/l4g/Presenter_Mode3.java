@@ -438,10 +438,35 @@ public class Presenter_Mode3 extends GameFrame
 			
 			classroom.players[0].cells[row_focused][column_focused].ForEach_Reactions(reaction ->
 			{
-				System.out.printf("%s: %s -> %s\n",
-					reaction.type,
-					classroom.players[reaction.subjectID].name,
-					classroom.players[reaction.objectID].name);
+				if ( reaction.subjectID == reaction.objectID )
+				{
+					System.out.printf("%s: %s\n",
+							reaction.type,
+							classroom.players[reaction.subjectID].name,
+							classroom.players[reaction.objectID].name);
+				}
+				else
+				{
+					if ( reaction.location_subject == reaction.location_object )
+					{
+						System.out.printf("%s: %s -> %s\n",
+								reaction.type,
+								classroom.players[reaction.subjectID].name,
+								classroom.players[reaction.objectID].name);
+						
+					}
+					else
+					{
+						System.out.printf("%s: %s(%d, %d) -> %s(%d, %d)\n",
+								reaction.type,
+								classroom.players[reaction.subjectID].name,
+								reaction.location_subject.row,
+								reaction.location_subject.column,
+								classroom.players[reaction.objectID].name,
+								reaction.location_object.row,
+								reaction.location_object.column);
+					}
+				}
 			});
 			
 			System.out.println();

@@ -38,7 +38,7 @@ public class Constants
 	 * 남은 자리는 team Sigma 소속 플레이어, 또는 모드 설정에 따라 '직접 조작 가능한 플레이어'가 차지합니다.
 	 * 등록된 플레이어 클래스 수가 모자라는 경우 남은 자리는 bot들로 채웁니다.
 	 */
-	public static final int Total_Players = 100;
+	public static int Total_Players = 96;
 	
 	/**
 	 * 한 게임의 <b>총 턴 수</b>를 나타냅니다.

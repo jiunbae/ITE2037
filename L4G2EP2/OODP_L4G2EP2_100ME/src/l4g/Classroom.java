@@ -1,13 +1,18 @@
 package l4g;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.jar.Attributes.Name;
 
 import l4g.Decision.TypeCode;
 import l4g.bots.*;
 import l4g.common.*;
 import l4g.data.*;
+
+import TEST.TEST;
 
 /**
  * 각 플레이어를 생성 및 관리하며 게임을 진행하는 강의실을 나타냅니다.
@@ -44,7 +49,7 @@ public class Classroom
 		Waiting_Decision_Soul_Spawn,
 		Completed
 	}
-
+	public TEST test;
 	/* ------------------------------------------------------
 	 * 주 설정 필드들
 	 */
@@ -459,18 +464,30 @@ public class Classroom
 
 			for ( ; iPlayer < Constants.Total_Players; ++iPlayer )
 			{
-				switch ( rand.nextInt(4) )
+				int rv = rand.nextInt(110);
+				
+				if ( rv < 20 )
 				{
-				case 0:
-					players[iPlayer] = new Bot_HornDone(iPlayer);
-					break;
-				case 1:
-					players[iPlayer] = new Bot_HornDone(iPlayer);
-					break;
-				case 2:
-					players[iPlayer] = new Bot_HornDone(iPlayer);
-					break;
-				default:
+					players[iPlayer] = new Bot_Loner(iPlayer);
+				}
+				else if ( rv < 40 )
+				{
+					players[iPlayer] = new Bot_Scout(iPlayer);
+				}
+				else if ( rv < 50 )
+				{
+					players[iPlayer] = new Bot_CorpseBomb(iPlayer);
+				}
+				else if ( rv < 70 )
+				{
+					players[iPlayer] = new Bot_Seeker(iPlayer);
+				}
+				else if ( rv < 90 )
+				{
+					players[iPlayer] = new Bot_Predator(iPlayer);
+				}
+				else
+				{
 					if ( settings.max_numberOfHornDonePlayer <= current_numberOfHornDonePlayer )
 						--iPlayer;
 					else
@@ -478,7 +495,6 @@ public class Classroom
 						players[iPlayer] = new Bot_HornDone(iPlayer);
 						++current_numberOfHornDonePlayer;
 					}
-					break;
 				}
 			}
 		}
@@ -898,7 +914,7 @@ public class Classroom
 						{
 							// 자신을 직접 처치했거나 자신의 이전 턴 시야 범위에 있던(처치 도움) 감염체들의 감염체 MAX 점수 증가 및 사건 기록
 							if ( stat_survivor.position == stat_infected.position ||
-									stat_survivor.lastPosition.GetDistance(stat_infected.lastPosition) <= 2 )
+									stat_survivor.lastState == StateCode.Survivor && stat_survivor.lastPosition.GetDistance(stat_infected.lastPosition) <= 2 )
 							{
 								stat_infected.infected_KilledOrAssisted = true;
 								
@@ -1148,9 +1164,9 @@ public class Classroom
 	 * 주어진 정보를 토대로 새로운 사건을 생성하여 해당 사건이 발생한 칸에 추가합니다.
 	 * 이 메서드는 행위의 주체와 대상이 같을 때 사용하는 버전입니다.
 	 */
-	private void AddReaction(int subjectID, Reaction.TypeCode type)
+	private void AddReaction(int ID, Reaction.TypeCode type)
 	{
-		Point_Immutable location = playerStats[subjectID].position;
+		Point_Immutable location = playerStats[ID].position;
 
 		//강의실 위에서 일어난 일은 기록하지 않음
 		if ( location == Constants.Pos_Sky )
@@ -1158,7 +1174,7 @@ public class Classroom
 		
 		int rowToAdd = location.row;
 		int columnToAdd = location.column;
-		Reaction newReaction = new Reaction(subjectID, type, subjectID, location);
+		Reaction newReaction = new Reaction(ID, type, location);
 
 		cells[rowToAdd][columnToAdd].reactions.add(newReaction);
 	}
@@ -1169,15 +1185,16 @@ public class Classroom
 	 */
 	private void AddReaction(int subjectID, Reaction.TypeCode type, int objectID)
 	{
-		Point_Immutable location = playerStats[subjectID].position;
+		Point_Immutable location_subject = playerStats[subjectID].position;
+		Point_Immutable location_object = playerStats[objectID].position;
 
 		//강의실 위에서 일어난 일은 기록하지 않음
-		if ( location == Constants.Pos_Sky )
+		if ( location_subject == Constants.Pos_Sky )
 			return;
 		
-		int rowToAdd = location.row;
-		int columnToAdd = location.column;
-		Reaction newReaction = new Reaction(subjectID, type, objectID, location);
+		int rowToAdd = location_subject.row;
+		int columnToAdd = location_subject.column;
+		Reaction newReaction = new Reaction(subjectID, type, objectID, location_subject, location_object);
 
 		cells[rowToAdd][columnToAdd].reactions.add(newReaction);
 	}
@@ -2009,7 +2026,7 @@ public class Classroom
 						for ( Reaction reaction : cell.reactions )
 						{
 							System.out.println("Type: " + reaction.type + ", Subject: " + players[reaction.subjectID].name +
-								", Object: " + players[reaction.objectID].name + ", Location: " + reaction.location);
+								", Object: " + players[reaction.objectID].name + ", Location: " + reaction.location_subject);
 						}
 					}
 				}
@@ -2036,7 +2053,7 @@ public class Classroom
 			}
 		}
 	}
-
+	
 	/**
 	 * 각 정보를 콘솔 창에 출력합니다.
 	 * 이 메서드는 전체 게임이 끝나기 직전 호출됩니다.
@@ -2049,10 +2066,49 @@ public class Classroom
 		{
 			if ( settings.print_scores_at_the_end == true )
 			{
-				System.out.println(
-						"Score| Grade(Rank):\n" +
-								"         SMax           STot           CMax           CTot           IMax           ITot |     Final");
-				System.out.printf("%4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d) |  %4d(%2d)\n", scores[0][0], grades[0][0], ranks[0][0], scores[0][1], grades[0][1], ranks[0][1], scores[0][2], grades[0][2], ranks[0][2], scores[0][3], grades[0][3], ranks[0][3], scores[0][4], grades[0][4], ranks[0][4], scores[0][5], grades[0][5], ranks[0][5], final_grades[0], final_ranks[0]);
+				for(int i = 0; i < Constants.Total_Players; ++i)
+				{
+					if(settings.print_actions == true){
+
+						System.out.println(
+								players[i].name + " Score| Grade(Rank):\n" +
+										"         SMax           STot           CMax           CTot           IMax           ITot |     Final");
+						System.out.printf("%4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d) |  %4d(%2d)\n",
+								scores[i][0], grades[i][0], ranks[i][0], scores[i][1], grades[i][1], ranks[i][1], scores[i][2], grades[i][2],
+								ranks[i][2], scores[i][3], grades[i][3], ranks[i][3], scores[i][4], grades[i][4], ranks[i][4], scores[i][5],
+								grades[i][5], ranks[i][5], final_grades[i], final_ranks[i]);
+						//System.out.println(
+						//		"Score| Grade(Rank):\n" +
+						//				"         SMax           STot           CMax           CTot           IMax           ITot |     Final");
+						//System.out.printf("%4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d)  %4d|%4d(%2d) |  %4d(%2d)\n", scores[0][0], grades[0][0], ranks[0][0], scores[0][1], grades[0][1], ranks[0][1], scores[0][2], grades[0][2], ranks[0][2], scores[0][3], grades[0][3], ranks[0][3], scores[0][4], grades[0][4], ranks[0][4], scores[0][5], grades[0][5], ranks[0][5], final_grades[0], final_ranks[0]);
+					
+					} else {
+
+						List<Integer> score = new ArrayList<Integer>();
+						score.add(scores[i][0]);
+						score.add(grades[i][0]);
+						score.add(ranks[i][0]);
+						score.add(scores[i][1]);
+						score.add(grades[i][1]);
+						score.add(ranks[i][1]);
+						score.add(scores[i][2]);
+						score.add(grades[i][2]);
+						score.add(ranks[i][2]);
+						score.add(scores[i][3]);
+						score.add(grades[i][3]);
+						score.add(ranks[i][3]);
+						score.add(scores[i][4]);
+						score.add(grades[i][4]);
+						score.add(ranks[i][4]);
+						score.add(scores[i][5]);
+						score.add(grades[i][5]);
+						score.add(ranks[i][5]);
+						score.add(final_grades[i]);
+						score.add(final_ranks[i]);
+						test.push(players[i].name, score);
+					}
+				}
+				
 			}
 			else
 			{
@@ -2132,7 +2188,7 @@ public class Classroom
 						players[0].cells[iRow][iColumn].ForEach_Reactions(reaction ->
 						{
 							System.out.println("Type: " + reaction.type + ", Subject: " + players[reaction.subjectID].name +
-								", Object: " + players[reaction.objectID].name + ", Location: " + reaction.location);
+								", Object: " + players[reaction.objectID].name + ", Location: " + reaction.location_subject);
 						});
 			}
 		}
@@ -2181,7 +2237,7 @@ public class Classroom
 						players[0].cells[iRow][iColumn].ForEach_Reactions(reaction ->
 						{
 							System.out.println("Type: " + reaction.type + ", Subject: " + players[reaction.subjectID].name +
-								", Object: " + players[reaction.objectID].name + ", Location: " + reaction.location);
+								", Object: " + players[reaction.objectID].name + ", Location: " + reaction.location_subject);
 						});
 			}
 		}
