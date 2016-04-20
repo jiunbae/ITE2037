@@ -1,0 +1,5 @@
+*.out
+log/
+test/
+.metadata/
+.recommenders/
