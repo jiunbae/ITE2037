@@ -20,8 +20,16 @@ import TEST.TEST;
 
 public class Program
 {
+	public static void ar(String ... args)
+	{
+		
+		for(String a : args)
+			System.out.println(a);
+		
+	}
 	public static void main(String[] args) throws IOException
 	{
+		ar("a","b,","c");
 		//settings는 강의실 설정(게임 한 판 설정)을 위한 여러 필드들을 가지고 있습니다.
 		Classroom_Settings settings = new Classroom_Settings();
 		
