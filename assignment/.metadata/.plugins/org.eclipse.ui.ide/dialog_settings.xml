@@ -3,11 +3,13 @@
 	<section name="ExternalProjectImportWizard">
 		<item value="true" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
 		<item value="true" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
-		<item value="true" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="D:\Documents\2016\1\객체지향설계및프로그래밍\ITE2037\assignment\LOOT_v1.8"/>
 			<item value=""/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
 			<item value="C:\Users\Maybe\Downloads\OODP_HW_3_3_by_TA.zip"/>
 			<item value="C:\Users\Maybe\Downloads\OODP_HW_2_3_by_TA.zip"/>
 			<item value="C:\Users\Maybe\Downloads\oopd\OODP_HW_1_by_TA.zip"/>
