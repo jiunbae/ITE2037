@@ -3,14 +3,16 @@ package object;
 import utility.*;
 import loot.graphics.DrawableObject3D;
 
-public class ObjectStatic extends DrawableObject3D
+public class Static extends DrawableObject3D
 {
-	private int width, height;
-	public ObjectStatic(int width, int height)
+	public Static(int x, int y, int z)
 	{
-		super(0,0,0, width, height);
-		this.width = width;
-		this.height = height;
+		super(x, y, z, -1, -1);
+	}
+	
+	public Static(int x, int y, int z, int width, int height)
+	{
+		super(x, y, z, width, height);
 	}
 	
 	public Triple<Double, Double, Double> nextMove(Triple<Double, Double, Double> position)

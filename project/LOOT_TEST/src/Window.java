@@ -1,14 +1,19 @@
-import java.awt.event.KeyEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.EventProcessor;
 import io.EventUtility;
 import io.Keyboard;
+import io.Processor;
+import io.Stage;
+import io.Stage.objectInfo;
 import io.Keyboard.KEYBOARD;
 import loot.GameFrame;
 import loot.GameFrameSettings;
-import loot.InputManager;
 import loot.graphics.Viewport;
 import object.*;
-import utility.*;
+import object.Character;
 
 public class Window extends GameFrame
 {
@@ -22,40 +27,65 @@ public class Window extends GameFrame
 		@Override
 		public void EventUtil(KEYBOARD wParam, Integer lParam) 
 		{
+			if(lParam == 0)
+				return;
+			
 			switch (wParam)
 			{
 				case UP:
+					me.pos_y +=10;
 					break;
 				case DOWN:
+					me.pos_y -=10;
 					break;
 				case LEFT:
+					me.pos_x -=10;
 					break;
 				case RIGHT:
+					me.pos_x +=10;
 					break;
 				case JUMP:
 					break;
 				default:
 					break;
-			}	
+			}
 		}
 	}
+
+	Processor processor = new Processor();
+	
+	Stage stage = new Stage("stages/STAGE1.xml", 0);
+	
+	ObjectManager<Static> objects = new ObjectManager<Static>();
+	
+	Character me = new Character(0,0,0,100,100), you;
+	
+	Static block = new Static(0,0,0,1,100);
+	Static glow = new Static(0,0,0,30,30);
 	
 	Viewport viewport;
-	ObjectStatic object, object2;
-	KeyEvent keyEvent;
-	Keyboard keyboard = new Keyboard(inputs, keyEvent);
 	
 	public Window(GameFrameSettings settings) 
 	{
 		super(settings);
+		
+		processor.install(new Keyboard(inputs, new KeyEvent()));
 	}
 
 	@Override
 	public boolean Initialize() 
 	{
+		processor.Initilize();
+		
 		images.LoadImage("images/ball.png", "ball");
 		images.LoadImage("images/ball2.png", "ball2");
-
+		images.LoadImage("images/block_black.png", "block");
+		images.LoadImage("images/glow.png", "glow");
+		
+		me.image = images.GetImage("ball");
+		block.image = images.GetImage("block");
+		glow.image = images.GetImage("glow");
+		
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		viewport.pointOfView_z = 500;
 		viewport.view_baseDistance = 500;
@@ -64,21 +94,26 @@ public class Window extends GameFrame
 		viewport.view_width = settings.canvas_width;
 		viewport.view_height = settings.canvas_height;
 		
-		object= new ObjectStatic(100, 100);
-		object.image = images.GetImage("ball");
-		object.pos_x = 50;
-		object2 = new ObjectStatic(160,160);
-		object2.image = images.GetImage("ball2");
-		viewport.children.add(object);
-		viewport.children.add(object2);
+		viewport.children.add(me);
+		//viewport.children.add(block);
+		//viewport.children.add(glow);
+		
+		stage.loop((e)->{
+			objects.insert(e.attrs.get("name"), new Static(Integer.valueOf(e.attrs.get("x")), Integer.valueOf(e.attrs.get("y")),
+					Integer.valueOf(e.attrs.get("z")),Integer.valueOf(e.attrs.get("w")),Integer.valueOf(e.attrs.get("h"))));
+			images.LoadImage("images/" + e.attrs.get("texture"), e.attrs.get("name"));
+			objects.get(e.attrs.get("name")).image = images.GetImage(e.attrs.get("name"));
+		});
+		objects.loop((e)->viewport.children.add(e));
+		
 	    return true;
 	}
 	
 	@Override
 	public boolean Update(long timeStamp) 
 	{
+		processor.Event();
 		return true;
-
 	}
 
 	@Override

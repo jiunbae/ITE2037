@@ -3,11 +3,16 @@ package object;
 import utility.*;
 import loot.graphics.DrawableObject3D;
 
-public class ObjectDynamic extends DrawableObject3D
+public class Dynamic extends Static
 {
-	public ObjectDynamic()
+	public Dynamic(int x, int y, int z)
 	{
-		
+		super(x, y, z, -1, -1);
+	}
+	
+	public Dynamic(int x, int y, int z, int width, int height)
+	{
+		super(x, y, z, width, height);
 	}
 	
 	public Triple<Double, Double, Double> nextMove(Triple<Double, Double, Double> position)

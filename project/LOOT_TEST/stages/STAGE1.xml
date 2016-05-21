@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<stage w="5000" h="1600">
+	<object x="0" y="10" w="100" h="50" name="THIS" static="false" texture="glow.png">
+		<name>THIS</name>
+	</object>
+	<object x="0" y="110" w="100" h="50" name="THAT" static="false" texture="glow.png">
+		<name>THAT</name>
+	</object>
+</stage>

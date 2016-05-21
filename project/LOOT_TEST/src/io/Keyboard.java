@@ -65,8 +65,6 @@ public class Keyboard implements EventProcessor
 		}
 	}
 	
-	
-	
 	@Override
 	public void EventIterator() 
 	{

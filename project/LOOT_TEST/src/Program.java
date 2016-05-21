@@ -14,6 +14,7 @@ public class Program
 	    settings.canvas_width = WIDTH;
 	    settings.canvas_backgroundColor = Color.black;
 	    settings.window_title = "pair";
+	    settings.gameLoop_interval_ns = 1000000000 / 60;
 	    
 	    Window window = new Window(settings);
 	    
