@@ -7,7 +7,6 @@ import io.EventUtility;
 import io.Keyboard;
 import io.Processor;
 import io.Stage;
-import io.Stage.objectInfo;
 import io.Keyboard.KEYBOARD;
 import loot.GameFrame;
 import loot.GameFrameSettings;
@@ -99,8 +98,7 @@ public class Window extends GameFrame
 		//viewport.children.add(glow);
 		
 		stage.loop((e)->{
-			objects.insert(e.attrs.get("name"), new Static(Integer.valueOf(e.attrs.get("x")), Integer.valueOf(e.attrs.get("y")),
-					Integer.valueOf(e.attrs.get("z")),Integer.valueOf(e.attrs.get("w")),Integer.valueOf(e.attrs.get("h"))));
+			objects.insert(e.get("name"), new Static(e));
 			images.LoadImage("images/" + e.attrs.get("texture"), e.attrs.get("name"));
 			objects.get(e.attrs.get("name")).image = images.GetImage(e.attrs.get("name"));
 		});

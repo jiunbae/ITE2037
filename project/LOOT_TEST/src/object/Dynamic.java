@@ -9,11 +9,11 @@ public class Dynamic extends Static
 	{
 		super(x, y, z, -1, -1);
 	}
-	
 	public Dynamic(int x, int y, int z, int width, int height)
 	{
 		super(x, y, z, width, height);
 	}
+	
 	
 	public Triple<Double, Double, Double> nextMove(Triple<Double, Double, Double> position)
 	{

@@ -1,5 +1,6 @@
 package io;
 
+import io.ObjectInfo;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.DocumentBuilder;
@@ -13,40 +14,13 @@ import org.w3c.dom.NamedNodeMap;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import utility.HashMapDefault;
-import utility.Pair;
 
 public class Stage
 {	
-	public class objectInfo
-	{
-		public String name;
-		public HashMapDefault<String, String> attrs = new HashMapDefault<String, String>("0");
-		
-		public objectInfo(String name) 
-		{
-			this.name = name;
-		}
-		
-		protected void insert(String name, String option)
-		{
-			attrs.put(name, option);
-		}
-	}
-	
-	public class settings
-	{
-	}
-
 	public String rootName;
-	public List<objectInfo> nodes = new ArrayList<objectInfo>();
+	public List<ObjectInfo> nodes = new ArrayList<ObjectInfo>();
 	
 	public Stage(String name, int options)
 	{
@@ -67,7 +41,7 @@ public class Stage
 				{
 					Element eElement = (Element) nNode;
 					NamedNodeMap attrs = eElement.getAttributes();
-					objectInfo oNode = new objectInfo(eElement.getNodeName());
+					ObjectInfo oNode = new ObjectInfo(eElement.getNodeName());
 					
 					for(int j = 0; j < attrs.getLength(); ++j)
 						oNode.insert(attrs.item(j).getNodeName(), attrs.item(j).getNodeValue());
@@ -83,9 +57,9 @@ public class Stage
 		}
 	}
 
-	public void loop(Consumer<objectInfo> func)
+	public void loop(Consumer<ObjectInfo> func)
 	{
-		for(objectInfo oi : nodes)
+		for(ObjectInfo oi : nodes)
 			func.accept(oi);;
 	}
 }
