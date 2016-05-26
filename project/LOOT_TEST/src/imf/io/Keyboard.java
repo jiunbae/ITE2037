@@ -1,4 +1,4 @@
-package io;
+package imf.io;
 
 import java.awt.Canvas;
 import java.awt.event.KeyEvent;

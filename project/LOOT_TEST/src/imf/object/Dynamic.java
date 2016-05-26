@@ -1,23 +1,19 @@
-package object;
+package imf.object;
 
-import utility.*;
-import io.ObjectInfo;
+import imf.utility.*;
 import loot.graphics.DrawableObject3D;
 
-public class Static extends DrawableObject3D
+public class Dynamic extends Static
 {
-	public Static(int x, int y, int z)
+	public Dynamic(int x, int y, int z)
 	{
 		super(x, y, z, -1, -1);
 	}
-	public Static(int x, int y, int z, int width, int height)
+	public Dynamic(int x, int y, int z, int width, int height)
 	{
 		super(x, y, z, width, height);
 	}
-	public Static(ObjectInfo oi)
-	{
-		super(Integer.valueOf(oi.get("x")), Integer.valueOf(oi.get("y")), Integer.valueOf(oi.get("z")), Integer.valueOf(oi.get("w")), Integer.valueOf(oi.get("h")));
-	}
+	
 	
 	public Triple<Double, Double, Double> nextMove(Triple<Double, Double, Double> position)
 	{

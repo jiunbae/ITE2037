@@ -2,17 +2,17 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import io.EventProcessor;
-import io.EventUtility;
-import io.Keyboard;
-import io.Processor;
-import io.Stage;
-import io.Keyboard.KEYBOARD;
+import imf.io.EventProcessor;
+import imf.io.EventUtility;
+import imf.io.Keyboard;
+import imf.io.Processor;
+import imf.io.Stage;
+import imf.io.Keyboard.KEYBOARD;
+import imf.object.*;
+import imf.object.Character;
 import loot.GameFrame;
 import loot.GameFrameSettings;
 import loot.graphics.Viewport;
-import object.*;
-import object.Character;
 
 public class Window extends GameFrame
 {

@@ -1,4 +1,4 @@
-package utility;
+package imf.utility;
 
 public class Pair<First, Second> 
 {

@@ -1,6 +1,6 @@
-package io;
+package imf.io;
 
-import utility.HashMapDefault;
+import imf.utility.HashMapDefault;
 
 public class ObjectInfo 
 {

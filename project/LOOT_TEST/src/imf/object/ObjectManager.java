@@ -1,4 +1,4 @@
-package object;
+package imf.object;
 
 import java.util.HashMap;
 import java.util.Map.Entry;

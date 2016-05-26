@@ -1,4 +1,4 @@
-package object;
+package imf.object;
 
 public class Character extends Dynamic 
 {

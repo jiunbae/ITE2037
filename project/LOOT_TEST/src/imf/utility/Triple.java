@@ -1,4 +1,4 @@
-package utility;
+package imf.utility;
 
 public class Triple<First, Second, Third> 
 {
