@@ -1,17 +1,17 @@
-package imf.io;
+package imf.processor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Processor implements EventProcessor{
-	List<EventProcessor> processors = new ArrayList<EventProcessor>();
+public class ProcessManager implements ProcessEvent{
+	List<ProcessEvent> processors = new ArrayList<ProcessEvent>();
 	
-	public void install(EventProcessor processor)
+	public void install(ProcessEvent processor)
 	{
 		processors.add(processor);
 	}
 	
-	public void uninstall(EventProcessor processor)
+	public void uninstall(ProcessEvent processor)
 	{
 		processors.remove(processor);
 	}
@@ -19,28 +19,28 @@ public class Processor implements EventProcessor{
 	@Override
 	public void Initilize() 
 	{
-		for(EventProcessor processor : processors)
+		for(ProcessEvent processor : processors)
 			processor.Initilize();
 	}
 
 	@Override
 	public void Event() 
 	{
-		for(EventProcessor processor : processors)
+		for(ProcessEvent processor : processors)
 			processor.Event();
 	}
 
 	@Override
 	public void EventIterator() 
 	{
-		for(EventProcessor processor : processors)
+		for(ProcessEvent processor : processors)
 			processor.EventIterator();
 	}
 
 	@Override
 	public void Finalize() 
 	{
-		for(EventProcessor processor : processors)
+		for(ProcessEvent processor : processors)
 			processor.Finalize();
 	}
 }

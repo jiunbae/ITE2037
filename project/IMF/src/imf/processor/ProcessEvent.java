@@ -1,6 +1,6 @@
-package imf.io;
+package imf.processor;
 
-public interface EventProcessor 
+public interface ProcessEvent 
 {
 	/**
 	 * 

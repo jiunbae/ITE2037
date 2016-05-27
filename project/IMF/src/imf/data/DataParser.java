@@ -1,4 +1,4 @@
-package imf.io;
+package imf.data;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -6,9 +6,6 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import imf.io.ObjectInfo;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -19,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Stage
+public class DataParser
 {	
 	public String rootName;
-	public List<ObjectInfo> nodes = new ArrayList<ObjectInfo>();
+	public List<DataObject> nodes = new ArrayList<DataObject>();
 	
-	public Stage(String name, int options)
+	public DataParser(String name, int options)
 	{
 		try {
 			File file = new File(name);
@@ -43,7 +40,7 @@ public class Stage
 				{
 					Element eElement = (Element) nNode;
 					NamedNodeMap attrs = eElement.getAttributes();
-					ObjectInfo oNode = new ObjectInfo(eElement.getNodeName());
+					DataObject oNode = new DataObject(eElement.getNodeName());
 					
 					for(int j = 0; j < attrs.getLength(); ++j)
 						oNode.insert(attrs.item(j).getNodeName(), attrs.item(j).getNodeValue());
@@ -51,7 +48,6 @@ public class Stage
 					nodes.add(oNode);
 				}
 			}
-			
 		} catch (ParserConfigurationException e) {
 			return;
 		} catch (SAXException | IOException e) {
@@ -59,9 +55,9 @@ public class Stage
 		}
 	}
 
-	public void loop(Consumer<ObjectInfo> func)
+	public void loop(Consumer<DataObject> func)
 	{
-		for(ObjectInfo oi : nodes)
+		for(DataObject oi : nodes)
 			func.accept(oi);;
 	}
 }

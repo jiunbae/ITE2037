@@ -1,20 +1,20 @@
 package imf.object;
 
-import imf.io.ObjectInfo;
+import imf.data.DataObject;
 import imf.utility.*;
 import loot.graphics.DrawableObject3D;
 
-public class Static extends DrawableObject3D
+public class StaticObject extends DrawableObject3D
 {
-	public Static(int x, int y, int z)
+	public StaticObject(int x, int y, int z)
 	{
 		super(x, y, z, -1, -1);
 	}
-	public Static(int x, int y, int z, int width, int height)
+	public StaticObject(int x, int y, int z, int width, int height)
 	{
 		super(x, y, z, width, height);
 	}
-	public Static(ObjectInfo oi)
+	public StaticObject(DataObject oi)
 	{
 		super(Integer.valueOf(oi.get("x")), Integer.valueOf(oi.get("y")), Integer.valueOf(oi.get("z")), Integer.valueOf(oi.get("w")), Integer.valueOf(oi.get("h")));
 	}

@@ -3,13 +3,13 @@ package imf.object;
 import imf.utility.*;
 import loot.graphics.DrawableObject3D;
 
-public class Dynamic extends Static
+public class DynamicObject extends StaticObject
 {
-	public Dynamic(int x, int y, int z)
+	public DynamicObject(int x, int y, int z)
 	{
 		super(x, y, z, -1, -1);
 	}
-	public Dynamic(int x, int y, int z, int width, int height)
+	public DynamicObject(int x, int y, int z, int width, int height)
 	{
 		super(x, y, z, width, height);
 	}

@@ -1,4 +1,4 @@
-package imf.io;
+package imf.processor;
 
 import java.awt.Canvas;
 import java.awt.event.KeyEvent;
@@ -6,10 +6,10 @@ import java.awt.event.KeyEvent;
 import loot.InputManager;
 import loot.InputManager.ButtonState;
 
-public class Keyboard implements EventProcessor
+public class Keyboard implements ProcessEvent
 {
 	InputManager inputs;
-	EventUtility<KEYBOARD, Integer> utility;
+	ProcessUtility<KEYBOARD, Integer> utility;
 	
 	public enum KEYBOARD
 	{ 
@@ -32,7 +32,7 @@ public class Keyboard implements EventProcessor
 
 	static final int STATE_PRESS = 1, STATE_CHANGE = 2;
 	
-	public Keyboard(InputManager inputs, EventUtility<KEYBOARD, Integer> utility)
+	public Keyboard(InputManager inputs, ProcessUtility<KEYBOARD, Integer> utility)
 	{
 		this.inputs = inputs;
 		this.utility = utility;

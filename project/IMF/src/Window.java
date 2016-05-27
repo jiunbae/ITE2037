@@ -2,14 +2,15 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import imf.io.EventProcessor;
-import imf.io.EventUtility;
-import imf.io.Keyboard;
-import imf.io.Processor;
-import imf.io.Stage;
-import imf.io.Keyboard.KEYBOARD;
+import imf.data.DataParser;
 import imf.object.*;
-import imf.object.Character;
+import imf.object.CharacterObject;
+import imf.processor.Keyboard;
+import imf.processor.ProcessManager;
+import imf.processor.ProcessEvent;
+import imf.processor.ProcessUtility;
+import imf.processor.Keyboard.KEYBOARD;
+
 import loot.GameFrame;
 import loot.GameFrameSettings;
 import loot.graphics.Viewport;
@@ -21,7 +22,7 @@ public class Window extends GameFrame
 	 */
 	private static final long serialVersionUID = 2015004584L;
 	
-	public class KeyEvent implements EventUtility<KEYBOARD, Integer>
+	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer>
 	{
 		@Override
 		public void EventUtil(KEYBOARD wParam, Integer lParam) 
@@ -51,23 +52,22 @@ public class Window extends GameFrame
 		}
 	}
 
-	Processor processor = new Processor();
-	
-	Stage stage = new Stage("stages/STAGE1.xml", 0);
-	
-	ObjectManager<Static> objects = new ObjectManager<Static>();
-	
-	Character me = new Character(0,0,0,100,100), you;
-	
-	Static block = new Static(0,0,0,1,100);
-	Static glow = new Static(0,0,0,30,30);
-	
+	Constant path;
+	DataParser data;
 	Viewport viewport;
+	ProcessManager processor;
+	
+	ObjectManager<StaticObject> objects = new ObjectManager<StaticObject>();
+	
+	CharacterObject me = new CharacterObject(0,0,0,100,100), you;
 	
 	public Window(GameFrameSettings settings) 
 	{
 		super(settings);
 		
+		path = new Constant(settings);
+		data = new DataParser(path.MAP + "stage1.xml", 0);
+		processor = new ProcessManager();
 		processor.install(new Keyboard(inputs, new KeyEvent()));
 	}
 
@@ -76,14 +76,9 @@ public class Window extends GameFrame
 	{
 		processor.Initilize();
 		
-		images.LoadImage("images/ball.png", "ball");
-		images.LoadImage("images/ball2.png", "ball2");
-		images.LoadImage("images/block_black.png", "block");
-		images.LoadImage("images/glow.png", "glow");
+		images.LoadImage(path.RES + "ball.png", "ball");
 		
 		me.image = images.GetImage("ball");
-		block.image = images.GetImage("block");
-		glow.image = images.GetImage("glow");
 		
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		viewport.pointOfView_z = 500;
@@ -94,12 +89,10 @@ public class Window extends GameFrame
 		viewport.view_height = settings.canvas_height;
 		
 		viewport.children.add(me);
-		//viewport.children.add(block);
-		//viewport.children.add(glow);
 		
-		stage.loop((e)->{
-			objects.insert(e.get("name"), new Static(e));
-			images.LoadImage("images/" + e.attrs.get("texture"), e.attrs.get("name"));
+		data.loop((e)->{
+			objects.insert(e.get("name"), new StaticObject(e));
+			images.LoadImage(path.RES + e.attrs.get("texture"), e.attrs.get("name"));
 			objects.get(e.attrs.get("name")).image = images.GetImage(e.attrs.get("name"));
 		});
 		objects.loop((e)->viewport.children.add(e));

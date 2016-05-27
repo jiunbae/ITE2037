@@ -1,13 +1,13 @@
-package imf.io;
+package imf.data;
 
 import imf.utility.HashMapDefault;
 
-public class ObjectInfo 
+public class DataObject 
 {
 	public String name;
 	public HashMapDefault<String, String> attrs = new HashMapDefault<String, String>("0");
 	
-	public ObjectInfo(String name) 
+	public DataObject(String name) 
 	{
 		this.name = name;
 	}
