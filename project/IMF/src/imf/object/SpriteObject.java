@@ -1,19 +1,26 @@
 package imf.object;
 
+import imf.data.DataObject;
 import imf.utility.*;
 import loot.graphics.DrawableObject3D;
 
-public class DynamicObject extends StaticObject
+public class SpriteObject extends DrawableObject3D
 {
-	public DynamicObject(int x, int y, int z)
+	public String ID;
+	
+	public SpriteObject(int x, int y, int z)
 	{
 		super(x, y, z, -1, -1);
 	}
-	public DynamicObject(int x, int y, int z, int width, int height)
+	public SpriteObject(int x, int y, int z, int width, int height)
 	{
 		super(x, y, z, width, height);
 	}
-	
+	public SpriteObject(DataObject oi)
+	{
+		super(Integer.valueOf(oi.get("x")), Integer.valueOf(oi.get("y")), Integer.valueOf(oi.get("z")), Integer.valueOf(oi.get("w")), Integer.valueOf(oi.get("h")));
+		this.ID = oi.get("name");
+	}
 	
 	public Triple<Double, Double, Double> nextMove(Triple<Double, Double, Double> position)
 	{

@@ -37,15 +37,15 @@ public class Keyboard implements ProcessEvent
 		this.inputs = inputs;
 		this.utility = utility;
 	}
-	
+
 	@Override
-	public void Initilize()
+	public void Initilize() 
 	{
 		inputs.BindKey(KEYBOARD.UP.getKey(), KEYBOARD.UP.ordinal());
 		inputs.BindKey(KEYBOARD.DOWN.getKey(), KEYBOARD.DOWN.ordinal());
 		inputs.BindKey(KEYBOARD.LEFT.getKey(), KEYBOARD.LEFT.ordinal());
 		inputs.BindKey(KEYBOARD.RIGHT.getKey(), KEYBOARD.RIGHT.ordinal());
-		inputs.BindKey(KEYBOARD.JUMP.getKey(), KEYBOARD.JUMP.ordinal());
+		inputs.BindKey(KEYBOARD.JUMP.getKey(), KEYBOARD.JUMP.ordinal());	
 	}
 
 	@Override
@@ -62,20 +62,21 @@ public class Keyboard implements ProcessEvent
 			state |= bs.isChanged ? STATE_CHANGE: 0;
 			
 			utility.EventUtil(KEYBOARD.values()[bs.ID], state);
-		}
-	}
-	
-	@Override
-	public void EventIterator() 
-	{
-		
+		}	
 	}
 
 	@Override
-	public void Finalize() 
-	{
+	public void EventIterator() {
+		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void Finalize() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	
 }

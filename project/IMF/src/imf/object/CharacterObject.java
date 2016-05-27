@@ -1,6 +1,6 @@
 package imf.object;
 
-public class CharacterObject extends DynamicObject 
+public class CharacterObject extends PhysicalObject 
 {
 	public CharacterObject(int x, int y, int z)
 	{

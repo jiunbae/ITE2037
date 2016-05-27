@@ -31,30 +31,44 @@ public class DataParser
 			Document doc = dBuilder.parse(file);
 			
 			rootName = doc.getDocumentElement().getNodeName();
-			NodeList nList =  doc.getElementsByTagName("object");
+			elementInsert(doc.getElementsByTagName("object"));
+			elementInsert(doc.getElementsByTagName("me"));
 			
-			for(int i  =0 ; i < nList.getLength(); ++i)
-			{
-				Node nNode = nList.item(i);
-				if(nNode.getNodeType() == Node.ELEMENT_NODE)
-				{
-					Element eElement = (Element) nNode;
-					NamedNodeMap attrs = eElement.getAttributes();
-					DataObject oNode = new DataObject(eElement.getNodeName());
-					
-					for(int j = 0; j < attrs.getLength(); ++j)
-						oNode.insert(attrs.item(j).getNodeName(), attrs.item(j).getNodeValue());
-					
-					nodes.add(oNode);
-				}
-			}
+			
 		} catch (ParserConfigurationException e) {
 			return;
 		} catch (SAXException | IOException e) {
 			return;
 		}
 	}
-
+	
+	private void elementInsert(NodeList list)
+	{
+		for(int i  =0 ; i < list.getLength(); ++i)
+		{
+			Node nNode = list.item(i);
+			if(nNode.getNodeType() == Node.ELEMENT_NODE)
+			{
+				Element eElement = (Element) nNode;
+				NamedNodeMap attrs = eElement.getAttributes();
+				DataObject oNode = new DataObject(eElement.getNodeName());
+				
+				for(int j = 0; j < attrs.getLength(); ++j)
+					oNode.insert(attrs.item(j).getNodeName(), attrs.item(j).getNodeValue());
+				
+				nodes.add(oNode);
+			}
+		}
+	}
+	
+	public DataObject get(String key)
+	{
+		for(DataObject o : nodes)
+			if(o.name.equals(key))
+				return o;
+		return null;
+	}
+	
 	public void loop(Consumer<DataObject> func)
 	{
 		for(DataObject oi : nodes)

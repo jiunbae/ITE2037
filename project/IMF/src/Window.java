@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.object.*;
 import imf.object.CharacterObject;
@@ -10,7 +11,7 @@ import imf.processor.ProcessManager;
 import imf.processor.ProcessEvent;
 import imf.processor.ProcessUtility;
 import imf.processor.Keyboard.KEYBOARD;
-
+import imf.processor.Physics;
 import loot.GameFrame;
 import loot.GameFrameSettings;
 import loot.graphics.Viewport;
@@ -27,22 +28,23 @@ public class Window extends GameFrame
 		@Override
 		public void EventUtil(KEYBOARD wParam, Integer lParam) 
 		{
-			if(lParam == 0)
+			if(lParam == 0 || lParam == 2)
 				return;
 			
 			switch (wParam)
 			{
 				case UP:
-					me.pos_y +=10;
+					if(me.v_y < -9)
+						me.v_y = 9;
 					break;
 				case DOWN:
-					me.pos_y -=10;
+					//me.pos_y -=1;
 					break;
 				case LEFT:
-					me.pos_x -=10;
+					me.pos_x -=3;
 					break;
 				case RIGHT:
-					me.pos_x +=10;
+					me.pos_x +=3;
 					break;
 				case JUMP:
 					break;
@@ -55,11 +57,14 @@ public class Window extends GameFrame
 	Constant path;
 	DataParser data;
 	Viewport viewport;
+	
 	ProcessManager processor;
+	Keyboard keyboard;
+	Physics physics;
 	
-	ObjectManager<StaticObject> objects = new ObjectManager<StaticObject>();
+	ObjectManager<PhysicalObject> objects = new ObjectManager<PhysicalObject>();
 	
-	CharacterObject me = new CharacterObject(0,0,0,100,100), you;
+	PhysicalObject me, you;
 	
 	public Window(GameFrameSettings settings) 
 	{
@@ -67,19 +72,22 @@ public class Window extends GameFrame
 		
 		path = new Constant(settings);
 		data = new DataParser(path.MAP + "stage1.xml", 0);
+		
+		images.LoadImage(path.RES + data.get("me").attrs.get("texture"), "me");
+		me = new PhysicalObject(data.get("me"));
+		me.image = images.GetImage("me");
+		me.a_y = -0.3;
+		
 		processor = new ProcessManager();
-		processor.install(new Keyboard(inputs, new KeyEvent()));
+		processor.install(keyboard = new Keyboard(inputs, new KeyEvent()));
+		processor.install(physics = new Physics(me));
 	}
 
 	@Override
 	public boolean Initialize() 
 	{
 		processor.Initilize();
-		
-		images.LoadImage(path.RES + "ball.png", "ball");
-		
-		me.image = images.GetImage("ball");
-		
+
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		viewport.pointOfView_z = 500;
 		viewport.view_baseDistance = 500;
@@ -91,9 +99,12 @@ public class Window extends GameFrame
 		viewport.children.add(me);
 		
 		data.loop((e)->{
-			objects.insert(e.get("name"), new StaticObject(e));
+			if(e.type().equals("me"))
+				return;
+			objects.insert(e.get("name"), new PhysicalObject(e));
 			images.LoadImage(path.RES + e.attrs.get("texture"), e.attrs.get("name"));
 			objects.get(e.attrs.get("name")).image = images.GetImage(e.attrs.get("name"));
+			physics.install(objects.get(e.attrs.get("name")));
 		});
 		objects.loop((e)->viewport.children.add(e));
 		
