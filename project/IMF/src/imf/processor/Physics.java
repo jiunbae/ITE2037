@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import imf.object.*;
+import imf.utility.Pair;
 
-public class Physics implements ProcessEvent
+public class Physics implements Process
 {
 	CharacterObject target;
+	List<PhysicalObject> objectp = new ArrayList<PhysicalObject>();
 	List<SpriteObject> objects = new ArrayList<SpriteObject>();
 	
 	public Physics(CharacterObject tar)
@@ -16,51 +18,50 @@ public class Physics implements ProcessEvent
 		target.a_y = -1;
 	}
 	
-	public void install(SpriteObject po)
+	public void install(PhysicalObject o)
 	{
-		objects.add(po);
+		objectp.add(o);
+	}
+	public void install(SpriteObject o)
+	{
+		objects.add(o);
 	}
 	
 	@Override
-	public void Initilize() 
+	public void initilize() 
 	{
-		
 	}
 
 	@Override
-	public void Event() 
+	public void process() 
 	{
-		double ox = target.pos_x, oy = target.pos_y;
-		applyMove(target);
+		target.do_move();
 		for(SpriteObject o : objects)
 		{
+			switch (target.position(o))
+			{
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+					
+			}
 			if (target.apertureX(o) < 0)
 				if (target.apertureY(o) < 0)
 				{
 					if(target.v_y < 0)
 						target.v_y = 0;
+					target.state_jump = false;
 				}
 		}
 	}
-
-	private void applyMove(PhysicalObject o)
-	{
-		if(o==null)
-			return;
-		o.pos_x += o.v_x;
-		o.pos_y += o.v_y;
-		o.v_x += o.a_x;
-		o.v_y += o.a_y;
-	}
 	
 	@Override
-	public void EventIterator() 
-	{
-		
-	}
-	
-	@Override
-	public void Finalize() 
+	public void finalize() 
 	{
 		
 	}

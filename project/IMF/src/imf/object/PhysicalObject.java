@@ -17,16 +17,24 @@ public class PhysicalObject extends SpriteObject
 		super(e);
 	}
 
-	/**
-	 * relative position <br>
-	 * 
-	 * example: (0,0).position(100,100) -> <False, False>
-	 * @Param object
-	 * @return relative position to Object (LEFT?, UP?)
-	 */
-	public Pair<Boolean, Boolean> position(SpriteObject o)
+	public void do_move()
 	{
-		return new Pair<Boolean, Boolean>(distanceX(o) > 0, distanceY(o) > 0);
+		this.pos_x += this.v_x;
+		this.pos_y += this.v_y;
+		this.v_x += this.a_x;
+		this.v_y += this.a_y;
+	}
+
+	/**
+	 * up, down, left, right - 0,1,2,3
+	 * 
+	 * @param o
+	 * @return relative position to o
+	 * @see 아 코딩하기싫다 ㅅㅂ
+	 */
+	public int position(SpriteObject o)
+	{
+		return distanceY(o) > 0 ? 1 : 0 + distanceX(o) > 0 ? 2 : 0;
 	}
 	
 	public double distanceX(SpriteObject o)

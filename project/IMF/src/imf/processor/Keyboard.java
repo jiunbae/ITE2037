@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import loot.InputManager;
 import loot.InputManager.ButtonState;
 
-public class Keyboard implements ProcessEvent
+public class Keyboard implements Process
 {
 	InputManager inputs;
 	ProcessUtility<KEYBOARD, Integer> utility;
@@ -39,7 +39,7 @@ public class Keyboard implements ProcessEvent
 	}
 
 	@Override
-	public void Initilize() 
+	public void initilize() 
 	{
 		inputs.BindKey(KEYBOARD.UP.getKey(), KEYBOARD.UP.ordinal());
 		inputs.BindKey(KEYBOARD.DOWN.getKey(), KEYBOARD.DOWN.ordinal());
@@ -49,7 +49,7 @@ public class Keyboard implements ProcessEvent
 	}
 
 	@Override
-	public void Event() 
+	public void process() 
 	{
 		inputs.AcceptInputs();
 		for(ButtonState bs : inputs.buttons)
@@ -64,15 +64,9 @@ public class Keyboard implements ProcessEvent
 			utility.EventUtil(KEYBOARD.values()[bs.ID], state);
 		}	
 	}
-
-	@Override
-	public void EventIterator() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
-	public void Finalize() {
+	public void finalize() {
 		// TODO Auto-generated method stub
 		
 	}

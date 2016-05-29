@@ -19,4 +19,29 @@ public class CharacterObject extends PhysicalObject
 	{
 		super(e);
 	}
+	
+	public void do_jump()
+	{
+		if(state_jump)
+			return;
+		state_jump = true;
+		this.v_y += 10;
+	}
+	public void do_move(int direction)
+	{
+		switch (direction)
+		{
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				this.pos_x -= 5;
+				break;
+			case 3:
+				this.pos_x += 5;
+				break;
+			
+		}
+	}
 }

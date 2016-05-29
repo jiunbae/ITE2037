@@ -8,7 +8,7 @@ import imf.object.*;
 import imf.object.CharacterObject;
 import imf.processor.Keyboard;
 import imf.processor.ProcessManager;
-import imf.processor.ProcessEvent;
+import imf.processor.Process;
 import imf.processor.ProcessUtility;
 import imf.processor.Keyboard.KEYBOARD;
 import imf.processor.Physics;
@@ -41,6 +41,7 @@ public class Window extends GameFrame
 	{
 		super(settings);
 		
+		//create new instance
 		path = new Constant(settings);
 		data = new DataParser(path.MAP + "stage1.xml", 0);
 		
@@ -55,31 +56,35 @@ public class Window extends GameFrame
 	@Override
 	public boolean Initialize() 
 	{
+		// data load
 		data.loop((e)->{
 			images.LoadImage(path.RES + e.get("texture"), e.get("name"));
 			if(e.ID.equals("me"))
 			{
 				me = new CharacterObject(e);
 				me.image = images.GetImage("me");
+				viewport.children.add(me);
 			}
 			else
 			{
 				SpriteObject object = new SpriteObject(e);
 				objects.insert(e.get("name"), object);
 				objects.get(e.get("name")).image = images.GetImage(e.get("name"));
+				viewport.children.add(object);
 			}
 		});
 		
+		// processor
 		processor.install(keyboard = new Keyboard(inputs, new KeyEvent()));
 		processor.install(physics = new Physics(me));
-		processor.Initilize();
+		processor.initilize();
 
+		// objects
 		objects.loop((e)->{
-			viewport.children.add(e);
-			if(!e.ID.equals("me"))
-				physics.install(e);
+			physics.install(e);
 		});
-
+		
+		// viewport
 		viewport.pointOfView_z = 500;
 		viewport.view_baseDistance = 500;
 		viewport.view_minDistance = 0.1;
@@ -87,8 +92,7 @@ public class Window extends GameFrame
 		viewport.view_width = settings.canvas_width;
 		viewport.view_height = settings.canvas_height;
 		
-		viewport.children.add(me);
-		
+		// text (for debug)
 		text.height = 100;
 		text.width = 100;
 		text.x = 0;
@@ -102,13 +106,14 @@ public class Window extends GameFrame
 	@Override
 	public boolean Update(long timeStamp) 
 	{
-		processor.Event();
+		processor.process();
 		
 		return true;
 	}
 
 	@Override
-	public void Draw(long timeStamp) {
+	public void Draw(long timeStamp) 
+	{
 		BeginDraw();
 		
 		ClearScreen();
@@ -118,6 +123,10 @@ public class Window extends GameFrame
 		EndDraw();
 	}
 	
+	/**
+	 * KeyEvent, callback function of Keyboard Process
+	 * @author Maybe
+	 */
 	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer>
 	{
 		@Override
@@ -129,18 +138,13 @@ public class Window extends GameFrame
 			switch (wParam)
 			{
 				case UP:
-					break;
 				case DOWN:
-					break;
 				case LEFT:
-					me.pos_x -=3;
-					break;
 				case RIGHT:
-					me.pos_x +=3;
+					me.do_move(wParam.ordinal());
 					break;
 				case JUMP:
-					if(!me.state_jump)
-						me.v_y = 9;
+					me.do_jump();
 					break;
 				default:
 					break;

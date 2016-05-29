@@ -3,44 +3,37 @@ package imf.processor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProcessManager implements ProcessEvent{
-	List<ProcessEvent> processors = new ArrayList<ProcessEvent>();
+public class ProcessManager implements Process{
+	List<Process> processors = new ArrayList<Process>();
 	
-	public void install(ProcessEvent processor)
+	public void install(Process processor)
 	{
 		processors.add(processor);
 	}
 	
-	public void uninstall(ProcessEvent processor)
+	public void uninstall(Process processor)
 	{
 		processors.remove(processor);
 	}
 
 	@Override
-	public void Initilize() 
+	public void initilize() 
 	{
-		for(ProcessEvent processor : processors)
-			processor.Initilize();
+		for(Process processor : processors)
+			processor.initilize();
 	}
 
 	@Override
-	public void Event() 
+	public void process() 
 	{
-		for(ProcessEvent processor : processors)
-			processor.Event();
+		for(Process processor : processors)
+			processor.process();
 	}
 
 	@Override
-	public void EventIterator() 
+	public void finalize() 
 	{
-		for(ProcessEvent processor : processors)
-			processor.EventIterator();
-	}
-
-	@Override
-	public void Finalize() 
-	{
-		for(ProcessEvent processor : processors)
-			processor.Finalize();
+		for(Process processor : processors)
+			processor.finalize();
 	}
 }
