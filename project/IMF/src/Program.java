@@ -9,7 +9,8 @@ public class Program
 	{	
 	    GameFrameSettings settings = new GameFrameSettings();
 	    
-	    SettingParser parser = new SettingParser("IMF.inf", settings);
+	    @SuppressWarnings("unused")
+		SettingParser parser = new SettingParser("IMF.inf", settings);
 	    
 	    settings.canvas_height = HEIGHT;
 	    settings.canvas_width = WIDTH;

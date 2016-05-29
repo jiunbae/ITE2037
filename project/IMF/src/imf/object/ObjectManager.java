@@ -2,7 +2,9 @@ package imf.object;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.function.Function;
+import java.util.function.Consumer;
+
+import imf.data.DataObject;
 
 public class ObjectManager<T> {
 	HashMap<String, T> objects = new HashMap<String, T>();
@@ -23,10 +25,10 @@ public class ObjectManager<T> {
 	{
 		objects.remove(object);
 	}
-	
-	public <R> void loop(Function<T, R> func)
+
+	public void loop(Consumer<T> func)
 	{
 		for(Entry<String, T> e : objects.entrySet())
-			func.apply(e.getValue());
+			func.accept(e.getValue());
 	}
 }

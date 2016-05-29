@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
+<!-- @STD 창 크기는 600x1200 -->
 <stage w="5000" h="1600">
+	<!-- @STD stage의 바닥을 정합니다. -->
+	<object x="0" y="-400" w="5000" h="15" texture="block_black.png"></object>
+
+	<!-- @STD me는 플레이어블 캐릭터를 나타냅니다. -->
 	<me x="0" y="0" w="25" h="25" texture="ball.png"></me>
-	
-	<object x="0" y="-150" w="100" h="50" static="false" texture="block_black.png"></object>
 
-
+	<object x="0" y="-150" w="100" h="50" static="true" texture="block_black.png"></object>
 </stage>

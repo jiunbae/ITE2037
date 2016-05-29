@@ -3,19 +3,20 @@ package imf.processor;
 import java.util.ArrayList;
 import java.util.List;
 
-import imf.object.PhysicalObject;
+import imf.object.*;
 
 public class Physics implements ProcessEvent
 {
-	PhysicalObject target;
-	List<PhysicalObject> objects = new ArrayList<PhysicalObject>();
+	CharacterObject target;
+	List<SpriteObject> objects = new ArrayList<SpriteObject>();
 	
-	public Physics(PhysicalObject tar)
+	public Physics(CharacterObject tar)
 	{
 		target = tar;
+		target.a_y = -1;
 	}
 	
-	public void install(PhysicalObject po)
+	public void install(SpriteObject po)
 	{
 		objects.add(po);
 	}
@@ -31,14 +32,14 @@ public class Physics implements ProcessEvent
 	{
 		double ox = target.pos_x, oy = target.pos_y;
 		applyMove(target);
-		for(PhysicalObject o : objects)
+		for(SpriteObject o : objects)
 		{
-			applyMove(o);
-			double x = target.apertureY(o);
-			if (target.apertureY(o) < 1)
-			{
-				target.pos_y = oy;
-			}
+			if (target.apertureX(o) < 0)
+				if (target.apertureY(o) < 0)
+				{
+					if(target.v_y < 0)
+						target.v_y = 0;
+				}
 		}
 	}
 

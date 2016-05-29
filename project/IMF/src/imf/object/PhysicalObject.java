@@ -8,57 +8,49 @@ public class PhysicalObject extends SpriteObject
 {
 	public double v_x = 0, v_y = 0, v_z = 0, a_x = 0, a_y = 0, a_z = 0;
 	
-	public PhysicalObject(int x, int y, int z)
-	{
-		super(x, y, z, -1, -1);
-	}
 	public PhysicalObject(int x, int y, int z, int width, int height)
 	{
 		super(x, y, z, width, height);
 	}
-	
-	public PhysicalObject(DataObject e) {
+	public PhysicalObject(DataObject e) 
+	{
 		super(e);
 	}
-	public double distanceX(PhysicalObject po)
+
+	/**
+	 * relative position <br>
+	 * 
+	 * example: (0,0).position(100,100) -> <False, False>
+	 * @Param object
+	 * @return relative position to Object (LEFT?, UP?)
+	 */
+	public Pair<Boolean, Boolean> position(SpriteObject o)
 	{
-		return (po.pos_x - this.pos_x);
+		return new Pair<Boolean, Boolean>(distanceX(o) > 0, distanceY(o) > 0);
 	}
 	
-	public double distanceY(PhysicalObject po)
+	public double distanceX(SpriteObject o)
 	{
-		return (po.pos_y - this.pos_y);
+		return (this.pos_x - o.pos_x);
 	}
 	
-	public double apertureX(PhysicalObject po)
+	public double distanceY(SpriteObject o)
 	{
-		return Math.abs(distanceX(po)) - (this.radius_x + po.radius_x);
+		return (this.pos_y - o.pos_y);
 	}
 	
-	public double apertureY(PhysicalObject po)
+	public double apertureX(SpriteObject o)
 	{
-		return Math.abs(distanceY(po)) - (this.radius_y + po.radius_y);
+		return Math.abs(distanceX(o)) - (this.radius_x + o.radius_x);
 	}
 	
-	public boolean collision(PhysicalObject po)
+	public double apertureY(SpriteObject o)
+	{
+		return Math.abs(distanceY(o)) - (this.radius_y + o.radius_y);
+	}
+	
+	public boolean collision(SpriteObject o)
 	{
 		return false;
-	}
-	
-	public Triple<Double, Double, Double> nextMove(Triple<Double, Double, Double> position)
-	{
-		position.first += this.pos_x;
-		position.second += this.pos_y;
-		position.third += this.pos_z;
-		
-		return position;
-	}
-	public Triple<Double, Double, Double> doMove(Triple<Double, Double, Double> position)
-	{
-		this.pos_x += position.first;
-		this.pos_y += position.second;
-		this.pos_z += position.third;
-		
-		return new Triple<Double, Double, Double>(this.pos_x, this.pos_y, this.pos_z);
 	}
 }

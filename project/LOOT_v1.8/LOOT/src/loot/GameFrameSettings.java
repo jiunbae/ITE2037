@@ -1,6 +1,7 @@
 package loot;
 
 import java.awt.Color;
+import java.util.HashMap;
 
 /**
  * GameFrame class 또는 그 하위 클래스들에 대한 세부 설정을 수행하기 위해 사용하는 클래스입니다.
@@ -60,6 +61,8 @@ public class GameFrameSettings
 	 * 기본값은 8입니다.
 	 */
 	public int numberOfButtons = 8;
+	
+	public HashMap<String, String> path = new HashMap<String, String>();
 	
 	public GameFrameSettings()
 	{

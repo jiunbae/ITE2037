@@ -14,6 +14,7 @@ import imf.processor.Keyboard.KEYBOARD;
 import imf.processor.Physics;
 import loot.GameFrame;
 import loot.GameFrameSettings;
+import loot.graphics.TextBox;
 import loot.graphics.Viewport;
 
 public class Window extends GameFrame
@@ -22,49 +23,19 @@ public class Window extends GameFrame
 	 * serialVersionUID 
 	 */
 	private static final long serialVersionUID = 2015004584L;
-	
-	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer>
-	{
-		@Override
-		public void EventUtil(KEYBOARD wParam, Integer lParam) 
-		{
-			if(lParam == 0 || lParam == 2)
-				return;
-			
-			switch (wParam)
-			{
-				case UP:
-					if(me.v_y < -9)
-						me.v_y = 9;
-					break;
-				case DOWN:
-					//me.pos_y -=1;
-					break;
-				case LEFT:
-					me.pos_x -=3;
-					break;
-				case RIGHT:
-					me.pos_x +=3;
-					break;
-				case JUMP:
-					break;
-				default:
-					break;
-			}
-		}
-	}
 
 	Constant path;
 	DataParser data;
+	
 	Viewport viewport;
+	TextBox text;
 	
 	ProcessManager processor;
 	Keyboard keyboard;
 	Physics physics;
 	
-	ObjectManager<PhysicalObject> objects = new ObjectManager<PhysicalObject>();
-	
-	PhysicalObject me, you;
+	ObjectManager<SpriteObject> objects;
+	CharacterObject me, you;
 	
 	public Window(GameFrameSettings settings) 
 	{
@@ -73,22 +44,42 @@ public class Window extends GameFrame
 		path = new Constant(settings);
 		data = new DataParser(path.MAP + "stage1.xml", 0);
 		
-		images.LoadImage(path.RES + data.get("me").attrs.get("texture"), "me");
-		me = new PhysicalObject(data.get("me"));
-		me.image = images.GetImage("me");
-		me.a_y = -0.3;
+		objects = new ObjectManager<SpriteObject>();
 		
 		processor = new ProcessManager();
-		processor.install(keyboard = new Keyboard(inputs, new KeyEvent()));
-		processor.install(physics = new Physics(me));
-	}
 
+		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		text = new TextBox();
+	}
+	
 	@Override
 	public boolean Initialize() 
 	{
+		data.loop((e)->{
+			images.LoadImage(path.RES + e.get("texture"), e.get("name"));
+			if(e.ID.equals("me"))
+			{
+				me = new CharacterObject(e);
+				me.image = images.GetImage("me");
+			}
+			else
+			{
+				SpriteObject object = new SpriteObject(e);
+				objects.insert(e.get("name"), object);
+				objects.get(e.get("name")).image = images.GetImage(e.get("name"));
+			}
+		});
+		
+		processor.install(keyboard = new Keyboard(inputs, new KeyEvent()));
+		processor.install(physics = new Physics(me));
 		processor.Initilize();
 
-		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		objects.loop((e)->{
+			viewport.children.add(e);
+			if(!e.ID.equals("me"))
+				physics.install(e);
+		});
+
 		viewport.pointOfView_z = 500;
 		viewport.view_baseDistance = 500;
 		viewport.view_minDistance = 0.1;
@@ -98,15 +89,12 @@ public class Window extends GameFrame
 		
 		viewport.children.add(me);
 		
-		data.loop((e)->{
-			if(e.type().equals("me"))
-				return;
-			objects.insert(e.get("name"), new PhysicalObject(e));
-			images.LoadImage(path.RES + e.attrs.get("texture"), e.attrs.get("name"));
-			objects.get(e.attrs.get("name")).image = images.GetImage(e.attrs.get("name"));
-			physics.install(objects.get(e.attrs.get("name")));
-		});
-		objects.loop((e)->viewport.children.add(e));
+		text.height = 100;
+		text.width = 100;
+		text.x = 0;
+		text.y = 0;
+		
+		viewport.children.add(text);
 		
 	    return true;
 	}
@@ -115,6 +103,7 @@ public class Window extends GameFrame
 	public boolean Update(long timeStamp) 
 	{
 		processor.Event();
+		
 		return true;
 	}
 
@@ -128,5 +117,34 @@ public class Window extends GameFrame
 		
 		EndDraw();
 	}
-
+	
+	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer>
+	{
+		@Override
+		public void EventUtil(KEYBOARD wParam, Integer lParam) 
+		{
+			if(lParam == 0 || lParam == 2)
+				return;
+			
+			switch (wParam)
+			{
+				case UP:
+					break;
+				case DOWN:
+					break;
+				case LEFT:
+					me.pos_x -=3;
+					break;
+				case RIGHT:
+					me.pos_x +=3;
+					break;
+				case JUMP:
+					if(!me.state_jump)
+						me.v_y = 9;
+					break;
+				default:
+					break;
+			}
+		}
+	}
 }

@@ -6,13 +6,15 @@ import imf.utility.HashMapDefault;
 
 public class DataObject 
 {
-	public String name;
-	public HashMapDefault<String, String> attrs = new HashMapDefault<String, String>("0");
+	public String ID;
+	private HashMapDefault<String, String> attrs = new HashMapDefault<String, String>("0");
 	
-	public DataObject(String name) 
+	public DataObject(String ID) 
 	{
-		this.name = name;
+		this.ID = ID;
 		insert("name", hash(10));
+		if(ID.equals("me"))
+			insert("name", "me");
 	}
 	
 	public static String hash(int size) 
@@ -24,11 +26,6 @@ public class DataObject
 			buffer.append(Integer.toString(random.nextInt(10)));
 		
 		return buffer.toString();
-	}
-	
-	public String type()
-	{
-		return name;
 	}
 	
 	protected void insert(String name, String option)
