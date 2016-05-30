@@ -4,8 +4,12 @@ import imf.data.DataObject;
 
 public class CharacterObject extends PhysicalObject 
 {
-	public boolean 	state_jump = false, 
+	public boolean 	state_jump = false,
 					state_do = false;
+	/**
+	 * -1, 0, 1 - left, not move, right;
+	 */
+	public int 		state_move = 0;
 	
 	public CharacterObject(int x, int y, int z)
 	{
@@ -20,14 +24,14 @@ public class CharacterObject extends PhysicalObject
 		super(e);
 	}
 	
-	public void do_jump()
+	public void doJump()
 	{
 		if(state_jump)
 			return;
 		state_jump = true;
-		this.v_y += 10;
+		this.v_y = 15;
 	}
-	public void do_move(int direction)
+	public void doMove(int direction)
 	{
 		switch (direction)
 		{
@@ -37,11 +41,12 @@ public class CharacterObject extends PhysicalObject
 				break;
 			case 2:
 				this.pos_x -= 5;
+				state_move = -1;
 				break;
 			case 3:
 				this.pos_x += 5;
+				state_move = 1;
 				break;
-			
 		}
 	}
 }

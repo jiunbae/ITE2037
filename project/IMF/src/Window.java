@@ -141,10 +141,14 @@ public class Window extends GameFrame
 				case DOWN:
 				case LEFT:
 				case RIGHT:
-					me.do_move(wParam.ordinal());
+					me.doMove(wParam.ordinal());
 					break;
 				case JUMP:
-					me.do_jump();
+					me.doJump();
+					break;
+				case STOP:
+					me.pos_x = 0;
+					me.pos_y = 0;
 					break;
 				default:
 					break;

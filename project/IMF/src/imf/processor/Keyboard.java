@@ -13,7 +13,12 @@ public class Keyboard implements Process
 	
 	public enum KEYBOARD
 	{ 
-		UP(KeyEvent.VK_W), DOWN(KeyEvent.VK_S), LEFT(KeyEvent.VK_A), RIGHT(KeyEvent.VK_D), JUMP(KeyEvent.VK_SPACE),
+		UP(KeyEvent.VK_W),
+		DOWN(KeyEvent.VK_S),
+		LEFT(KeyEvent.VK_A),
+		RIGHT(KeyEvent.VK_D),
+		JUMP(KeyEvent.VK_SPACE),
+		STOP(KeyEvent.VK_E),
 		/**
 		 * FINAL, count enum elements;
 		 */
@@ -46,6 +51,7 @@ public class Keyboard implements Process
 		inputs.BindKey(KEYBOARD.LEFT.getKey(), KEYBOARD.LEFT.ordinal());
 		inputs.BindKey(KEYBOARD.RIGHT.getKey(), KEYBOARD.RIGHT.ordinal());
 		inputs.BindKey(KEYBOARD.JUMP.getKey(), KEYBOARD.JUMP.ordinal());	
+		inputs.BindKey(KEYBOARD.STOP.getKey(), KEYBOARD.STOP.ordinal());
 	}
 
 	@Override

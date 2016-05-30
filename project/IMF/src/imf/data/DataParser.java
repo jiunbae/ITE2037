@@ -32,7 +32,7 @@ public class DataParser
 			
 			
 			root = doc.getDocumentElement();
-			appendNode(doc.getElementsByTagName("object"));
+			appendNode(doc.getElementsByTagName("static"));
 			appendNode(doc.getElementsByTagName("me"));
 			
 		} catch (ParserConfigurationException e) {

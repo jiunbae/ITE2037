@@ -35,29 +35,49 @@ public class Physics implements Process
 	@Override
 	public void process() 
 	{
-		target.do_move();
+		boolean exc = false;
+		PhysicalObject next = target.newInstance();
+		next.doMove();
+		
 		for(SpriteObject o : objects)
 		{
-			switch (target.position(o))
+			if(!target.zPosition(o) || o == null)
+				continue;
+
+			//
+			if(target.relativeX(o) > 0)
 			{
-				case 0:
-					break;
-				case 1:
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-					
+				target.pos_x = o.box_left - target.radius_y;
 			}
-			if (target.apertureX(o) < 0)
-				if (target.apertureY(o) < 0)
+			else if(target.relativeX(o) < 0)
+			{
+				target.pos_x = o.box_right + target.radius_y;
+			}
+			
+			//
+			if(target.relativeX(o) == 0 && next.relativeX(o) == 0)
+			{
+				if(target.relativeY(o) != 0 && next.relativeY(o) == 0)
 				{
-					if(target.v_y < 0)
-						target.v_y = 0;
-					target.state_jump = false;
+					if(target.relativeY(o) > 0)
+					{
+						target.pos_y = o.box_top + target.radius_y;
+						if(target.v_y < 0)
+							target.v_y = 0;
+						target.state_jump = false;
+					}
+					else if(target.relativeY(o) < 0)
+					{
+						target.pos_y = o.box_bottom - target.radius_y;
+						if(target.v_y > 0)
+							target.v_y = 0;
+					}
 				}
+			}
+			
 		}
+		if(!exc)
+			target.doMove();
 	}
 	
 	@Override

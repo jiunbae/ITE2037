@@ -1,10 +1,9 @@
 package imf.utility;
 
-public class Pair<First, Second> 
+public class Pair<T> 
 {
-	public First first;
-	public Second second;
-	public Pair(First _first, Second _second)
+	public T first, second;
+	public Pair(T _first, T _second)
 	{
 		this.first =  _first;
 		this.second = _second;

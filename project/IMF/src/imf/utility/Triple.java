@@ -1,11 +1,9 @@
 package imf.utility;
 
-public class Triple<First, Second, Third> 
+public class Triple<T> 
 {
-	public First first;
-	public Second second;
-	public Third third;
-	public Triple(First _first, Second _second, Third _third)
+	public T first, second, third;
+	public Triple(T _first, T _second, T _third)
 	{
 		this.first =  _first;
 		this.second = _second;
