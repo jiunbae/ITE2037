@@ -4,13 +4,14 @@ import org.json.*;
 import org.json.simple.JSONObject;
 
 /**
- * IPlayerDelegate Interface
+ * IPlayerConnected Interface
  * 
+ * @package	imf.network
  * @author Prev
  */
 
 
-public interface IPlayerDelegate {
+public interface IPlayerConnected {
 	
 	/**
 	 * Get data for sending like position, velocity, acceleration, etc

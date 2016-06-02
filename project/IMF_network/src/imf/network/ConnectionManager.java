@@ -12,7 +12,6 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- * @copyright Copyright (c) 2016 prev.kr
  *
  */
 
@@ -54,10 +53,10 @@ public class ConnectionManager {
 	
 	
 	/*
-	 * Receivers objects implements IConnection
+	 * Receivers objects implements IConnectionReceiver
 	 * When data is received, call receivers[i].onReceived(JSONData data)
 	 */
-	static private ArrayList<IConnection> receivers = new ArrayList<IConnection>();
+	static private ArrayList<IConnectionReceiver> receivers = new ArrayList<IConnectionReceiver>();
 	
 	
 	
@@ -178,12 +177,12 @@ public class ConnectionManager {
 	}
 	
 	/**
-	 * Register instance that implements IConnection
+	 * Register instance that implements IConnectionReceiver
 	 * When data is received, call onReceive(JSONObject data) method registered to this manager
 	 * 
-	 * @param receiver: instance that implements IConnection
+	 * @param receiver: instance that implements IConnectionReceiver
 	 */
-	static public void registerReceiver(IConnection receiver) {
+	static public void registerReceiver(IConnectionReceiver receiver) {
 		receivers.add(receiver);
 	}
 	

@@ -3,13 +3,13 @@ package imf.network;
 import org.json.simple.JSONObject;
 
 /**
- * IConnection Interface
+ * IConnectionReceiver Interface
  * 
  * Registered by ConnectionManager.registerReceiver
  * 
  * ----------------------------------------------------------------
  * Usage:
- * class Test implements IConnection {
+ * class Test implements IConnectionReceiver {
  * 		int x;
  * 		int y;
  * 		@override public void onReceived(JSONObject data) {
@@ -24,11 +24,10 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- * @copyright Copyright (c) 2016 prev.kr
  * 
  */
 
-public interface IConnection {
+public interface IConnectionReceiver {
 	
 	/**
 	 * On received data on server

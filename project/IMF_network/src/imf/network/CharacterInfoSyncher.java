@@ -11,7 +11,6 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- * @copyright Copyright (c) 2016 prev.kr
  *
  */
 
@@ -21,8 +20,8 @@ public class CharacterInfoSyncher {
 	/*
 	 * Player and Partner instance
 	 */
-	static private IPlayerDelegate player = null;
-	static private IPartnerDelegate partner = null;
+	static private IPlayerConnected player = null;
+	static private IPartnerConnected partner = null;
 	
 	
 	static private boolean isReceiverResgisterd = false;
@@ -42,9 +41,9 @@ public class CharacterInfoSyncher {
 	 * Register player
 	 * When calling CharacterInfoSyncher.fetch(), player's data getting by player.getDataForSending() will be sent to partner
 	 * 
-	 * @param _player: IPlayerDelegate instance
+	 * @param _player: IPlayerConnected instance
 	 */
-	static public void registerPlayer(IPlayerDelegate _player) {
+	static public void registerPlayer(IPlayerConnected _player) {
 		player = _player;
 		
 		if (!ConnectionManager.getIsConnected())
@@ -59,9 +58,9 @@ public class CharacterInfoSyncher {
 	 * Register partner
 	 * When data received by partner's program, partner.onInfoReceived 
 	 * 
-	 * @param _partner: IPartnerDelegate instance
+	 * @param _partner: IPartnerConnected instance
 	 */
-	static public void registerPartner(IPartnerDelegate _partner) {
+	static public void registerPartner(IPartnerConnected _partner) {
 		partner = _partner;
 	}
 	

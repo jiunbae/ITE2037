@@ -3,13 +3,14 @@ package imf.network;
 import org.json.simple.JSONObject;
 
 /**
- * IPartnerDelegate Interface
+ * IPartnerConnected Interface
  * 
+ * @package	imf.network
  * @author Prev
  */
 
 
-public interface IPartnerDelegate {
+public interface IPartnerConnected {
 	/**
 	 * On info data received like position, velocity, acceleration, etc
 	 * @return JSON Object
