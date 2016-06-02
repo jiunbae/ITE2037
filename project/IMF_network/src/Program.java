@@ -36,11 +36,13 @@ public class Program {
 						JSONObject obj = new JSONObject();
 						obj.put("message", "hello partner!!");
 						
+						gWindow.registerCharacters();
+						
 						ConnectionManager.sendToPartner( obj );
 						break;
 				}
 	    		
-	    		System.out.println( "data received: " + data.toJSONString() );
+	    		//System.out.println( "data received: " + data.toJSONString() );
 	    		
 	    	});
 	    	

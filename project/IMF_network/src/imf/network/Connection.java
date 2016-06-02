@@ -151,7 +151,7 @@ public class Connection extends Thread {
 	 */
 	public void send(JSONObject data) {
 		try {
-			outStream.writeUTF(data.toJSONString());
+			outStream.writeUTF( " " + data.toJSONString() );
 			
 		}catch (IOException e) {
 			callOutOfConnectionEvent(e);
