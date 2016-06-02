@@ -23,9 +23,11 @@ public class PhysicalObject extends SpriteObject
 		object.a_x = this.a_x;
 		object.a_y = this.a_y;
 		object.a_z = this.a_z;
-		object.v_x = this.v_y;
+		object.v_x = this.v_x;
 		object.v_y = this.v_y;
 		object.v_z = this.v_z;
+		object.radius_x = this.radius_x;
+		object.radius_y = this.radius_y;
 		object.trigger_hide = true;
 		return object;
 	}

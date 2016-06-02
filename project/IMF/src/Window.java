@@ -5,7 +5,6 @@ import java.util.List;
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.object.*;
-import imf.object.CharacterObject;
 import imf.processor.Keyboard;
 import imf.processor.ProcessManager;
 import imf.processor.Process;
@@ -35,7 +34,7 @@ public class Window extends GameFrame
 	Physics physics;
 	
 	ObjectManager<SpriteObject> objects;
-	CharacterObject me, you;
+	PhysicalObject me, you;
 	
 	public Window(GameFrameSettings settings) 
 	{
@@ -61,7 +60,7 @@ public class Window extends GameFrame
 			images.LoadImage(path.RES + e.get("texture"), e.get("name"));
 			if(e.ID.equals("me"))
 			{
-				me = new CharacterObject(e);
+				me = new PhysicalObject(e);
 				me.image = images.GetImage("me");
 				viewport.children.add(me);
 			}
@@ -76,7 +75,7 @@ public class Window extends GameFrame
 		
 		// processor
 		processor.install(keyboard = new Keyboard(inputs, new KeyEvent()));
-		processor.install(physics = new Physics(me));
+		processor.install(physics = new Physics(me, new PhysicsEvent()));
 		processor.initilize();
 
 		// objects
@@ -127,11 +126,9 @@ public class Window extends GameFrame
 	 * KeyEvent, callback function of Keyboard Process
 	 * @author Maybe
 	 */
-	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer>
-	{
+	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer> {
 		@Override
-		public void EventUtil(KEYBOARD wParam, Integer lParam) 
-		{
+		public void utility(KEYBOARD wParam, Integer lParam) {
 			if(lParam == 0 || lParam == 2)
 				return;
 			
@@ -141,18 +138,25 @@ public class Window extends GameFrame
 				case DOWN:
 				case LEFT:
 				case RIGHT:
-					me.doMove(wParam.ordinal());
+					physics.doMove(wParam.ordinal());
 					break;
 				case JUMP:
-					me.doJump();
+					physics.doJump();
 					break;
 				case STOP:
-					me.pos_x = 0;
-					me.pos_y = 0;
+					physics.doClear();
 					break;
 				default:
 					break;
 			}
 		}
 	}
+	
+	public class PhysicsEvent implements ProcessUtility<SpriteObject, Integer> {
+		@Override
+		public void utility(SpriteObject wParam, Integer lParam) {
+			
+		}
+	}
+
 }

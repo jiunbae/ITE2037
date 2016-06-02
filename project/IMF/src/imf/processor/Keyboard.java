@@ -67,7 +67,7 @@ public class Keyboard implements Process
 			state |= bs.isPressed ? STATE_PRESS : 0;
 			state |= bs.isChanged ? STATE_CHANGE: 0;
 			
-			utility.EventUtil(KEYBOARD.values()[bs.ID], state);
+			utility.utility(KEYBOARD.values()[bs.ID], state);
 		}	
 	}
 	

@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
-<!-- @STD 창 크기는 600x1200 -->
+<!--
+	@DEFAULT: 무조건 지정해야 합니다.
+	@MOST: 지정하는것을 권장합니다.
+	@IF: 대부분 옵션입니다.
+-->
+<!-- @DEFAULT 창 크기는 600x1200 -->
 <stage w="5000" h="1600">
-	<!-- @STD stage의 바닥을 정합니다. -->
+	<!-- @MOST stage의 바닥을 정합니다. -->
 	<static x="0" y="-400" w="5000" h="15" texture="block_black.png"></static>
 
-	<!-- @STD me는 플레이어블 캐릭터를 나타냅니다. -->
+	<!-- @DEFAULT me는 플레이어블 캐릭터를 나타냅니다. -->
 	<me x="0" y="0" w="25" h="25" texture="ball.png"></me>
 
 	<static x="0" y="-150" w="100" h="15" texture="block_black.png"></static>
