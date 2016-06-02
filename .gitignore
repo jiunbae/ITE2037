@@ -2,3 +2,5 @@
 .metadata
 .recommenders
 ~*.tmp
+*.class
+RemoteSystemsTempFiles
