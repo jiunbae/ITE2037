@@ -21,7 +21,6 @@ import org.json.simple.parser.ParseException;
  * 
  * @package	imf.network
  * @author Prev
- * @copyright Copyright (c) 2016 prev.kr
  *
  */
 

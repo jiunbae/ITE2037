@@ -6,7 +6,7 @@ import org.json.simple.parser.JSONParser;
 
 import imf.network.Connection;
 import imf.network.ConnectionManager;
-import imf.network.IConnection;
+import imf.network.IConnectionReceiver;
 import loot.GameFrameSettings;
 
 public class Program {
