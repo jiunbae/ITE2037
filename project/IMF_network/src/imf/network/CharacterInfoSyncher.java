@@ -31,7 +31,10 @@ public class CharacterInfoSyncher {
 	 * On data receiving listener
 	 */
 	static private Consumer<JSONObject> receivedListener = (JSONObject data) -> {
-		if ((String)data.get("type") == "partner_info_sent") {
+		//System.out.println( data.toJSONString() );
+		
+		if (((String)data.get("type")).equals("partner_info_sent")) {
+			//System.out.println("partner moved!!");
 			partner.onInfoReceived( (JSONObject) data.get("data") );
 		}
 	};
@@ -49,8 +52,10 @@ public class CharacterInfoSyncher {
 		if (!ConnectionManager.getIsConnected())
 			System.out.println("WARNING: CharacterInfoSyncher.registerPlayer SHOULD BE CALLED after ConnectionManager is connected");
 		
-		if (!isReceiverResgisterd)
+		if (!isReceiverResgisterd) {
 			ConnectionManager.getConnection().addReceivedEvent(receivedListener);
+			isReceiverResgisterd = true;
+		}
 	}
 	
 	
@@ -74,7 +79,7 @@ public class CharacterInfoSyncher {
 	 */
 	static public boolean fetch() {
 		if (player == null) {
-			System.out.println("WARNING: player object is NULL");
+			//System.out.println("WARNING: player object is NULL");
 			return false;
 		}
 		
