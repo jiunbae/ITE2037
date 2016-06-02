@@ -1,39 +1,60 @@
 package imf.processor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-public class ProcessManager implements Process{
-	List<Process> processors = new ArrayList<Process>();
+public class ProcessManager implements IProcess
+{
+	HashMap<String, IProcess> processors = new HashMap<String, IProcess>();
+	HashMap<String, IProcessUtility> processUtilitys = new HashMap<String, IProcessUtility>();
 	
-	public void install(Process processor)
+	public void install(String name, IProcess processor)
 	{
-		processors.add(processor);
+		processors.put(name, processor);
+	}
+	public void installUtility(String name, IProcessUtility processUtility)
+	{
+		processUtilitys.put(name, processUtility);
 	}
 	
-	public void uninstall(Process processor)
+	public IProcess get(String name)
 	{
-		processors.remove(processor);
+		return processors.get(name);
 	}
-
+	public IProcessUtility getUtility(String name)
+	{
+		return processUtilitys.get(name);
+	}
+	
+	public void uninstall(String name)
+	{
+		processors.remove(name);
+	}
+	public void uninstallUtility(String name)
+	{
+		processUtilitys.remove(name);
+	}
+	
 	@Override
 	public void initilize() 
-	{
-		for(Process processor : processors)
-			processor.initilize();
+	{	
+		processors.forEach((name, processor)->processor.initilize());
 	}
 
 	@Override
 	public void process() 
 	{
-		for(Process processor : processors)
-			processor.process();
+		processors.forEach((name, processor)->processor.process());
 	}
 
 	@Override
 	public void finalize() 
 	{
-		for(Process processor : processors)
-			processor.finalize();
+		processors.forEach((name, processor)->processor.finalize());
+	}
+	
+	@Override
+	public void utility(Integer arg) 
+	{
+		
 	}
 }

@@ -6,10 +6,10 @@ import java.awt.event.KeyEvent;
 import loot.InputManager;
 import loot.InputManager.ButtonState;
 
-public class Keyboard implements Process
+public class Keyboard implements IProcess
 {
+	ProcessManager manager;
 	InputManager inputs;
-	ProcessUtility<KEYBOARD, Integer> utility;
 	
 	public enum KEYBOARD
 	{ 
@@ -37,12 +37,12 @@ public class Keyboard implements Process
 
 	static final int STATE_PRESS = 1, STATE_CHANGE = 2;
 	
-	public Keyboard(InputManager inputs, ProcessUtility<KEYBOARD, Integer> utility)
+	public Keyboard(InputManager inputs, ProcessManager manager)
 	{
 		this.inputs = inputs;
-		this.utility = utility;
+		this.manager = manager;
 	}
-
+	
 	@Override
 	public void initilize() 
 	{
@@ -67,16 +67,21 @@ public class Keyboard implements Process
 			state |= bs.isPressed ? STATE_PRESS : 0;
 			state |= bs.isChanged ? STATE_CHANGE: 0;
 			
-			utility.utility(KEYBOARD.values()[bs.ID], state);
-		}	
+			if(state == 1)
+				manager.get("physics").utility(bs.ID);
+		}
 	}
 	
 	@Override
-	public void finalize() {
-		// TODO Auto-generated method stub
+	public void finalize() 
+	{
 		
 	}
-	
-	
+
+	@Override
+	public void utility(Integer arg) 
+	{
+		
+	}
 	
 }

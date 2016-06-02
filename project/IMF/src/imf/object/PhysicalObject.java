@@ -38,7 +38,6 @@ public class PhysicalObject extends SpriteObject
 		doVelocity(nextVelocity());
 	}
 	
-	
 	public void doPosition(double x, double y)
 	{
 		this.pos_x = x;
@@ -73,51 +72,5 @@ public class PhysicalObject extends SpriteObject
 	public Pair<Double> nextVelocity()
 	{
 		return new Pair<Double>(this.v_x + this.a_x, this.v_y + this.a_y);
-	}
-	
-	/**
-	 * left:	 x,
-	 * in:		 0,
-	 * right:	-x
-	 * @param o
-	 * @return relative X position to o
-	 * @see 아 코딩하기싫다 ㅅㅂ
-	 */
-	public double relativeX(SpriteObject o)
-	{
-		return Math.abs(distanceX(o)) < (this.radius_x + o.radius_x) ? 0 : distanceX(o);
-	}
-
-	/**
-	 * up:	 	 x,
-	 * in:	 	 0,
-	 * down:	-x
-	 * @param o
-	 * @return relative Y position to o
-	 * @see 아 코딩하기싫다 ㅅㅂ
-	 */
-	public double relativeY(SpriteObject o)
-	{
-		return Math.abs(distanceY(o)) < (this.radius_y + o.radius_y) ? 0 : distanceY(o);
-	}
-	
-	public double distanceX(SpriteObject o)
-	{
-		return (this.pos_x - o.pos_x);
-	}
-	
-	public double distanceY(SpriteObject o)
-	{
-		return (this.pos_y - o.pos_y);
-	}
-	
-	public double apertureX(SpriteObject o)
-	{
-		return Math.abs(distanceX(o)) - (this.radius_x + o.radius_x);
-	}
-	
-	public double apertureY(SpriteObject o)
-	{
-		return Math.abs(distanceY(o)) - (this.radius_y + o.radius_y);
 	}
 }

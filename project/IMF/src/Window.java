@@ -7,8 +7,9 @@ import imf.data.DataParser;
 import imf.object.*;
 import imf.processor.Keyboard;
 import imf.processor.ProcessManager;
-import imf.processor.Process;
-import imf.processor.ProcessUtility;
+import imf.processor.Scene;
+import imf.processor.IProcess;
+import imf.processor.IProcessUtility;
 import imf.processor.Keyboard.KEYBOARD;
 import imf.processor.Physics;
 import loot.GameFrame;
@@ -32,9 +33,10 @@ public class Window extends GameFrame
 	ProcessManager processor;
 	Keyboard keyboard;
 	Physics physics;
+	Scene scene;
 	
 	ObjectManager<SpriteObject> objects;
-	PhysicalObject me, you;
+	CharacterObject me, you;
 	
 	public Window(GameFrameSettings settings) 
 	{
@@ -60,7 +62,7 @@ public class Window extends GameFrame
 			images.LoadImage(path.RES + e.get("texture"), e.get("name"));
 			if(e.ID.equals("me"))
 			{
-				me = new PhysicalObject(e);
+				me = new CharacterObject(e);
 				me.image = images.GetImage("me");
 				viewport.children.add(me);
 			}
@@ -74,8 +76,9 @@ public class Window extends GameFrame
 		});
 		
 		// processor
-		processor.install(keyboard = new Keyboard(inputs, new KeyEvent()));
-		processor.install(physics = new Physics(me, new PhysicsEvent()));
+		processor.install("keyboard", keyboard = new Keyboard(inputs, processor));
+		processor.install("physics", physics = new Physics(me, processor));
+		processor.install("scene", scene = new Scene(viewport, processor));
 		processor.initilize();
 
 		// objects
@@ -83,8 +86,12 @@ public class Window extends GameFrame
 			physics.install(e);
 		});
 		
+		scene.set(me);
+		
 		// viewport
 		viewport.pointOfView_z = 500;
+		viewport.radius_x = 25;
+		viewport.radius_y = 25;
 		viewport.view_baseDistance = 500;
 		viewport.view_minDistance = 0.1;
 		viewport.view_maxDistance = 1000;
@@ -121,42 +128,4 @@ public class Window extends GameFrame
 		
 		EndDraw();
 	}
-	
-	/**
-	 * KeyEvent, callback function of Keyboard Process
-	 * @author Maybe
-	 */
-	public class KeyEvent implements ProcessUtility<KEYBOARD, Integer> {
-		@Override
-		public void utility(KEYBOARD wParam, Integer lParam) {
-			if(lParam == 0 || lParam == 2)
-				return;
-			
-			switch (wParam)
-			{
-				case UP:
-				case DOWN:
-				case LEFT:
-				case RIGHT:
-					physics.doMove(wParam.ordinal());
-					break;
-				case JUMP:
-					physics.doJump();
-					break;
-				case STOP:
-					physics.doClear();
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	
-	public class PhysicsEvent implements ProcessUtility<SpriteObject, Integer> {
-		@Override
-		public void utility(SpriteObject wParam, Integer lParam) {
-			
-		}
-	}
-
 }

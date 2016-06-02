@@ -1,7 +1,7 @@
 package imf.processor;
 
-public interface Process 
-{
+public interface IProcess extends IProcessUtility
+{	
 	/**
 	 * 
 	 */

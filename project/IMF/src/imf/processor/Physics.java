@@ -14,12 +14,12 @@ import imf.utility.Pair;
  * @author Maybe
  *
  */
-public class Physics implements Process
+public class Physics implements IProcess
 {
+	ProcessManager manager;
 	PhysicalObject target, next;
 	List<PhysicalObject> objectp = new ArrayList<PhysicalObject>();
 	List<SpriteObject> objects = new ArrayList<SpriteObject>();
-	ProcessUtility<SpriteObject, Integer> utility;
 
 	public boolean 	state_jump = false,
 					state_do = false;
@@ -28,11 +28,11 @@ public class Physics implements Process
 	*/
 	public int 		state_move = 0;
 	
-	public Physics(PhysicalObject tar, ProcessUtility<SpriteObject, Integer> utility)
+	public Physics(PhysicalObject tar, ProcessManager manager)
 	{
 		target = tar;
 		target.a_y = -1;
-		this.utility = utility;
+		this.manager = manager;
 	}
 	
 	public void install(PhysicalObject o)
@@ -43,43 +43,6 @@ public class Physics implements Process
 	{
 		objects.add(o);
 	}
-	
-	public void doClear()
-	{
-		state_jump = true;
-		target.pos_x = 0;
-		target.pos_y = 0;
-		target.v_x = 0;
-		target.v_y = 0;
-	}
-	public void doJump()
-	{
-		if(state_jump)
-			return;
-		state_jump = true;
-		target.v_y = 15;
-	}
-	public void doMove(int direction)
-	{
-		switch (direction)
-		{
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2:
-				next = target.newInstance();
-				next.pos_x -= 5;
-				doCollision(next);
-				break;
-			case 3:
-				next = target.newInstance();
-				next.pos_x += 5;
-				doCollision(next);
-				break;
-		}
-	}
-	
 	private void doCollision(PhysicalObject next)
 	{
 		boolean state_next_jump = true;
@@ -129,7 +92,6 @@ public class Physics implements Process
 					}
 				}
 			}	
-			this.utility.utility(o, 0);
 		}
 		
 		if(!exc)
@@ -158,5 +120,40 @@ public class Physics implements Process
 	public void finalize() 
 	{
 		
+	}
+
+	@Override
+	public void utility(Integer arg) 
+	{
+		switch (arg)
+		{
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				next = target.newInstance();
+				next.pos_x -= 5;
+				doCollision(next);
+				break;
+			case 3:
+				next = target.newInstance();
+				next.pos_x += 5;
+				doCollision(next);
+				break;
+			case 4:
+				if(state_jump)
+					return;
+				state_jump = true;
+				target.v_y = 15;
+				break;
+			case 5:
+				state_jump = true;
+				target.pos_x = 0;
+				target.pos_y = 0;
+				target.v_x = 0;
+				target.v_y = 0;
+				break;
+		}
 	}
 }
