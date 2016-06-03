@@ -38,7 +38,7 @@ public class Window extends GameFrame {
 	public boolean Initialize() {
 		tb = new TextBox(10, 10, 900, 900);
 		tb.text = "Waiting...\n";
-		tb.font = new Font("Verdana", Font.PLAIN, 30);
+		tb.font = new Font("Verdana", Font.PLAIN, 20);
 		
 		images.LoadImage("res/ball.png", "ball1");
 		images.LoadImage("res/ball2.png", "ball2");
@@ -61,29 +61,41 @@ public class Window extends GameFrame {
 		CharacterInfoSyncher.registerPartner(partner);
 	}
 	
+	public void appendToTextBox(String str) {
+		tb.text += str + "\n";
+	}
+	
 	
 	@Override
 	public boolean Update(long timeStamp) {
 		im.AcceptInputs();
 		
 		for (ButtonState bs : im.buttons) {
-			if (bs.ID == 0 && bs.isPressed)
-				player.x -= 10;
-			
-			if (bs.ID == 1 && bs.isPressed)
-				player.x += 10;
-			
-			if (bs.ID == 2 && bs.isPressed)
-				player.y -= 10;
-			
-			if (bs.ID == 3 && bs.isPressed)
-				player.y += 10;
+			if (bs.isPressed) {
+				switch (bs.ID) {
+					case 0:
+						player.x -= 10;
+						break;
+	
+					case 1:
+						player.x += 10;
+						break;
+						
+					case 2:
+						player.y -= 10;
+						break;
+						
+					case 3:
+						player.y += 10;
+						break;
+				}
+			}
 		}
 		
 		if (++intervalHandle == 5) {
 			intervalHandle = 0;
 			
-			if (ConnectionManager.getIsConnected())
+			if (ConnectionManager.getPartnerSessionID() != null)
 				CharacterInfoSyncher.fetch();
 		}
 		

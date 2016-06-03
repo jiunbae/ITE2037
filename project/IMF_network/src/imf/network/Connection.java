@@ -21,7 +21,7 @@ import org.json.simple.parser.ParseException;
  * 
  * @package	imf.network
  * @author Prev
- *
+ * @version 1.0.0
  */
 
 public class Connection extends Thread {
