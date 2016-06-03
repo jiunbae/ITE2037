@@ -27,18 +27,18 @@ public class Program {
 	    	ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
 	    		switch ((String)data.get("type")) {
 					case "connected":
-						gWindow.tb.text += "connected to server\n";
-						gWindow.tb.text += "my sess id: " + ConnectionManager.getSessionID() + "\n";
+						gWindow.appendToTextBox("connected to server");
+						gWindow.appendToTextBox("my sess id: " + ConnectionManager.getSessionID() );
 						break;
 	
 					case "partner_found":
-						gWindow.tb.text += "partner found: " + (String)data.get("partner_sess_id") + "\n";
-						JSONObject obj = new JSONObject();
-						obj.put("message", "hello partner!!");
+						gWindow.appendToTextBox( "partner found: " + (String)data.get("partner_sess_id") );
 						
 						gWindow.registerCharacters();
+						break;
 						
-						ConnectionManager.sendToPartner( obj );
+					case "partner_disconnected" :
+						gWindow.appendToTextBox("partner disconnected");
 						break;
 				}
 	    		
@@ -48,7 +48,7 @@ public class Program {
 	    	
 	    	
 	    	ConnectionManager.getConnection().addOutOfConnectionEvent((Exception) -> {
-	    		gWindow.tb.text += "Disconnected to server\n";
+	    		gWindow.appendToTextBox("Disconnected to server");
 	    	});
 	    	
 	    	

@@ -11,7 +11,7 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- *
+ * @version 1.0.0
  */
 
 
@@ -31,10 +31,7 @@ public class CharacterInfoSyncher {
 	 * On data receiving listener
 	 */
 	static private Consumer<JSONObject> receivedListener = (JSONObject data) -> {
-		//System.out.println( data.toJSONString() );
-		
 		if (((String)data.get("type")).equals("partner_info_sent")) {
-			//System.out.println("partner moved!!");
 			partner.onInfoReceived( (JSONObject) data.get("data") );
 		}
 	};
@@ -79,7 +76,7 @@ public class CharacterInfoSyncher {
 	 */
 	static public boolean fetch() {
 		if (player == null) {
-			//System.out.println("WARNING: player object is NULL");
+			System.out.println("WARNING: player object is NULL");
 			return false;
 		}
 		

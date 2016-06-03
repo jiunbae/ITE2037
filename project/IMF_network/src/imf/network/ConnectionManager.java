@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- *
+ * @version 1.0.0
  */
 
 public class ConnectionManager {
@@ -86,7 +86,7 @@ public class ConnectionManager {
 	 * @return String
 	 */
 	static public String getSessionID() {
-		return ConnectionManager.sessionID;
+		return sessionID;
 	}
 	
 	/**
@@ -94,7 +94,17 @@ public class ConnectionManager {
 	 * @return Boolean
 	 */
 	static public boolean getIsConnected() {
-		return ConnectionManager.connected;
+		return connected;
+	}
+	
+	/**
+	 * Get partner's sessionID
+	 * If partner is not connected, return null
+	 * 
+	 * @return String
+	 */
+	static public String getPartnerSessionID() {
+		return partnerSessionID;
 	}
 	
 	
