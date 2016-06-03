@@ -30,7 +30,7 @@ public class Scene implements IProcess
 	public void process() 
 	{
 		if(!(target.relativeX(viewport) == 0 && target.relativeY(viewport) == 0))
-		{
+		{		
 			viewport.pos_x += target.distanceX(viewport) / 50;
 			viewport.pos_y += target.distanceY(viewport) / 50;
 			viewport.x = (int) -viewport.pos_x;

@@ -7,16 +7,15 @@
 <!-- @DEFAULT 창 크기는 600x1200 -->
 <stage w="5000" h="1600">
 	<!-- @MOST stage의 바닥을 정합니다. -->
-	<static x="0" y="-400" w="5000" h="15" texture="block_black.png"></static>
+	<static x="0" y="-400" w="5000" h="15" texture="floor.png"></static>
 
-	<static x="0" y="-100" w="5000" h="15" texture="block_black.png"></static>
+	<static x="0" y="-100" w="5000" h="15" texture="floor.png"></static>
 	<!-- @DEFAULT me는 플레이어블 캐릭터를 나타냅니다. -->
-	<me x="0" y="0" w="25" h="25" texture="ball.png"></me>
+	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
+	<you x="0" y="0" w="25" h="25" texture="you.png"></you>
 
-	<static x="0" y="150" w="100" h="15" texture="block_black.png"></static>
-	<static x="225" y="100" w="100" h="15" texture="block_black.png"></static>
-	<static x="450" y="50" w="100" h="15" texture="block_black.png"></static>
+	<static x="-100" y="200" w="100" h="15" texture="floor.png"></static>
+	<static x="100" y="100" w="100" h="15" texture="floor.png"></static>
+	<static x="300" y="00" w="100" h="15" texture="floor.png"></static>
 
-	<static x="-100" y="75" w="15" h="75" texture="block_black.png"></static>
-	<static x="100" y="75" w="15" h="75" texture="block_black.png"></static>
 </stage>
