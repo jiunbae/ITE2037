@@ -2,44 +2,39 @@ package imf.processor;
 
 import java.util.HashMap;
 
-public class ProcessManager implements IProcess
+@SuppressWarnings("rawtypes")
+public class ProcessManager implements IProcess<String, IProcess>
 {
 	HashMap<String, IProcess> processors = new HashMap<String, IProcess>();
-	HashMap<String, IProcessUtility> processUtilitys = new HashMap<String, IProcessUtility>();
+	IProcess ret;
 	
 	public void install(String name, IProcess processor)
 	{
 		processors.put(name, processor);
-	}
-	public void installUtility(String name, IProcessUtility processUtility)
-	{
-		processUtilitys.put(name, processUtility);
 	}
 	
 	public IProcess get(String name)
 	{
 		return processors.get(name);
 	}
-	public IProcessUtility getUtility(String name)
-	{
-		return processUtilitys.get(name);
-	}
 	
 	public void uninstall(String name)
 	{
 		processors.remove(name);
 	}
-	public void uninstallUtility(String name)
-	{
-		processUtilitys.remove(name);
-	}
 	
 	@Override
-	public void initilize() 
+	public void initilize(IProcess manager) 
 	{	
-		processors.forEach((name, processor)->processor.initilize());
+		processors.forEach((name, processor)->processor.initilize(manager));
 	}
 
+	@Override
+	public void loop()
+	{
+		processors.forEach((name, processor)->processor.loop());
+	}
+	
 	@Override
 	public void process() 
 	{
@@ -51,10 +46,16 @@ public class ProcessManager implements IProcess
 	{
 		processors.forEach((name, processor)->processor.finalize());
 	}
-	
+
 	@Override
-	public void utility(Integer arg) 
+	public void setter(String object) 
 	{
-		
+		ret = processors.get(object);
+	}
+
+	@Override
+	public IProcess getter() 
+	{
+		return ret;
 	}
 }

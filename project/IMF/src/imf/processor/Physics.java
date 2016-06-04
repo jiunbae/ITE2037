@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import imf.object.*;
-import imf.processor.Keyboard.KEYBOARD;
-import imf.utility.Pair;
 
 /**
  * Constructor argument <br>
@@ -14,12 +12,12 @@ import imf.utility.Pair;
  * @author Maybe
  *
  */
-public class Physics implements IProcess
+public class Physics implements IProcess<Integer, ContainerObject>
 {
 	ProcessManager manager;
-	PhysicalObject target, next;
-	List<PhysicalObject> objectp = new ArrayList<PhysicalObject>();
-	List<SpriteObject> objects = new ArrayList<SpriteObject>();
+	PhysicalObject target;
+	List<ContainerObject> containers = new ArrayList<ContainerObject>();
+	List<SpriteObject> sprites = new ArrayList<SpriteObject>();
 
 	public boolean 	state_jump = false,
 					state_do = false;
@@ -28,73 +26,76 @@ public class Physics implements IProcess
 	*/
 	public int 		state_move = 0;
 	
-	public Physics(PhysicalObject tar, ProcessManager manager)
+	public Physics(PhysicalObject tar)
 	{
 		target = tar;
-		target.a_y = -1;
-		this.manager = manager;
 	}
 	
-	public void install(PhysicalObject o)
+	public void install(ContainerObject o)
 	{
-		objectp.add(o);
+		containers.add(o);
 	}
 	public void install(SpriteObject o)
 	{
-		objects.add(o);
+		sprites.add(o);
 	}
 	private void doCollision(PhysicalObject next)
 	{
 		boolean state_next_jump = true;
 		boolean exc = false;
-		for(SpriteObject o : objects)
+		for (SpriteObject o : sprites)
 		{
-			if(!target.zPosition(o) || o == null)
+			if (!target.zPosition(o) || o.collision == false || o == null)
 				continue;
 			
-			if(target.relativeY(o) == 0 && next.relativeY(o) == 0)
+			if (target.relativeY(o) == 0 && next.relativeY(o) == 0)
 			{
-				if(target.relativeX(o) != 0 && next.relativeX(o) == 0)
+				if (target.relativeX(o) != 0 && next.relativeX(o) == 0)
 				{
-					if(target.relativeX(o) > 0)
+					if (target.relativeX(o) > 0)
 					{
-						if(next.pos_x < o.box_right + target.radius_x)
+						if (next.pos_x < o.box_right + target.radius_x)
 							next.pos_x = o.box_right + target.radius_x;				
 					}
-					else if(target.relativeX(o) < 0)
+					else if (target.relativeX(o) < 0)
 					{
-						if(next.pos_x > o.box_left - target.radius_x)
+						if (next.pos_x > o.box_left - target.radius_x)
 							next.pos_x = o.box_left - target.radius_x;
 					}
 				}
 			}
 				
-			if(target.relativeX(o) == 0 && next.relativeX(o) == 0)
+			if (target.relativeX(o) == 0 && next.relativeX(o) == 0)
 			{
-				if(target.relativeY(o) != 0 && next.relativeY(o) == 0)
+				if (target.relativeY(o) != 0 && next.relativeY(o) == 0)
 				{
-					if(target.relativeY(o) > 0)
+					if (target.relativeY(o) > 0)
 					{
-						if(next.pos_y < o.box_top + target.radius_y)
-							next.pos_y = o.box_top + target.radius_y;
-						state_next_jump = false;	
+						if (next.pos_y < o.box_top + target.radius_y)
+							next.setPositionAbove(o);
 						
-						if(next.v_y < 0)
+						if (target.a_y < 0)
+							state_next_jump = false;	
+						
+						if (next.v_y < 0)
 							next.v_y = 0;
 					}
 					else if(target.relativeY(o) < 0)
 					{
-						if(next.pos_y > o.box_bottom - target.radius_y)
-							next.pos_y = o.box_bottom - target.radius_y;
+						if (next.pos_y > o.box_bottom - target.radius_y)
+							next.setPositionBelow(o);
 						
-						if(next.v_y > 0)
+						if (target.a_y > 0)
+							state_next_jump = false;
+						
+						if (next.v_y > 0)
 							next.v_y = 0;
 					}
 				}
 			}	
 		}
 		
-		if(!exc)
+		if (!exc)
 		{
 			target.doVelocity(next.nowVelocity());
 			target.doPosition(next.nowPosition());
@@ -104,16 +105,21 @@ public class Physics implements IProcess
 	}
 	
 	@Override
-	public void initilize() 
+	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
+		this.manager = (ProcessManager) manager;
+	}
+
+	@Override
+	public void loop()
+	{
+		doCollision(target.newInstance().doMove());
 	}
 	
 	@Override
 	public void process() 
 	{
-		next = target.newInstance();
-		next.doMove();
-		doCollision(next);
+		
 	}
 	
 	@Override
@@ -121,11 +127,12 @@ public class Physics implements IProcess
 	{
 		
 	}
-
+	
 	@Override
-	public void utility(Integer arg) 
+	public void setter(Integer object) 
 	{
-		switch (arg)
+		PhysicalObject next;
+		switch (object)
 		{
 			case 0:
 				break;
@@ -145,15 +152,17 @@ public class Physics implements IProcess
 				if(state_jump)
 					return;
 				state_jump = true;
-				target.v_y = 15;
-				break;
-			case 5:
-				state_jump = true;
-				target.pos_x = 0;
-				target.pos_y = 0;
-				target.v_x = 0;
-				target.v_y = 0;
+				target.v_y = 15 * -((target.a_y) / Math.abs(target.a_y));
 				break;
 		}
+	}
+
+	@Override
+	public ContainerObject getter() 
+	{
+		for (ContainerObject o : containers)
+			if(target.relativeX(o) == 0 && target.relativeY(o) == 0 && o.type.equals("switch"))
+				return o;
+		return null;
 	}
 }

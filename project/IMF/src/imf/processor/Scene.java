@@ -9,10 +9,9 @@ public class Scene implements IProcess
 	SpriteObject target;
 	ProcessManager manager;
 	
-	public Scene(Viewport viewport, ProcessManager manager)
+	public Scene(Viewport viewport)
 	{
 		this.viewport = viewport;
-		this.manager = manager;
 	}
 	
 	public void set(SpriteObject o)
@@ -21,20 +20,24 @@ public class Scene implements IProcess
 	}
 	
 	@Override
-	public void initilize() 
+	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
-		
+		this.manager = (ProcessManager) manager;
 	}
 
 	@Override
+	public void loop()
+	{
+		process();
+	}
+	
+	@Override
 	public void process() 
 	{
-		if(!(target.relativeX(viewport) == 0 && target.relativeY(viewport) == 0))
-		{		
-			viewport.pos_x += target.distanceX(viewport) / 50;
-			viewport.pos_y += target.distanceY(viewport) / 50;
-			viewport.x = (int) -viewport.pos_x;
-			viewport.y = (int) viewport.pos_y;
+		if ((Math.abs(viewport.pointOfView_x - target.pos_x) > 10) || Math.abs(viewport.pointOfView_y - target.pos_y) > 10)
+		{
+			viewport.pointOfView_x += (target.pos_x - viewport.pointOfView_x) * 0.05;
+			viewport.pointOfView_y += (target.pos_y - viewport.pointOfView_y) * 0.05;
 		}
 	}
 	
@@ -43,10 +46,16 @@ public class Scene implements IProcess
 	{
 	
 	}
-
+	
 	@Override
-	public void utility(Integer arg) 
+	public void setter(Object object) 
 	{
 		
+	}
+
+	@Override
+	public Object getter() 
+	{
+		return null;
 	}
 }

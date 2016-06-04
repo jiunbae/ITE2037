@@ -32,8 +32,9 @@ public class DataParser
 			
 			
 			root = doc.getDocumentElement();
-			appendNode(doc.getElementsByTagName("static"));
 			appendNode(doc.getElementsByTagName("me"));
+			appendNode(doc.getElementsByTagName("static"));
+			appendNode(doc.getElementsByTagName("trigger"));
 			
 		} catch (ParserConfigurationException e) {
 			return;
@@ -44,25 +45,35 @@ public class DataParser
 	
 	private void appendNode(NodeList nodes)
 	{
-		for(int i = 0; i < nodes.getLength(); ++i)
-			datas.add(appendData(nodes.item(i)));
+		for (int i = 0; i < nodes.getLength(); ++i)
+			if (nodes.item(i).getParentNode() == root)
+				datas.add(getNodeData(new DataObject(nodes.item(i).getNodeName()), nodes.item(i)));
 	}
 	
-	private DataObject appendData(Node node)
+	private DataObject getNodeData(DataObject data, Node node)
 	{
-		DataObject data = new DataObject(node.getNodeName());
 		NamedNodeMap attrs = node.getAttributes();
 
-		for(int j = 0; j < attrs.getLength(); ++j)
-			data.insert(attrs.item(j).getNodeName(), attrs.item(j).getNodeValue());
+		for (int i = 0; i < attrs.getLength(); ++i)
+			data.insert(attrs.item(i).getNodeName(), attrs.item(i).getNodeValue());
 		
+		if (data.ID.equals("trigger"))
+		{
+			for (Node child = node.getFirstChild(); child != node.getLastChild(); child = child.getNextSibling())
+			{
+				if(child.getTextContent().equals("\n\t\t"))
+					continue;
+				DataObject childData = getNodeData(new DataObject(child.getNodeName(), data), child);
+				data.insertChild(childData);
+			}
+		}
 		return data;
 	}
 	
 	public DataObject get(String key)
 	{
-		for(DataObject o : datas)
-			if(o.ID.equals(key))
+		for (DataObject o : datas)
+			if (o.ID.equals(key))
 				return o;
 		return null;
 	}

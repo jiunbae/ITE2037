@@ -1,16 +1,11 @@
 
-import java.util.ArrayList;
-import java.util.List;
-
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.object.*;
 import imf.processor.Keyboard;
 import imf.processor.ProcessManager;
 import imf.processor.Scene;
-import imf.processor.IProcess;
-import imf.processor.IProcessUtility;
-import imf.processor.Keyboard.KEYBOARD;
+import imf.processor.Interaction;
 import imf.processor.Physics;
 import loot.GameFrame;
 import loot.GameFrameSettings;
@@ -31,11 +26,14 @@ public class Window extends GameFrame
 	TextBox text;
 	
 	ProcessManager processor;
+	Interaction interaction;
 	Keyboard keyboard;
 	Physics physics;
 	Scene scene;
 	
-	ObjectManager<SpriteObject> objects;
+	ObjectManager<SpriteObject> sprites;
+	ObjectManager<ContainerObject> containers;
+	
 	CharacterObject me, you;
 	
 	public Window(GameFrameSettings settings) 
@@ -46,7 +44,8 @@ public class Window extends GameFrame
 		path = new Constant(settings);
 		data = new DataParser(path.MAP + "stage1.xml", 0);
 		
-		objects = new ObjectManager<SpriteObject>();
+		sprites = new ObjectManager<SpriteObject>();
+		containers = new ObjectManager<ContainerObject>();
 		
 		processor = new ProcessManager();
 
@@ -59,39 +58,63 @@ public class Window extends GameFrame
 	{
 		// data load
 		data.loop((e)->{
-			images.LoadImage(path.RES + e.get("texture"), e.get("name"));
 			if(e.ID.equals("me"))
 			{
 				me = new CharacterObject(e);
+				images.LoadImage(path.RES + me.texture, "me");
 				me.image = images.GetImage("me");
 				viewport.children.add(me);
+				me.a_y = -0.98;
 			}
 			else
 			{
-				SpriteObject object = new SpriteObject(e);
-				objects.insert(e.get("name"), object);
-				objects.get(e.get("name")).image = images.GetImage(e.get("name"));
-				viewport.children.add(object);
+				switch (e.ID)
+				{
+					case "static":
+						sprites.insert(e.get("name"), new SpriteObject(e));
+						break;
+					case "trigger":
+						containers.insert(e.get("name"), new TriggerObject(e));
+						for(DataObject o : e.getChild())
+						{
+							SpriteObject child = new SpriteObject(o);
+							child.trigger_hide = true;
+							sprites.insert(o.get("name"), child);
+							containers.get(e.get("name")).add(child);
+						}
+						break;
+				}
 			}
 		});
 		
 		// processor
-		processor.install("keyboard", keyboard = new Keyboard(inputs, processor));
-		processor.install("physics", physics = new Physics(me, processor));
-		processor.install("scene", scene = new Scene(viewport, processor));
-		processor.initilize();
+		processor.install("keyboard", keyboard = new Keyboard(inputs));
+		processor.install("physics", physics = new Physics(me));
+		processor.install("scene", scene = new Scene(viewport));
+		processor.install("interaction", interaction = new Interaction(me));
+		processor.initilize(processor);
 
 		// objects
-		objects.loop((e)->{
+		sprites.loop((e)->{
 			physics.install(e);
+			images.LoadImage(path.RES + e.texture, e.ID);
+			e.image = images.GetImage(e.ID);
+			viewport.children.add(e);
+		});
+		
+		containers.loop((e)->{
+			physics.install(e);
+			images.LoadImage(path.RES + e.texture, e.ID);
+			e.image = images.GetImage(e.ID);
+			viewport.children.add(e);
 		});
 		
 		scene.set(me);
 		
 		// viewport
-		viewport.pointOfView_z = 500;
 		viewport.radius_x = 25;
 		viewport.radius_y = 25;
+		viewport.pointOfView_z = 500;
 		viewport.view_baseDistance = 500;
 		viewport.view_minDistance = 0.1;
 		viewport.view_maxDistance = 1000;
@@ -99,11 +122,12 @@ public class Window extends GameFrame
 		viewport.view_height = settings.canvas_height;
 		
 		// text (for debug)
-		text.height = 100;
-		text.width = 100;
+		text.height = 50;
+		text.width = 50;
 		text.x = 0;
 		text.y = 0;
 		
+		viewport.children.add(me);
 		viewport.children.add(text);
 		
 	    return true;
@@ -112,7 +136,8 @@ public class Window extends GameFrame
 	@Override
 	public boolean Update(long timeStamp) 
 	{
-		processor.process();
+		processor.loop();
+		text.text = "" + me.a_y;
 		
 		return true;
 	}

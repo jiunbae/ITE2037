@@ -32,10 +32,11 @@ public class PhysicalObject extends SpriteObject
 		return object;
 	}
 	
-	public void doMove()
+	public PhysicalObject doMove()
 	{
 		doPosition(nextPosition());
 		doVelocity(nextVelocity());
+		return this;
 	}
 	
 	public void doPosition(double x, double y)

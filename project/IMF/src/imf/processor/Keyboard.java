@@ -18,7 +18,7 @@ public class Keyboard implements IProcess
 		LEFT(KeyEvent.VK_A),
 		RIGHT(KeyEvent.VK_D),
 		JUMP(KeyEvent.VK_SPACE),
-		STOP(KeyEvent.VK_E),
+		ACTION(KeyEvent.VK_E),
 		/**
 		 * FINAL, count enum elements;
 		 */
@@ -35,27 +35,28 @@ public class Keyboard implements IProcess
 		}
 	}
 
-	static final int STATE_PRESS = 1, STATE_CHANGE = 2;
+	public static final int STATE_PRESS = 1, STATE_CHANGE = 2;
 	
-	public Keyboard(InputManager inputs, ProcessManager manager)
+	public Keyboard(InputManager inputs)
 	{
 		this.inputs = inputs;
-		this.manager = manager;
 	}
 	
 	@Override
-	public void initilize() 
+	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
+		this.manager = (ProcessManager) manager;
 		inputs.BindKey(KEYBOARD.UP.getKey(), KEYBOARD.UP.ordinal());
 		inputs.BindKey(KEYBOARD.DOWN.getKey(), KEYBOARD.DOWN.ordinal());
 		inputs.BindKey(KEYBOARD.LEFT.getKey(), KEYBOARD.LEFT.ordinal());
 		inputs.BindKey(KEYBOARD.RIGHT.getKey(), KEYBOARD.RIGHT.ordinal());
 		inputs.BindKey(KEYBOARD.JUMP.getKey(), KEYBOARD.JUMP.ordinal());	
-		inputs.BindKey(KEYBOARD.STOP.getKey(), KEYBOARD.STOP.ordinal());
+		inputs.BindKey(KEYBOARD.ACTION.getKey(), KEYBOARD.ACTION.ordinal());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void process() 
+	public void loop()
 	{
 		inputs.AcceptInputs();
 		for(ButtonState bs : inputs.buttons)
@@ -66,10 +67,20 @@ public class Keyboard implements IProcess
 			int state = 0;
 			state |= bs.isPressed ? STATE_PRESS : 0;
 			state |= bs.isChanged ? STATE_CHANGE: 0;
+
+			if(state == Keyboard.STATE_CHANGE + Keyboard.STATE_PRESS)
+				manager.get("interaction").setter(bs.ID);
 			
-			if(state == 1)
-				manager.get("physics").utility(bs.ID);
+			if(state == Keyboard.STATE_PRESS)
+				manager.get("physics").setter(bs.ID);
+			
 		}
+	}
+	
+	@Override
+	public void process() 
+	{
+		
 	}
 	
 	@Override
@@ -79,9 +90,14 @@ public class Keyboard implements IProcess
 	}
 
 	@Override
-	public void utility(Integer arg) 
+	public void setter(Object object) 
 	{
 		
 	}
-	
+
+	@Override
+	public Object getter() 
+	{
+		return null;
+	}
 }

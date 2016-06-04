@@ -7,7 +7,11 @@ import java.util.function.Consumer;
 import imf.data.DataObject;
 
 public class ObjectManager<T> {
-	HashMap<String, T> objects = new HashMap<String, T>();
+	HashMap<String, T> objects = new HashMap<String, T>();	
+	
+	public void create(DataObject o)
+	{
+	}
 	
 	public void insert(String name, T object)
 	{

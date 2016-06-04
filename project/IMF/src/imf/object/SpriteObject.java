@@ -9,7 +9,8 @@ import loot.graphics.VisualObject3D;
 
 public class SpriteObject extends DrawableObject3D
 {
-	public String ID;
+	public String ID, type, texture;
+	public boolean collision;
 	public double box_top = 0, box_bottom = 0, box_left = 0, box_right = 0;
 
 	public SpriteObject(double x, double y, double z, double width, double height)
@@ -20,10 +21,31 @@ public class SpriteObject extends DrawableObject3D
 		box_left = x - this.radius_x;
 		box_right = x + this.radius_x;
 	}
-	public SpriteObject(DataObject oi)
+	public SpriteObject(DataObject o)
 	{
-		this(Integer.valueOf(oi.get("x")), Integer.valueOf(oi.get("y")), Integer.valueOf(oi.get("z")), Integer.valueOf(oi.get("w")), Integer.valueOf(oi.get("h")));
-		this.ID = oi.get("name");
+		this(Integer.valueOf(o.get("x")), Integer.valueOf(o.get("y")), Integer.valueOf(o.get("z")), Integer.valueOf(o.get("w")), Integer.valueOf(o.get("h")));
+		this.pos_z = Integer.valueOf(o.get("z"));
+		this.collision = o.get("collision").equals("true");
+		this.texture = o.get("texture");
+		this.type = o.get("type");
+		this.ID = o.get("name");
+	}
+	
+	public void setPositionAbove(SpriteObject o)
+	{
+		pos_y = o.box_top + radius_y;
+	}
+	public void setPositionBelow(SpriteObject o)
+	{
+		pos_y = o.box_bottom - radius_y;
+	}
+	public void setPositionLeft(SpriteObject o)
+	{
+		pos_x = o.box_right + radius_x;
+	}
+	public void setPositionRight(SpriteObject o)
+	{
+		pos_x = o.box_left - radius_x;
 	}
 	
 	/**
