@@ -6,7 +6,7 @@
 -->
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
-<stage w="2400" h="1200" z="-1" texture="UI/bg.png">
+<stage w="1200" h="600" z="-1" texture="UI/bg.png">
 	<static name="logo" x="0" y="50" z="1000" w="225" h="30" texture="UI/logo.png"></static>
 
 	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
