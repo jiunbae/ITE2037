@@ -22,7 +22,7 @@ public class Window extends GameFrame
 	private static final long serialVersionUID = 2015004584L;
 
 	private enum STATE{
-		splash, cancel, loading, play, over
+		splash, cancel, finding, loading, credit, play, over
 	}
 	
 	boolean reload = true;
@@ -75,14 +75,21 @@ public class Window extends GameFrame
 			case splash:
 				data = new DataParser(path.MAP + "splash.xml", 0);
 				break;
-			case cancel:
-				containers.get("start").invisible(false);
-				me.pos_y = 50;
-				break;
-			case loading:
+			case finding:
 				containers.get("start").invisible(true);
+				containers.get("credit").invisible(true);
 				((TriggerObject) containers.get("loading")).invisible(false);
 				((TriggerObject) containers.get("loadAni")).trigger();
+				break;
+			case cancel:
+				containers.get("start").invisible(false);
+				containers.get("credit").invisible(false);
+				me.pos_y = 50;
+				state = STATE.splash;
+				break;
+			case loading:
+				break;
+			case credit:
 				break;
 			case play:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
@@ -170,7 +177,11 @@ public class Window extends GameFrame
 		{
 			case splash:
 				break;
+			case finding:
+				break;
 			case loading:
+				break;
+			case credit:
 				break;
 			case play:
 				text.text = "" + me.a_y;
@@ -189,7 +200,11 @@ public class Window extends GameFrame
 		{
 			case splash:
 				break;
+			case finding:
+				break;
 			case loading:
+				break;
+			case credit:
 				break;
 			case play:
 				break;
@@ -207,13 +222,28 @@ public class Window extends GameFrame
 		public void setter(String object) {
 			switch (object) {
 				case "start":
-					state = STATE.loading;
+					if(state != STATE.splash)
+						break;
+					state = STATE.finding;
 					Initialize();
 					break;
 				case "credit":
-					
+					if(state != STATE.splash)
+						break;
+					state = STATE.credit;
+					me.pos_x= 750;
+					me.pos_y = 0;
+					break;
+				case "credit_cancel":
+					if(state != STATE.credit)
+						break;
+					state = STATE.splash;
+					me.pos_x= -250;
+					me.pos_y = 50;
 					break;
 				case "cancel":
+					if(state != STATE.finding)
+						break;
 					state = STATE.cancel;
 					Initialize();
 					break;

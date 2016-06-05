@@ -6,44 +6,55 @@
 -->
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
-<stage w="1200" h="600" y="-200" z="-1" texture="UI/bg.png">
-	<static name="logo" x="0" y="100" z="1000" w="225" h="30" texture="UI/logo.png"></static>
+<stage w="1600" h="600" x="100" y="-100" z="-1000" texture="UI/bg.png">
+	<static name="logo" x="-250" y="100" z="1000" w="225" h="30" texture="UI/logo.png"></static>
 
-	<me x="0" y="50" w="25" h="25" texture="me.png"></me>
+	<me x="-250" y="50" w="25" h="25" texture="me.png"></me>
 
-	<container name="start" x="0" y="-25" w="300" h="20" type="button" collision="true">
-		<static w="287" name="start_init" texture="UI/text/start_btn.png"></static>
-		<static w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
+	<container name="start" x="-250" y="-25" w="300" h="20" type="button" collision="true">
+		<static x="-250" w="287" name="start_init" texture="UI/text/start_btn.png"></static>
+		<static x="-250" w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
 
-	<container name="credit" x="0" y="-100" w="300" h="20" type="button" collision="false">
-		<static w="287" name="credit_init" texture="UI/text/credit_btn.png"></static>
-		<static w="287" name="credit_hover" texture="UI/text/credit_btn_hover.png"></static>
+	<container name="credit" x="-250" y="-100" z="1" w="300" h="20" type="button" collision="false">
+		<static x="-250" w="287" name="credit_init" texture="UI/text/credit_btn.png"></static>
+		<static x="-250" w="287" name="credit_hover" texture="UI/text/credit_btn_hover.png"></static>
 	</container>
 
-	<container name="cancel" x="0" y="-475" w="300" h="20" type="button" collision="true">
-		<static w="287" name="cancel_init" texture="UI/text/cancel_btn.png"></static>
-		<static w="287" name="cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
+	<container name="cancel" x="-250" y="-475" w="300" h="20" type="button" collision="true">
+		<static x="-250" w="287" name="cancel_init" texture="UI/text/cancel_btn.png"></static>
+		<static x="-250" w="287" name="cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
 
-	<container name="loading" x="0" y="-300" w="300" h="20" collision="true" type="box" visible="false">
+	<container name="credit_page" x="1050" y="-50" w="600" h="300" texture="UI/text/credit_page.png" type="box">
+		<static x="800" y="-100" w="300" h="20" collision="true"></static>
+		<static x="500" y="0" w="20" h="100" collision="true"></static>
+		<static x="1100" y="0" w="20" h="100" collision="true"></static>
+	</container>
+
+	<container name="credit_cancel" x="800" w="287" y="-250" h="20" type="button" collision="true">
+		<static x="800" w="287" y="-250" name="credit_cancel_init" texture="UI/text/cancel_btn.png"></static>
+		<static x="800" w="287" y="-250" name="credit_cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
+	</container>
+
+	<container name="loading" x="-250" y="-300" w="300" h="20" collision="true" type="box" visible="false">
 		<container type="box">
-			<static y="-315" w="90" h="11" texture="UI/text/waiting_partner.png"></static>
+			<static x="-250" y="-315" w="90" h="11" texture="UI/text/waiting_partner.png"></static>
 			<container name="loadAni" type="trigger">
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading2.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading3.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading4.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading5.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading6.png"></static>
-				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading2.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading3.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading4.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading5.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading6.png"></static>
+				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
 			</container>
 		</container>
-		<static y="-315" w="90" h="11" texture="UI/text/server_connect.png.png"></static>
-		<static y="-315" w="90" h="11" texture="UI/text/server_connect_fail.png.png"></static>
+		<static x="-250" y="-315" w="90" h="11" texture="UI/text/server_connect.png.png"></static>
+		<static x="-250" y="-315" w="90" h="11" texture="UI/text/server_connect_fail.png.png"></static>
 	</container>
 
-	<static w="10" h="500" x="-300"></static>
-	<static w="10" h="500" x="300"></static>
+	<static w="10" h="500" x="-550"></static>
+	<static w="10" h="500" x="50"></static>
 </stage>

@@ -21,8 +21,13 @@ public class TriggerObject extends ContainerObject
 	{
 		if(o==null)
 			return;
+		
 		if(!childs.isEmpty())
 			o.invisible(true);
+		
+		if(type.equals("box"))
+			o.invisible(false);
+		
 		childs.add(o);
 	}
 	
