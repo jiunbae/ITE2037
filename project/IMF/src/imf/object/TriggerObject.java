@@ -7,7 +7,7 @@ import imf.data.DataObject;
 
 public class TriggerObject extends ContainerObject 
 {
-	int index = 0;
+	public int index = 0;
 	
 	public TriggerObject(DataObject o) 
 	{

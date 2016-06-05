@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+	@DEFAULT: 무조건 지정해야 합니다.
+	@RECOMMAND: 지정하는것을 권장합니다.
+	@IF: 옵션입니다.
+-->
+
+<!-- @DEFAULT 창 크기는 600x1200 -->
+<stage w="5000" h="1600" texture="UI/bg.png">
+	<static name="logo" x="0" y="50" w="287" h="35" texture="UI/logo.png"></static>
+
+	<me x="0" y="0" w="25" h="25" texture=""></me>
+
+	<container x="0" y="-50" w="287" h="20" type="button" collision="true">
+		<static name="start" x="0" y="-50" w="287" h="20" texture="UI/text/start_btn.png"></static>
+		<static name="start_hover" x="0" y="-50" w="287" h="20" texture="UI/text/start_btn_hover.png"></static>
+	</container>
+
+</stage>

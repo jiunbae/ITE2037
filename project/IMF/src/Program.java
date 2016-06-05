@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import imf.data.SettingParser;
 import loot.GameFrameSettings;
 
@@ -10,15 +12,15 @@ public class Program
 	    GameFrameSettings settings = new GameFrameSettings();
 	    
 	    @SuppressWarnings("unused")
-		SettingParser parser = new SettingParser("IMF.inf", settings);
+		SettingParser parser = new SettingParser("data/IMF.inf", settings);
 	    
 	    settings.canvas_height = HEIGHT;
 	    settings.canvas_width = WIDTH;
 	    settings.window_title = "pair";
+	    settings.canvas_backgroundColor = Color.black;
 	    settings.gameLoop_interval_ns = 1000000000 / 65;
 	    
 	    Window window = new Window(settings);
-	    
 	    window.setVisible(true);
 	}
 

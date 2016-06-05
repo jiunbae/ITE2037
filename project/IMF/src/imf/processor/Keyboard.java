@@ -1,6 +1,5 @@
 package imf.processor;
 
-import java.awt.Canvas;
 import java.awt.event.KeyEvent;
 
 import loot.InputManager;
@@ -58,7 +57,6 @@ public class Keyboard implements IProcess
 	@Override
 	public void loop()
 	{
-		inputs.AcceptInputs();
 		for(ButtonState bs : inputs.buttons)
 		{
 			if (bs.ID < 0)
@@ -73,7 +71,6 @@ public class Keyboard implements IProcess
 			
 			if(state == Keyboard.STATE_PRESS)
 				manager.get("physics").setter(bs.ID);
-			
 		}
 	}
 	

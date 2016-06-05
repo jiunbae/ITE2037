@@ -38,8 +38,9 @@ public class SettingParser
 	
 	private void defaultSetting()
 	{
+		appendSetting("ui", "res/ui/");
 		appendSetting("res", "res/");
-		appendSetting("map", "map/");
+		appendSetting("map", "data/map/");
 		appendSetting("ver", "0.13");
 	}
 	

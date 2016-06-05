@@ -3,6 +3,7 @@ import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.object.*;
 import imf.processor.Keyboard;
+import imf.processor.Mouse;
 import imf.processor.ProcessManager;
 import imf.processor.Scene;
 import imf.processor.Interaction;
@@ -19,38 +20,57 @@ public class Window extends GameFrame
 	 */
 	private static final long serialVersionUID = 2015004584L;
 
+	private enum STATE{
+		splash, play, over
+	}
+	
+	STATE state = STATE.splash;
+	
 	Constant path;
 	DataParser data;
 	
 	Viewport viewport;
 	TextBox text;
 	
+	/**
+	 * processor(ProcessManager) manage processors.
+	 * 
+	 * @extends: IProcess
+	 */
 	ProcessManager processor;
 	Interaction interaction;
 	Keyboard keyboard;
 	Physics physics;
+	Mouse mouse;
 	Scene scene;
 	
 	ObjectManager<SpriteObject> sprites;
 	ObjectManager<ContainerObject> containers;
-	
 	CharacterObject me, you;
 	
 	public Window(GameFrameSettings settings) 
 	{
 		super(settings);
 		
-		//create new instance
+		// load settings
 		path = new Constant(settings);
-		data = new DataParser(path.MAP + "stage1.xml", 0);
 		
+		// create new instance
 		sprites = new ObjectManager<SpriteObject>();
 		containers = new ObjectManager<ContainerObject>();
-		
 		processor = new ProcessManager();
-
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
+	}
+	
+	private void install(SpriteObject o)
+	{
+		physics.install(o);
+		images.LoadImage(path.RES + o.texture, o.texture);
+		o.image = images.GetImage(o.texture);
+		viewport.children.add(o);
+		if(o.type.equals("button"))
+			mouse.install(o);
 	}
 	
 	private SpriteObject newObject(DataObject e)
@@ -68,6 +88,7 @@ public class Window extends GameFrame
 					case "box":
 						ret = new ContainerObject(e);
 						containers.insert(e.get("name"), (ContainerObject) ret);
+					case "button":
 					case "trigger":
 						ret = new TriggerObject(e);
 						containers.insert(e.get("name"), (TriggerObject) ret);
@@ -82,7 +103,21 @@ public class Window extends GameFrame
 	@Override
 	public boolean Initialize() 
 	{
-		// data load
+		switch (state)
+		{
+			case splash:
+				data = new DataParser(path.MAP + "splash.xml", 0);
+				
+				break;
+			case play:
+				// load data
+				data = new DataParser(path.MAP + "stage1.xml", 0);
+				
+				break;
+			case over:
+				break;
+		}
+		
 		data.loop((e)->{
 			if(e.ID.equals("me"))
 			{
@@ -96,31 +131,33 @@ public class Window extends GameFrame
 				newObject(e);
 		});
 		
-		// processor
+		// install processor
 		processor.install("interaction", interaction = new Interaction(me));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
 		processor.install("physics", physics = new Physics(me));
 		processor.install("scene", scene = new Scene(viewport));
+		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
 
-		// objects
+		// install objects
 		sprites.loop((e)->{
-			physics.install(e);
-			images.LoadImage(path.RES + e.texture, e.texture);
-			e.image = images.GetImage(e.texture);
-			viewport.children.add(e);
+			install(e);
 		});
 		
 		containers.loop((e)->{
-			physics.install(e);
-			images.LoadImage(path.RES + e.texture, e.texture);
-			e.image = images.GetImage(e.texture);
-			viewport.children.add(e);
+			install(e);
 		});
 		
+		// scene setting
 		scene.set(me);
+
+		// text (for debug)
+		text.height = 50;
+		text.width = 50;
+		text.x = 0;
+		text.y = 0;
 		
-		// viewport
+		// viewport setting
 		viewport.radius_x = 25;
 		viewport.radius_y = 25;
 		viewport.pointOfView_z = 10000;
@@ -130,36 +167,46 @@ public class Window extends GameFrame
 		viewport.view_width = settings.canvas_width;
 		viewport.view_height = settings.canvas_height;
 		
-		// text (for debug)
-		text.height = 50;
-		text.width = 50;
-		text.x = 0;
-		text.y = 0;
-		
-		viewport.children.add(me);
+		if(me != null)
+			viewport.children.add(me);
 		viewport.children.add(text);
 		
-	    return true;
+		return true;
 	}
 	
 	@Override
 	public boolean Update(long timeStamp) 
 	{
+		inputs.AcceptInputs();
+		switch (state)
+		{
+			case splash:
+				break;
+			case play:
+				text.text = "" + me.a_y;
+				break;
+			case over:
+				break;
+		}
 		processor.loop();
-		text.text = "" + me.a_y;
-		
 		return true;
 	}
 
 	@Override
 	public void Draw(long timeStamp) 
 	{
+		switch (state)
+		{
+			case splash:
+				break;
+			case play:
+				break;
+			case over:
+				break;
+		}
 		BeginDraw();
-		
 		ClearScreen();
-		
 		viewport.Draw(g);
-		
 		EndDraw();
 	}
 }
