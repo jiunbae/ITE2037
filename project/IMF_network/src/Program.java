@@ -38,7 +38,7 @@ public class Program {
 						break;
 						
 					case "partner_disconnected" :
-						gWindow.appendToTextBox("partner disconnected");
+						gWindow. appendToTextBox("partner disconnected");
 						break;
 				}
 	    		
@@ -53,7 +53,7 @@ public class Program {
 	    	
 	    	
 	    }else {
-	    	gWindow.tb.text += "Fail to connect to server\n";
+	    	gWindow.appendToTextBox("Fail to connect to server");
 	    }
 
 	}
