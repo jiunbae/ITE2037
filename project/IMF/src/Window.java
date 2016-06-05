@@ -21,12 +21,12 @@ public class Window extends GameFrame
 	 */
 	private static final long serialVersionUID = 2015004584L;
 
-	private enum STATE{
-		splash, cancel, finding, loading, credit, play, over
+	private enum GAME_STATE{
+		SPLASH, FINDING, LOADING, CREDIT, PLAY, OVER
 	}
 	
 	boolean reload = true;
-	static STATE state = STATE.splash;
+	static GAME_STATE state = GAME_STATE.SPLASH;
 	
 	Constant path;
 	DataParser data;
@@ -72,32 +72,22 @@ public class Window extends GameFrame
 		switch (state)
 		{
 			// load data
-			case splash:
+			case SPLASH:
 				data = new DataParser(path.MAP + "splash.xml", 0);
 				break;
-			case finding:
-				containers.get("start").invisible(true);
-				containers.get("credit").invisible(true);
-				((TriggerObject) containers.get("loading")).invisible(false);
-				((TriggerObject) containers.get("loadAni")).trigger();
+			case FINDING:
 				break;
-			case cancel:
-				containers.get("start").invisible(false);
-				containers.get("credit").invisible(false);
-				me.pos_y = 50;
-				state = STATE.splash;
-				break;
-			case loading:
+			case LOADING:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
 				Destroy();
 				reload = true;
-				state = STATE.play;
+				state = GAME_STATE.PLAY;
 				break;
-			case credit:
+			case CREDIT:
 				break;
-			case play:
+			case PLAY:
 				break;
-			case over:
+			case OVER:
 				break;
 		}
 		
@@ -187,18 +177,18 @@ public class Window extends GameFrame
 		inputs.AcceptInputs();
 		switch (state)
 		{
-			case splash:
+			case SPLASH:
 				break;
-			case finding:
+			case FINDING:
 				break;
-			case loading:
+			case LOADING:
 				break;
-			case credit:
+			case CREDIT:
 				break;
-			case play:
+			case PLAY:
 				text.text = "" + me.a_y;
 				break;
-			case over:
+			case OVER:
 				break;
 		}
 		processor.loop();
@@ -210,17 +200,17 @@ public class Window extends GameFrame
 	{
 		switch (state)
 		{
-			case splash:
+			case SPLASH:
 				break;
-			case finding:
+			case FINDING:
 				break;
-			case loading:
+			case LOADING:
 				break;
-			case credit:
+			case CREDIT:
 				break;
-			case play:
+			case PLAY:
 				break;
-			case over:
+			case OVER:
 				break;
 		}
 		BeginDraw();
@@ -234,29 +224,36 @@ public class Window extends GameFrame
 		public void setter(String object) {
 			switch (object) {
 				case "start":
-					if(state != STATE.splash)
+					if(state != GAME_STATE.SPLASH)
 						break;
-					state = STATE.loading;
+					containers.get("start").invisible(true);
+					containers.get("credit").invisible(true);
+					((TriggerObject) containers.get("loading")).invisible(false);
+					((TriggerObject) containers.get("loadAni")).trigger();
+					state = GAME_STATE.LOADING;
 					Initialize();
 					break;
 				case "credit":
-					if(state != STATE.splash)
+					if(state != GAME_STATE.SPLASH)
 						break;
-					state = STATE.credit;
+					state = GAME_STATE.CREDIT;
 					me.pos_x= 750;
 					me.pos_y = 0;
 					break;
 				case "credit_cancel":
-					if(state != STATE.credit)
+					if(state != GAME_STATE.CREDIT)
 						break;
-					state = STATE.splash;
+					state = GAME_STATE.SPLASH;
 					me.pos_x= -250;
 					me.pos_y = 50;
 					break;
 				case "cancel":
-					if(state != STATE.finding)
+					if(state != GAME_STATE.FINDING)
 						break;
-					state = STATE.cancel;
+					containers.get("start").invisible(false);
+					containers.get("credit").invisible(false);
+					me.pos_y = 50;
+					state = GAME_STATE.SPLASH;
 					Initialize();
 					break;
 			}
