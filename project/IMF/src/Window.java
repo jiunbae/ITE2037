@@ -23,7 +23,7 @@ public class Window extends GameFrame
 	private static final long serialVersionUID = 2015004584L;
 
 	private enum STATE{
-		splash, loading, play, over
+		splash, cancel, loading, play, over
 	}
 	
 	boolean reload = true;
@@ -76,10 +76,14 @@ public class Window extends GameFrame
 			case splash:
 				data = new DataParser(path.MAP + "splash.xml", 0);
 				break;
+			case cancel:
+				containers.get("start").invisible(false);
+				me.pos_y = 50;
+				break;
 			case loading:
-				uninstall(containers.get("start"));
+				containers.get("start").invisible(true);
 				((TriggerObject) containers.get("loading")).invisible(false);
-				((TriggerObject) containers.get("loadingAni")).trigger();
+				((TriggerObject) containers.get("loadAni")).trigger();
 				break;
 			case play:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
@@ -205,6 +209,10 @@ public class Window extends GameFrame
 			switch (object) {
 				case "start":
 					state = STATE.loading;
+					Initialize();
+					break;
+				case "stop":
+					state = STATE.cancel;
 					Initialize();
 					break;
 			}

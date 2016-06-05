@@ -29,8 +29,7 @@ public class TriggerObject extends ContainerObject
 	public void invisible(boolean value)
 	{
 		trigger_hide = value;
-		if (type.equals("box"))
-			childs.forEach((o) -> o.invisible(value));
+		childs.forEach((o) -> o.invisible(value));
 	}
 	
 	public void trigger()

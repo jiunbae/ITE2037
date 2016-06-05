@@ -69,7 +69,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	public SpriteObject findTarget()
 	{
 		for(SpriteObject o : buttons)
-			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x)
+			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x && o.trigger_hide == false)
 				return o;
 		return null;
 	}

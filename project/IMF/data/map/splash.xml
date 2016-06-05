@@ -16,18 +16,27 @@
 		<static w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
 
+	<container name="stop" x="0" y="-475" w="300" h="20" type="button" collision="true">
+		<static w="287" name="stop_init" texture="UI/text/start_btn.png"></static>
+		<static w="287" name="stop_hover" texture="UI/text/start_btn_hover.png"></static>
+	</container>
+
 	<container name="loading" x="0" y="-300" w="300" h="20" collision="true" type="box" visible="false">
-		<static y="-315" w="75" h="10" texture="UI/text/waiting_partner.png"></static>
-		<container name="loadingAni" type="trigger">
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading2.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading3.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading4.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading5.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading6.png"></static>
-			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
+		<container type="box">
+			<static y="-315" w="90" h="11" texture="UI/text/waiting_partner.png"></static>
+			<container name="loadAni" type="trigger">
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading2.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading3.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading4.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading5.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading6.png"></static>
+				<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
+			</container>
 		</container>
+		<static y="-315" w="90" h="11" texture="UI/text/server_connect.png.png"></static>
+		<static y="-315" w="90" h="11" texture="UI/text/server_connect_fail.png.png"></static>
 	</container>
 
 	<static w="10" h="500" x="-300"></static>
