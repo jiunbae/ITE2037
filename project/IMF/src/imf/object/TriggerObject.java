@@ -9,6 +9,7 @@ public class TriggerObject extends ContainerObject
 {
 	public int index = 0;
 	Timer timer = null;
+	WorkTask task = new WorkTask();
 	
 	public TriggerObject(DataObject o) 
 	{
@@ -34,7 +35,15 @@ public class TriggerObject extends ContainerObject
 	
 	public void trigger()
 	{
+		if (task != null)
+			task = null;
+		if (timer != null)
+		{
+			timer.cancel();
+			timer = null;
+		}
 		next();
+	
 	}
 	
 	public void next()
@@ -46,14 +55,14 @@ public class TriggerObject extends ContainerObject
 		{
 			if (timer == null)
 				timer = new Timer();
-			timer.schedule(new WorkTask(), childs.get(index).interval);
+			timer.schedule(task = new WorkTask(), childs.get(index).interval);
 		}
 	}
 	
 	public class WorkTask extends TimerTask {
 		@Override
 		public void run() {
-			next();
+			trigger();
 		}
 	}
 }

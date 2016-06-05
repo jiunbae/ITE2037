@@ -6,7 +6,6 @@ import imf.processor.Keyboard;
 import imf.processor.Mouse;
 import imf.processor.ProcessManager;
 import imf.processor.Scene;
-import imf.utility.Pair;
 import imf.processor.IProcessProperty;
 import imf.processor.Interaction;
 import imf.processor.Physics;
@@ -211,7 +210,10 @@ public class Window extends GameFrame
 					state = STATE.loading;
 					Initialize();
 					break;
-				case "stop":
+				case "credit":
+					
+					break;
+				case "cancel":
 					state = STATE.cancel;
 					Initialize();
 					break;

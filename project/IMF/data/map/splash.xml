@@ -7,18 +7,23 @@
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
 <stage w="1200" h="600" y="-200" z="-1" texture="UI/bg.png">
-	<static name="logo" x="0" y="50" z="1000" w="225" h="30" texture="UI/logo.png"></static>
+	<static name="logo" x="0" y="100" z="1000" w="225" h="30" texture="UI/logo.png"></static>
 
-	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
+	<me x="0" y="50" w="25" h="25" texture="me.png"></me>
 
-	<container name="start" x="0" y="-50" w="300" h="20" type="button" collision="true">
+	<container name="start" x="0" y="-25" w="300" h="20" type="button" collision="true">
 		<static w="287" name="start_init" texture="UI/text/start_btn.png"></static>
 		<static w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
 
-	<container name="stop" x="0" y="-475" w="300" h="20" type="button" collision="true">
-		<static w="287" name="stop_init" texture="UI/text/start_btn.png"></static>
-		<static w="287" name="stop_hover" texture="UI/text/start_btn_hover.png"></static>
+	<container name="credit" x="0" y="-100" w="300" h="20" type="button" collision="false">
+		<static w="287" name="credit_init" texture="UI/text/credit_btn.png"></static>
+		<static w="287" name="credit_hover" texture="UI/text/credit_btn_hover.png"></static>
+	</container>
+
+	<container name="cancel" x="0" y="-475" w="300" h="20" type="button" collision="true">
+		<static w="287" name="cancel_init" texture="UI/text/cancel_btn.png"></static>
+		<static w="287" name="cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
 
 	<container name="loading" x="0" y="-300" w="300" h="20" collision="true" type="box" visible="false">

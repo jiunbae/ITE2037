@@ -42,7 +42,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@SuppressWarnings("unchecked")
 	public void click(SpriteObject o)
 	{
-		if(o == null)
+		if(o == null || o.trigger_hide == true)
 			return;
 		push = o;
 		manager.get("interaction").setter(11);
@@ -51,7 +51,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@SuppressWarnings("unchecked")
 	public void hover(SpriteObject o)
 	{
-		if(o == null)
+		if(o == null || o.trigger_hide == true)
 			return;
 		push = o;
 		manager.get("interaction").setter(9);
@@ -60,7 +60,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@SuppressWarnings("unchecked")
 	public void leave(SpriteObject o)
 	{
-		if(o == null)
+		if(o == null || o.trigger_hide == true)
 			return;
 		push = o;
 		manager.get("interaction").setter(10);
