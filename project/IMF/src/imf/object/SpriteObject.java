@@ -6,7 +6,7 @@ import loot.graphics.VisualObject3D;
 
 public class SpriteObject extends DrawableObject3D
 {
-	public String ID, type, texture;
+	public String name, ID, type, texture;
 	public boolean collision;
 	public int interval;
 	public double box_top = 0, box_bottom = 0, box_left = 0, box_right = 0;
@@ -22,12 +22,13 @@ public class SpriteObject extends DrawableObject3D
 	public SpriteObject(DataObject o)
 	{
 		this(Integer.valueOf(o.get("x")), Integer.valueOf(o.get("y")), Integer.valueOf(o.get("z")), Integer.valueOf(o.get("w")), Integer.valueOf(o.get("h")));
-		this.pos_z = Integer.valueOf(o.get("z"));
 		this.collision = o.get("collision").equals("true");
-		this.texture = o.get("texture");
-		this.type = o.ID;
 		this.interval = Integer.valueOf(o.get("interval"));
-		this.ID = o.get("name");
+		this.pos_z = Integer.valueOf(o.get("z"));
+		this.texture = o.get("texture");
+		this.type = o.get("type");
+		this.name = o.get("name");
+		this.ID = o.ID;
 	}
 	
 	public void visible(boolean value)

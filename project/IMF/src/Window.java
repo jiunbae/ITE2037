@@ -106,15 +106,15 @@ public class Window extends GameFrame
 		// objects
 		sprites.loop((e)->{
 			physics.install(e);
-			images.LoadImage(path.RES + e.texture, e.ID);
-			e.image = images.GetImage(e.ID);
+			images.LoadImage(path.RES + e.texture, e.texture);
+			e.image = images.GetImage(e.texture);
 			viewport.children.add(e);
 		});
 		
 		containers.loop((e)->{
 			physics.install(e);
-			images.LoadImage(path.RES + e.texture, e.ID);
-			e.image = images.GetImage(e.ID);
+			images.LoadImage(path.RES + e.texture, e.texture);
+			e.image = images.GetImage(e.texture);
 			viewport.children.add(e);
 		});
 		

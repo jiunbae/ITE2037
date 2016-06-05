@@ -15,7 +15,7 @@ public class Program
 	    settings.canvas_height = HEIGHT;
 	    settings.canvas_width = WIDTH;
 	    settings.window_title = "pair";
-	    settings.gameLoop_interval_ns = 1000000000 / 75;
+	    settings.gameLoop_interval_ns = 1000000000 / 65;
 	    
 	    Window window = new Window(settings);
 	    

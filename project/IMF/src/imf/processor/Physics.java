@@ -171,7 +171,7 @@ public class Physics implements IProcess<Integer, ContainerObject>
 	public ContainerObject getter() 
 	{
 		for (ContainerObject o : containers)
-			if(target.relativeX(o) == 0 && target.relativeY(o) == 0 && o.type.equals("container"))
+			if(target.relativeX(o) == 0 && target.relativeY(o) == 0 && o.type.equals("trigger"))
 				return o;
 		return null;
 	}

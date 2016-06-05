@@ -35,7 +35,7 @@
 	<container x="100" y="-70" z="2" w="30" h="15" texture="switch_main.png" type="trigger" collision="false">
 		<static z="1" w="30" h="15" texture="switch_right.png"></static>
 		<static interval="50"></static>
-		<container>
+		<container type="box">
 			<static z="1" w="30" h="15" texture="switch_left.png"></static>
 			<static x="600" y="100" w="100" h="15" texture="floor.png"></static>
 		</container>
