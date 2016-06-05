@@ -113,6 +113,14 @@ public class Window extends GameFrame
 				viewport.children.add(me);
 				me.a_y = -0.98;
 			}
+			else if (e.ID.equals("you") && you == null)
+			{
+				you = new CharacterObject(e);
+				images.LoadImage(path.RES + you.texture, "you");
+				you.image = images.GetImage("you");
+				viewport.children.add(you);
+				you.a_y = -0.98;
+			}
 			else
 				newObject(e);
 		});

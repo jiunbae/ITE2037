@@ -35,6 +35,7 @@ public class DataParser
 			root = doc.getDocumentElement();
 			stage = getNodeData(new DataObject("stage"), root);
 			appendNode(doc.getElementsByTagName("me"));
+			appendNode(doc.getElementsByTagName("you"));
 			appendNode(doc.getElementsByTagName("static"));
 			appendNode(doc.getElementsByTagName("container"));
 			
