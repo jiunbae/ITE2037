@@ -1,9 +1,6 @@
 package imf.object;
 
-import java.awt.event.KeyEvent;
-
 import imf.data.DataObject;
-import imf.utility.*;
 import loot.graphics.DrawableObject3D;
 import loot.graphics.VisualObject3D;
 
@@ -11,6 +8,7 @@ public class SpriteObject extends DrawableObject3D
 {
 	public String ID, type, texture;
 	public boolean collision;
+	public int interval;
 	public double box_top = 0, box_bottom = 0, box_left = 0, box_right = 0;
 
 	public SpriteObject(double x, double y, double z, double width, double height)
@@ -27,8 +25,14 @@ public class SpriteObject extends DrawableObject3D
 		this.pos_z = Integer.valueOf(o.get("z"));
 		this.collision = o.get("collision").equals("true");
 		this.texture = o.get("texture");
-		this.type = o.get("type");
+		this.type = o.ID;
+		this.interval = Integer.valueOf(o.get("interval"));
 		this.ID = o.get("name");
+	}
+	
+	public void visible(boolean value)
+	{
+		trigger_hide = value;
 	}
 	
 	public void setPositionAbove(SpriteObject o)

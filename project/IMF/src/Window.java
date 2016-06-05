@@ -53,6 +53,32 @@ public class Window extends GameFrame
 		text = new TextBox();
 	}
 	
+	private SpriteObject newObject(DataObject e)
+	{
+		SpriteObject ret = null;
+		switch (e.ID)
+		{
+			case "static":
+				ret = new SpriteObject(e);
+				sprites.insert(e.get("name"), ret);
+				break;
+			case "container":
+				switch (e.get("type"))
+				{
+					case "box":
+						ret = new ContainerObject(e);
+						containers.insert(e.get("name"), (ContainerObject) ret);
+					case "trigger":
+						ret = new TriggerObject(e);
+						containers.insert(e.get("name"), (TriggerObject) ret);
+				}
+				for (DataObject o : e.getChild())
+					((ContainerObject) ret).add(newObject(o));
+				break;
+		}
+		return ret;
+	}
+	
 	@Override
 	public boolean Initialize() 
 	{
@@ -67,31 +93,14 @@ public class Window extends GameFrame
 				me.a_y = -0.98;
 			}
 			else
-			{
-				switch (e.ID)
-				{
-					case "static":
-						sprites.insert(e.get("name"), new SpriteObject(e));
-						break;
-					case "trigger":
-						containers.insert(e.get("name"), new TriggerObject(e));
-						for(DataObject o : e.getChild())
-						{
-							SpriteObject child = new SpriteObject(o);
-							child.trigger_hide = true;
-							sprites.insert(o.get("name"), child);
-							containers.get(e.get("name")).add(child);
-						}
-						break;
-				}
-			}
+				newObject(e);
 		});
 		
 		// processor
+		processor.install("interaction", interaction = new Interaction(me));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
 		processor.install("physics", physics = new Physics(me));
 		processor.install("scene", scene = new Scene(viewport));
-		processor.install("interaction", interaction = new Interaction(me));
 		processor.initilize(processor);
 
 		// objects
@@ -114,10 +123,10 @@ public class Window extends GameFrame
 		// viewport
 		viewport.radius_x = 25;
 		viewport.radius_y = 25;
-		viewport.pointOfView_z = 500;
-		viewport.view_baseDistance = 500;
-		viewport.view_minDistance = 0.1;
-		viewport.view_maxDistance = 1000;
+		viewport.pointOfView_z = 10000;
+		viewport.view_baseDistance = 10000;
+		viewport.view_minDistance = 1000;
+		viewport.view_maxDistance = 100000;
 		viewport.view_width = settings.canvas_width;
 		viewport.view_height = settings.canvas_height;
 		

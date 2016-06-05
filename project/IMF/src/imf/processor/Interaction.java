@@ -43,7 +43,8 @@ public class Interaction implements IProcess<Integer, Integer>
 		{
 			case 5:
 				TriggerObject o = (TriggerObject) manager.get("physics").getter();
-				o.trigger();
+				if (o != null)
+					o.trigger();
 				//target.a_y = -target.a_y;
 				break;
 		}

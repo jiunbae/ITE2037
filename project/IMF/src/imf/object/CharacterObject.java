@@ -4,7 +4,8 @@ import imf.data.DataObject;
 
 public class CharacterObject extends PhysicalObject
 {
-	public CharacterObject(DataObject e) {
+	public CharacterObject(DataObject e) 
+	{
 		super(e);
 	}
 

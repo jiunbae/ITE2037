@@ -34,7 +34,7 @@ public class DataParser
 			root = doc.getDocumentElement();
 			appendNode(doc.getElementsByTagName("me"));
 			appendNode(doc.getElementsByTagName("static"));
-			appendNode(doc.getElementsByTagName("trigger"));
+			appendNode(doc.getElementsByTagName("container"));
 			
 		} catch (ParserConfigurationException e) {
 			return;
@@ -54,18 +54,15 @@ public class DataParser
 	{
 		NamedNodeMap attrs = node.getAttributes();
 
-		for (int i = 0; i < attrs.getLength(); ++i)
+		for (int i = 0; attrs != null && i < attrs.getLength(); ++i)
 			data.insert(attrs.item(i).getNodeName(), attrs.item(i).getNodeValue());
 		
-		if (data.ID.equals("trigger"))
+		for (Node child = node.getFirstChild(); child != node.getLastChild(); child = child.getNextSibling())
 		{
-			for (Node child = node.getFirstChild(); child != node.getLastChild(); child = child.getNextSibling())
-			{
-				if(child.getTextContent().equals("\n\t\t"))
-					continue;
-				DataObject childData = getNodeData(new DataObject(child.getNodeName(), data), child);
-				data.insertChild(childData);
-			}
+			if (child.getNodeType() != 1)
+				continue;
+			DataObject childData = getNodeData(new DataObject(child.getNodeName(), data), child);
+			data.insertChild(childData);
 		}
 		return data;
 	}

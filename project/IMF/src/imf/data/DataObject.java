@@ -9,6 +9,8 @@ import imf.utility.HashMapDefault;
 public class DataObject 
 {
 	public String ID;
+	static List<String> IDs = new ArrayList<String>();
+	
 	private HashMapDefault<String, String> attrs = new HashMapDefault<String, String>("0");
 	private List<DataObject> childs = new ArrayList<DataObject>();
 	
@@ -25,13 +27,14 @@ public class DataObject
 		insert("texture", "");
 		insert("type", "box");
 		insert("collision", "true");
+		insert("interval", "0");
 		if(ID.equals("me"))
 			insert("name", "me");
 	}
 	public DataObject(String ID, DataObject o)
 	{
 		this.ID = ID;
-		o.attrs.forEach((k, v)->insert(k, v));
+		o.attrs.forEach((k, v)->insert(k,v));
 		insert("name", hash(10));
 	}
 	
@@ -43,7 +46,13 @@ public class DataObject
 		for (int i = 0; i < size; i++)
 			buffer.append(Integer.toString(random.nextInt(10)));
 		
-		return buffer.toString();
+		String ID = buffer.toString();
+		
+		for(String id : IDs)
+			if(ID.equals(id))
+				ID = hash(size);
+		
+		return ID;
 	}
 	
 	protected void insert(String name, String option)

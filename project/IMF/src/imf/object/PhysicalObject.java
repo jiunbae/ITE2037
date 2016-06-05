@@ -2,7 +2,6 @@ package imf.object;
 
 import imf.data.DataObject;
 import imf.utility.*;
-import loot.graphics.DrawableObject3D;
 
 public class PhysicalObject extends SpriteObject
 {

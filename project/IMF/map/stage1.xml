@@ -1,31 +1,46 @@
 <?xml version="1.0"?>
 <!--
 	@DEFAULT: 무조건 지정해야 합니다.
-	@MOST: 지정하는것을 권장합니다.
-	@IF: 대부분 옵션입니다.
+	@RECOMMAND: 지정하는것을 권장합니다.
+	@IF: 옵션입니다.
 -->
+
+<!--
+	object는 네가지 종류가 있습니다.
+	<static>은 단일 오브젝트입니다.
+	<container>은 자식 오브젝트를 여럿 가질 수 있는 오브젝트입니다.
+	<me>는 플레이어 캐릭터입니다.
+	<you>는 상대방 플레이어 캐릭터입니다.
+-->
+
 <!-- @DEFAULT 창 크기는 600x1200 -->
 <stage w="5000" h="1600">
-	<!-- @MOST stage의 바닥을 정합니다. -->
+	<!-- @RECOMMAND stage의 바닥을 정합니다. -->
 	<static x="0" y="-400" w="5000" h="15" texture="floor.png"></static>
-	<!-- @MOST staget의 천장을 정합니다. -->
+	<!-- @IF stage 천장을 정합니다. -->
 	<static x="0" y="300" w="5000" h="15" texture="floor.png"></static>
 
 	<static x="0" y="-100" w="5000" h="15" texture="floor.png"></static>
 
 	<!-- @DEFAULT me는 플레이어블 캐릭터를 나타냅니다. -->
 	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
+
 	<!-- @DEFAULT you는 상대 플레이어의 캐릭터를 나타냅니다. -->
 	<you x="0" y="0" w="25" h="25" texture="you.png"></you>
 
 	<static x="-100" y="200" w="100" h="15" texture="floor.png"></static>
 	<static x="100" y="100" w="100" h="15" texture="floor.png"></static>
-	<static x="300" y="00" w="100" h="15" texture="floor.png"></static>
+	<static x="300" y="0" w="100" h="15" texture="floor.png"></static>
 
-	<trigger x="100" y="-70" z="2" w="30" h="15" texture="switch_main.png" type="switch" collision="false">
-		<static x="0" y="0" z="1" w="30" h="15" texture="switch_right.png"></static>
-		<static x="0" y="0" z="1" w="30" h="15" texture="switch_left.png"></static>
-	</trigger>
+	<container x="100" y="-70" z="2" w="30" h="15" texture="switch_main.png" type="trigger" collision="false">
+		<static z="1" w="30" h="15" texture="switch_right.png"></static>
+		<static interval="50"></static>
+		<container>
+			<static z="1" w="30" h="15" texture="switch_left.png"></static>
+			<static x="600" y="100" w="100" h="15" texture="floor.png"></static>
+		</container>
+		<static interval="50"></static>
+	</container>
 
 	<script>
 	</script>
