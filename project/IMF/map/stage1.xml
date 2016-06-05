@@ -37,7 +37,7 @@
 		<static interval="50"></static>
 		<container type="box">
 			<static z="1" w="30" h="15" texture="switch_left.png"></static>
-			<static x="600" y="100" w="100" h="15" texture="floor.png"></static>
+			<static x="600" y="100" w="100" h="15" texture="floor.png" collision="true"></static>
 		</container>
 		<static interval="50"></static>
 	</container>

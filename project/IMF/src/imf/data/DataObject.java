@@ -34,7 +34,10 @@ public class DataObject
 	public DataObject(String ID, DataObject o)
 	{
 		this.ID = ID;
-		o.attrs.forEach((k, v)->insert(k,v));
+		o.attrs.forEach((k, v)-> {
+			if(k.equals("x") || k.equals("y"))
+				insert(k,v);	
+		});
 		insert("name", hash(10));
 	}
 	
