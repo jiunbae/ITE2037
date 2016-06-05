@@ -15,14 +15,14 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 
 	List<SpriteObject> buttons = new ArrayList<SpriteObject>();
 	SpriteObject target, push;
-	int x, y, width, height;
+	double x, y, width, height;
 	MOUSE state;
 	
 	public enum MOUSE {
 		click, hover, leav
 	}
 	
-	public Mouse(InputManager inputs, Integer width, Integer height)
+	public Mouse(InputManager inputs, double width, double height)
 	{
 		this.inputs = inputs;
 		this.width = width;
@@ -61,20 +61,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@Override
 	public void setter(Pair<Integer> object) 
 	{
-		x = object.first - width/2;
-		y = -object.second + height/2;
-
-		SpriteObject target_next = null;
-		for(SpriteObject o : buttons)
-			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x)
-				target_next = o;
 		
-		if(target != target_next)
-		{
-			leave(target);
-			hover(target_next);
-			target = target_next;
-		}
 	}
 
 	@Override
@@ -87,15 +74,29 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	public void loop() 
 	{
 		if (inputs.isMouseCursorMoved)
-		{
-			setter(new Pair<Integer>((int) inputs.pos_mouseCursor.getX(), (int) inputs.pos_mouseCursor.getY()));
-		}
+			process();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process() 
 	{
+		Pair<Double> view = (Pair<Double>) manager.get("scene").getter();
 		
+		x = inputs.pos_mouseCursor.getX() - width/2 + view.first;
+		y = -inputs.pos_mouseCursor.getY() + height/2 + view.second;
+		
+		SpriteObject target_next = null;
+		for(SpriteObject o : buttons)
+			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x)
+				target_next = o;
+		
+		if(target != target_next)
+		{
+			leave(target);
+			hover(target_next);
+			target = target_next;
+		}
 	}
 
 	@Override

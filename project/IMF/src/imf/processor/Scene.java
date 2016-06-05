@@ -1,9 +1,10 @@
 package imf.processor;
 
 import imf.object.SpriteObject;
+import imf.utility.Pair;
 import loot.graphics.Viewport;
 
-public class Scene implements IProcess<SpriteObject, Integer>
+public class Scene implements IProcess<SpriteObject, Pair<Double>>
 {
 	Viewport viewport;
 	SpriteObject target, background;
@@ -49,8 +50,8 @@ public class Scene implements IProcess<SpriteObject, Integer>
 	}
 
 	@Override
-	public Integer getter() 
+	public Pair<Double> getter() 
 	{
-		return null;
+		return new Pair<Double>(viewport.pointOfView_x, viewport.pointOfView_y);
 	}
 }

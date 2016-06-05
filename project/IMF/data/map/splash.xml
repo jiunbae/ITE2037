@@ -11,12 +11,11 @@
 
 	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
 
-	<container x="0" y="-50" w="5000" h="20" type="button" collision="true">
+	<container x="0" y="-50" w="287" h="20" type="button" collision="true">
 		<static w="287" name="start" texture="UI/text/start_btn.png"></static>
 		<static w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
+
 	<static w="10" h="100" x="-300"></static>
 	<static w="10" h="100" x="300"></static>
-
-
 </stage>
