@@ -47,6 +47,7 @@ public class Window extends GameFrame
 	ObjectManager<SpriteObject> sprites;
 	ObjectManager<ContainerObject> containers;
 	CharacterObject me, you;
+	SpriteObject stage;
 	
 	public Window(GameFrameSettings settings) 
 	{
@@ -65,9 +66,9 @@ public class Window extends GameFrame
 	
 	private void install(SpriteObject o)
 	{
-		physics.install(o);
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
+		physics.install(o);
 		viewport.children.add(o);
 		if(o.type.equals("button"))
 			mouse.install(o);
@@ -78,6 +79,10 @@ public class Window extends GameFrame
 		SpriteObject ret = null;
 		switch (e.ID)
 		{
+			case "stage":
+				ret = new SpriteObject(e);
+				install(ret);
+				break;
 			case "static":
 				ret = new SpriteObject(e);
 				sprites.insert(e.get("name"), ret);
@@ -135,7 +140,7 @@ public class Window extends GameFrame
 		processor.install("interaction", interaction = new Interaction(me));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
 		processor.install("physics", physics = new Physics(me));
-		processor.install("scene", scene = new Scene(viewport));
+		processor.install("scene", scene = new Scene(viewport, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
 
@@ -149,7 +154,7 @@ public class Window extends GameFrame
 		});
 		
 		// scene setting
-		scene.set(me);
+		scene.setter(me);
 
 		// text (for debug)
 		text.height = 50;

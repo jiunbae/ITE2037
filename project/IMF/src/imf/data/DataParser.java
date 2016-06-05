@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 public class DataParser
 {	
 	private Element root;
+	public DataObject stage;
 	private List<DataObject> datas = new ArrayList<DataObject>();
 	
 	public DataParser(String name, int options)
@@ -32,6 +33,7 @@ public class DataParser
 			
 			
 			root = doc.getDocumentElement();
+			stage = getNodeData(new DataObject("stage"), root);
 			appendNode(doc.getElementsByTagName("me"));
 			appendNode(doc.getElementsByTagName("static"));
 			appendNode(doc.getElementsByTagName("container"));

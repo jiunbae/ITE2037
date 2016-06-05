@@ -3,20 +3,15 @@ package imf.processor;
 import imf.object.SpriteObject;
 import loot.graphics.Viewport;
 
-public class Scene implements IProcess
+public class Scene implements IProcess<SpriteObject, Integer>
 {
 	Viewport viewport;
-	SpriteObject target;
+	SpriteObject target, background;
 	ProcessManager manager;
 	
-	public Scene(Viewport viewport)
+	public Scene(Viewport viewport, SpriteObject back)
 	{
 		this.viewport = viewport;
-	}
-	
-	public void set(SpriteObject o)
-	{
-		this.target = o;
 	}
 	
 	@Override
@@ -48,13 +43,13 @@ public class Scene implements IProcess
 	}
 	
 	@Override
-	public void setter(Object object) 
+	public void setter(SpriteObject object) 
 	{
-		
+		this.target = object;
 	}
 
 	@Override
-	public Object getter() 
+	public Integer getter() 
 	{
 		return null;
 	}

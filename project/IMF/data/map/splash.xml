@@ -6,14 +6,17 @@
 -->
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
-<stage w="5000" h="1600" texture="UI/bg.png">
-	<static name="logo" x="0" y="50" w="287" h="35" texture="UI/logo.png"></static>
+<stage w="2400" h="1200" z="-1" texture="UI/bg.png">
+	<static name="logo" x="0" y="50" z="1000" w="225" h="30" texture="UI/logo.png"></static>
 
-	<me x="0" y="0" w="25" h="25" texture=""></me>
+	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
 
-	<container x="0" y="-50" w="287" h="20" type="button" collision="true">
-		<static name="start" x="0" y="-50" w="287" h="20" texture="UI/text/start_btn.png"></static>
-		<static name="start_hover" x="0" y="-50" w="287" h="20" texture="UI/text/start_btn_hover.png"></static>
+	<container x="0" y="-50" w="5000" h="20" type="button" collision="true">
+		<static w="287" name="start" texture="UI/text/start_btn.png"></static>
+		<static w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
+	<static w="10" h="100" x="-300"></static>
+	<static w="10" h="100" x="300"></static>
+
 
 </stage>

@@ -35,7 +35,7 @@ public class DataObject
 	{
 		this.ID = ID;
 		o.attrs.forEach((k, v)-> {
-			if(k.equals("x") || k.equals("y"))
+			if(k.equals("x") || k.equals("y") || k.equals("w") || k.equals("h"))
 				insert(k,v);	
 		});
 		insert("name", hash(10));
