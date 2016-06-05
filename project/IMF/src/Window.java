@@ -153,7 +153,7 @@ public class Window extends GameFrame
 		
 		if(me != null)
 			viewport.children.add(me);
-		viewport.children.add(text);
+		//viewport.children.add(text);
 		
 		reload = false;
 		return true;
@@ -230,14 +230,14 @@ public class Window extends GameFrame
 					containers.get("credit").invisible(true);
 					((TriggerObject) containers.get("loading")).invisible(false);
 					((TriggerObject) containers.get("loadAni")).trigger();
-					state = GAME_STATE.LOADING;
+					state = GAME_STATE.FINDING;
 					Initialize();
 					break;
 				case "credit":
 					if(state != GAME_STATE.SPLASH)
 						break;
 					state = GAME_STATE.CREDIT;
-					me.pos_x= 750;
+					me.pos_x= 850;
 					me.pos_y = 0;
 					break;
 				case "credit_cancel":

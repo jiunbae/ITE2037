@@ -35,7 +35,8 @@ public class TriggerObject extends ContainerObject
 	public void invisible(boolean value)
 	{
 		trigger_hide = value;
-		childs.forEach((o) -> o.invisible(value));
+		childs.get(index).invisible(value);
+		index = 0;
 	}
 	
 	public void trigger()
@@ -47,8 +48,9 @@ public class TriggerObject extends ContainerObject
 			timer.cancel();
 			timer = null;
 		}
-		next();
-	
+		
+		if (trigger_hide != true)
+			next();
 	}
 	
 	public void next()
