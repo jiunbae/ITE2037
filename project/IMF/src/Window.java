@@ -88,11 +88,14 @@ public class Window extends GameFrame
 				state = STATE.splash;
 				break;
 			case loading:
+				data = new DataParser(path.MAP + "stage1.xml", 0);
+				Destroy();
+				reload = true;
+				state = STATE.play;
 				break;
 			case credit:
 				break;
 			case play:
-				data = new DataParser(path.MAP + "stage1.xml", 0);
 				break;
 			case over:
 				break;
@@ -160,13 +163,14 @@ public class Window extends GameFrame
 	
 	public void Destroy()
 	{
-		// create new instance
+		sprites.loop((o)->uninstall(o));
+		containers.loop((o)->uninstall(o));
+		
 		sprites = new ObjectManager<SpriteObject>();
 		containers = new ObjectManager<ContainerObject>();
 		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
-		Initialize();
 	}
 	
 	@Override
@@ -224,7 +228,7 @@ public class Window extends GameFrame
 				case "start":
 					if(state != STATE.splash)
 						break;
-					state = STATE.finding;
+					state = STATE.loading;
 					Initialize();
 					break;
 				case "credit":
@@ -256,6 +260,16 @@ public class Window extends GameFrame
 	}
 	
 	private void install(SpriteObject o)
+	{
+		images.LoadImage(path.RES + o.texture, o.texture);
+		o.image = images.GetImage(o.texture);
+		physics.install(o);
+		viewport.children.add(o);
+		if(o.type.equals("button"))
+			mouse.install(o);
+	}
+	
+	private void install(ContainerObject o)
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
