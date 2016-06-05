@@ -1,11 +1,11 @@
 package imf.processor;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import imf.object.SpriteObject;
 import imf.utility.Pair;
-import imf.utility.Swap;
 import loot.InputManager;
 
 public class Mouse implements IProcess<Pair<Integer>, SpriteObject> 
@@ -29,11 +29,25 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 		this.height = height;
 	}
 	
-	public void install(SpriteObject object)
+	public void install(SpriteObject o)
 	{
-		buttons.add(object);
+		buttons.add(o);
 	}
 
+	public void uninstall(SpriteObject o)
+	{
+		buttons.remove(o);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void click(SpriteObject o)
+	{
+		if(o == null)
+			return;
+		push = o;
+		manager.get("interaction").setter(11);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void hover(SpriteObject o)
 	{
@@ -52,10 +66,19 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 		manager.get("interaction").setter(10);
 	}
 	
+	public SpriteObject findTarget()
+	{
+		for(SpriteObject o : buttons)
+			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x)
+				return o;
+		return null;
+	}
+	
 	@Override
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
 		this.manager = (ProcessManager) manager;
+		inputs.BindMouseButton(MouseEvent.BUTTON1, 7);
 	}
 
 	@Override
@@ -75,6 +98,9 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if (inputs.isMouseCursorMoved)
 			process();
+		
+		if (inputs.buttons[7].isChanged && inputs.buttons[7].isPressed)
+			click(findTarget());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -86,10 +112,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 		x = inputs.pos_mouseCursor.getX() - width/2 + view.first;
 		y = -inputs.pos_mouseCursor.getY() + height/2 + view.second;
 		
-		SpriteObject target_next = null;
-		for(SpriteObject o : buttons)
-			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x)
-				target_next = o;
+		SpriteObject target_next = findTarget();
 		
 		if(target != target_next)
 		{

@@ -31,7 +31,7 @@ public class SpriteObject extends DrawableObject3D
 		this.ID = o.ID;
 	}
 	
-	public void visible(boolean value)
+	public void invisible(boolean value)
 	{
 		trigger_hide = value;
 	}

@@ -7,7 +7,7 @@ import imf.data.DataObject;
 
 public class ContainerObject extends SpriteObject 
 {
-	List<SpriteObject> childs = new ArrayList<SpriteObject>();
+	public List<SpriteObject> childs = new ArrayList<SpriteObject>();
 	
 	public ContainerObject(DataObject o) 
 	{

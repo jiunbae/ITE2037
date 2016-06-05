@@ -6,6 +6,8 @@ import imf.processor.Keyboard;
 import imf.processor.Mouse;
 import imf.processor.ProcessManager;
 import imf.processor.Scene;
+import imf.utility.Pair;
+import imf.processor.IProcessProperty;
 import imf.processor.Interaction;
 import imf.processor.Physics;
 import loot.GameFrame;
@@ -21,10 +23,11 @@ public class Window extends GameFrame
 	private static final long serialVersionUID = 2015004584L;
 
 	private enum STATE{
-		splash, play, over
+		splash, loading, play, over
 	}
 	
-	STATE state = STATE.splash;
+	boolean reload = true;
+	static STATE state = STATE.splash;
 	
 	Constant path;
 	DataParser data;
@@ -46,7 +49,7 @@ public class Window extends GameFrame
 	
 	ObjectManager<SpriteObject> sprites;
 	ObjectManager<ContainerObject> containers;
-	CharacterObject me, you;
+	CharacterObject me = null, you;
 	SpriteObject stage;
 	
 	public Window(GameFrameSettings settings) 
@@ -59,50 +62,9 @@ public class Window extends GameFrame
 		// create new instance
 		sprites = new ObjectManager<SpriteObject>();
 		containers = new ObjectManager<ContainerObject>();
-		processor = new ProcessManager();
+		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
-	}
-	
-	private void install(SpriteObject o)
-	{
-		images.LoadImage(path.RES + o.texture, o.texture);
-		o.image = images.GetImage(o.texture);
-		physics.install(o);
-		viewport.children.add(o);
-		if(o.type.equals("button"))
-			mouse.install(o);
-	}
-	
-	private SpriteObject newObject(DataObject e)
-	{
-		SpriteObject ret = null;
-		switch (e.ID)
-		{
-			case "stage":
-				ret = new SpriteObject(e);
-				install(ret);
-				break;
-			case "static":
-				ret = new SpriteObject(e);
-				sprites.insert(e.get("name"), ret);
-				break;
-			case "container":
-				switch (e.get("type"))
-				{
-					case "box":
-						ret = new ContainerObject(e);
-						containers.insert(e.get("name"), (ContainerObject) ret);
-					case "button":
-					case "trigger":
-						ret = new TriggerObject(e);
-						containers.insert(e.get("name"), (TriggerObject) ret);
-				}
-				for (DataObject o : e.getChild())
-					((ContainerObject) ret).add(newObject(o));
-				break;
-		}
-		return ret;
 	}
 	
 	@Override
@@ -110,21 +72,27 @@ public class Window extends GameFrame
 	{
 		switch (state)
 		{
+			// load data
 			case splash:
 				data = new DataParser(path.MAP + "splash.xml", 0);
-				
+				break;
+			case loading:
+				uninstall(containers.get("start"));
+				((TriggerObject) containers.get("loading")).invisible(false);
+				((TriggerObject) containers.get("loadingAni")).trigger();
 				break;
 			case play:
-				// load data
 				data = new DataParser(path.MAP + "stage1.xml", 0);
-				
 				break;
 			case over:
 				break;
 		}
 		
+		if (!reload)
+			return true;
+		
 		data.loop((e)->{
-			if(e.ID.equals("me"))
+			if(e.ID.equals("me") && me == null)
 			{
 				me = new CharacterObject(e);
 				images.LoadImage(path.RES + me.texture, "me");
@@ -143,7 +111,7 @@ public class Window extends GameFrame
 		processor.install("scene", scene = new Scene(viewport, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
-
+		
 		// install objects
 		sprites.loop((e)->{
 			install(e);
@@ -176,7 +144,19 @@ public class Window extends GameFrame
 			viewport.children.add(me);
 		viewport.children.add(text);
 		
+		reload = false;
 		return true;
+	}
+	
+	public void Destroy()
+	{
+		// create new instance
+		sprites = new ObjectManager<SpriteObject>();
+		containers = new ObjectManager<ContainerObject>();
+		processor = new ProcessManager(new Stage());
+		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		text = new TextBox();
+		Initialize();
 	}
 	
 	@Override
@@ -186,6 +166,8 @@ public class Window extends GameFrame
 		switch (state)
 		{
 			case splash:
+				break;
+			case loading:
 				break;
 			case play:
 				text.text = "" + me.a_y;
@@ -204,6 +186,8 @@ public class Window extends GameFrame
 		{
 			case splash:
 				break;
+			case loading:
+				break;
 			case play:
 				break;
 			case over:
@@ -213,5 +197,80 @@ public class Window extends GameFrame
 		ClearScreen();
 		viewport.Draw(g);
 		EndDraw();
+	}
+	
+	public class Stage implements IProcessProperty<String, Integer> {
+		@Override
+		public void setter(String object) {
+			switch (object) {
+				case "start":
+					state = STATE.loading;
+					Initialize();
+					break;
+			}
+		}
+		@Override
+		public Integer getter() {
+			return state.ordinal();
+		}
+	}
+	
+	private void install(SpriteObject o)
+	{
+		images.LoadImage(path.RES + o.texture, o.texture);
+		o.image = images.GetImage(o.texture);
+		physics.install(o);
+		viewport.children.add(o);
+		if(o.type.equals("button"))
+			mouse.install(o);
+	}
+	
+	private void uninstall(SpriteObject o)
+	{
+		physics.uninstall(o);
+		viewport.children.remove(o);
+		sprites.remove(o);
+		if (o.ID.equals("container"))
+		{
+			ContainerObject c = (ContainerObject) o;
+			containers.remove(c);
+			for (SpriteObject s : c.childs)
+				uninstall(s);
+		}
+		if(o.type.equals("button"))
+			mouse.uninstall(o);
+	}
+	
+	private SpriteObject newObject(DataObject e)
+	{
+		SpriteObject ret = null;
+		switch (e.ID)
+		{
+			case "stage":
+				ret = new SpriteObject(e);
+				install(ret);
+				break;
+			case "static":
+				ret = new SpriteObject(e);
+				sprites.insert(e.get("name"), ret);
+				break;
+			case "container":
+				switch (e.get("type"))
+				{
+					case "box":
+						ret = new ContainerObject(e);
+						containers.insert(e.get("name"), (ContainerObject) ret);
+					case "button":
+					case "trigger":
+						ret = new TriggerObject(e);
+						containers.insert(e.get("name"), (TriggerObject) ret);
+				}
+				for (DataObject o : e.getChild())
+					((ContainerObject) ret).add(newObject(o));
+				break;
+		}
+		if (e.get("visible").equals("false"))
+			ret.invisible(true);
+		return ret;
 	}
 }

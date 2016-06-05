@@ -6,16 +6,30 @@
 -->
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
-<stage w="1200" h="600" z="-1" texture="UI/bg.png">
+<stage w="1200" h="600" y="-200" z="-1" texture="UI/bg.png">
 	<static name="logo" x="0" y="50" z="1000" w="225" h="30" texture="UI/logo.png"></static>
 
 	<me x="0" y="0" w="25" h="25" texture="me.png"></me>
 
-	<container x="0" y="-50" w="287" h="20" type="button" collision="true">
-		<static w="287" name="start" texture="UI/text/start_btn.png"></static>
+	<container name="start" x="0" y="-50" w="300" h="20" type="button" collision="true">
+		<static w="287" name="start_init" texture="UI/text/start_btn.png"></static>
 		<static w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
 
-	<static w="10" h="100" x="-300"></static>
-	<static w="10" h="100" x="300"></static>
+	<container name="loading" x="0" y="-300" w="300" h="20" collision="true" type="box" visible="false">
+		<static y="-315" w="75" h="10" texture="UI/text/waiting_partner.png"></static>
+		<container name="loadingAni" type="trigger">
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading2.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading3.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading4.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading5.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading6.png"></static>
+			<static y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
+		</container>
+	</container>
+
+	<static w="10" h="500" x="-300"></static>
+	<static w="10" h="500" x="300"></static>
 </stage>

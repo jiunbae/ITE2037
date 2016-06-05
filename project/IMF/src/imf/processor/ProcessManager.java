@@ -7,6 +7,12 @@ public class ProcessManager implements IProcess<String, IProcess>
 {
 	HashMap<String, IProcess> processors = new HashMap<String, IProcess>();
 	IProcess ret;
+	IProcessProperty property;
+	
+	public ProcessManager(IProcessProperty property)
+	{
+		this.property = property;
+	}
 	
 	public void install(String name, IProcess processor)
 	{

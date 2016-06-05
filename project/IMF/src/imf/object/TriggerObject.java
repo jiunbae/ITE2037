@@ -8,6 +8,7 @@ import imf.data.DataObject;
 public class TriggerObject extends ContainerObject 
 {
 	public int index = 0;
+	Timer timer = null;
 	
 	public TriggerObject(DataObject o) 
 	{
@@ -20,15 +21,16 @@ public class TriggerObject extends ContainerObject
 		if(o==null)
 			return;
 		if(!childs.isEmpty())
-			o.visible(true);
+			o.invisible(true);
 		childs.add(o);
 	}
 	
 	@Override
-	public void visible(boolean value)
+	public void invisible(boolean value)
 	{
 		trigger_hide = value;
-		childs.forEach((o) -> o.trigger_hide = value);
+		if (type.equals("box"))
+			childs.forEach((o) -> o.invisible(value));
 	}
 	
 	public void trigger()
@@ -38,12 +40,13 @@ public class TriggerObject extends ContainerObject
 	
 	public void next()
 	{
-		childs.get(index).visible(true);
+		childs.get(index).invisible(true);
 		index = (++index == childs.size() ? 0 : index);
-		childs.get(index).visible(false);
+		childs.get(index).invisible(false);
 		if(childs.get(index).interval != 0)
 		{
-			Timer timer = new Timer();
+			if (timer == null)
+				timer = new Timer();
 			timer.schedule(new WorkTask(), childs.get(index).interval);
 		}
 	}

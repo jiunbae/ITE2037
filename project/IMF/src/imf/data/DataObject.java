@@ -28,6 +28,7 @@ public class DataObject
 		insert("type", "box");
 		insert("collision", "true");
 		insert("interval", "0");
+		insert("visible", "true");
 		if(ID.equals("me"))
 			insert("name", "me");
 	}

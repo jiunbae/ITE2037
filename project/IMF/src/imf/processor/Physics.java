@@ -19,7 +19,7 @@ public class Physics implements IProcess<Integer, ContainerObject>
 	List<ContainerObject> containers = new ArrayList<ContainerObject>();
 	List<SpriteObject> sprites = new ArrayList<SpriteObject>();
 
-	public boolean 	state_jump = false,
+	public boolean 	state_jump = true,
 					state_do = false;
 	/**
 	* -1, 0, 1 - left, not move, right;
@@ -39,6 +39,15 @@ public class Physics implements IProcess<Integer, ContainerObject>
 	{
 		sprites.add(o);
 	}
+	public void uninstall(ContainerObject o)
+	{
+		containers.remove(o);
+	}
+	public void uninstall(SpriteObject o)
+	{
+		sprites.remove(o);
+	}
+	
 	private boolean doCollisionUtil(boolean jump, SpriteObject o, PhysicalObject next)
 	{
 		boolean state_next_jump = jump;

@@ -1,11 +1,8 @@
 package imf.processor;
 
-public interface IProcess<T, R>
+public interface IProcess<T, R> extends IProcessProperty<T, R>
 {
-	void initilize(IProcess manager);
-	
-	void setter(T object);
-	R getter();
+	void initilize(@SuppressWarnings("rawtypes") IProcess manager);
 	
 	void loop();
 	

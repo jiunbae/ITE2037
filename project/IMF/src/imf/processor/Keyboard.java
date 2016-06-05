@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import loot.InputManager;
 import loot.InputManager.ButtonState;
 
-public class Keyboard implements IProcess
+public class Keyboard implements IProcess<Integer, Integer>
 {
 	ProcessManager manager;
 	InputManager inputs;
@@ -87,13 +87,13 @@ public class Keyboard implements IProcess
 	}
 
 	@Override
-	public void setter(Object object) 
+	public void setter(Integer object) 
 	{
 		
 	}
 
 	@Override
-	public Object getter() 
+	public Integer getter() 
 	{
 		return null;
 	}
