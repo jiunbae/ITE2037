@@ -3,6 +3,7 @@ import org.json.simple.JSONObject;
 
 import imf.data.DataObject;
 import imf.data.DataParser;
+import imf.network.CharacterInfoSyncher;
 import imf.network.ConnectionManager;
 import imf.object.*;
 import imf.processor.Keyboard;
@@ -31,6 +32,8 @@ public class Window extends GameFrame
 	boolean reload = true;
 	static GAME_STATE state = GAME_STATE.SPLASH;
 	
+	int intervalHandle = 0;
+	
 	Constant path;
 	DataParser data;
 	
@@ -51,7 +54,8 @@ public class Window extends GameFrame
 	
 	ObjectManager<SpriteObject> sprites;
 	ObjectManager<ContainerObject> containers;
-	CharacterObject me = null, you;
+	PlayerObject me = null;
+	PartnerObject you = null;
 	SpriteObject stage;
 	
 	public Window(GameFrameSettings settings) 
@@ -100,7 +104,7 @@ public class Window extends GameFrame
 		data.loop((e)->{
 			if(e.ID.equals("me") && me == null)
 			{
-				me = new CharacterObject(e);
+				me = new PlayerObject(e);
 				images.LoadImage(path.RES + me.texture, "me");
 				me.image = images.GetImage("me");
 				viewport.children.add(me);
@@ -108,7 +112,7 @@ public class Window extends GameFrame
 			}
 			else if (e.ID.equals("you") && you == null)
 			{
-				you = new CharacterObject(e);
+				you = new PartnerObject(e);
 				images.LoadImage(path.RES + you.texture, "you");
 				you.image = images.GetImage("you");
 				viewport.children.add(you);
@@ -117,6 +121,12 @@ public class Window extends GameFrame
 			else
 				newObject(e);
 		});
+		
+		if(state == GAME_STATE.PLAY)
+		{
+			CharacterInfoSyncher.registerPlayer(me);
+			CharacterInfoSyncher.registerPartner(you);
+		}
 		
 		// install processor
 		processor.install("interaction", interaction = new Interaction(me));
@@ -172,6 +182,9 @@ public class Window extends GameFrame
 		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
+		
+		me = null;
+		you = null;
 	}
 	
 	@Override
@@ -221,7 +234,12 @@ public class Window extends GameFrame
 			case CREDIT:
 				break;
 			case PLAY:
-				text.text = "" + me.a_y;
+				if (++intervalHandle == 5) {
+					intervalHandle = 0;
+					
+					if (ConnectionManager.getPartnerSessionID() != null)
+						CharacterInfoSyncher.fetch();
+				}
 				break;
 			case OVER:
 				break;

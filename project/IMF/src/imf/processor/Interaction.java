@@ -5,11 +5,11 @@ import imf.utility.Pair;
 
 public class Interaction implements IProcess<Integer, Pair<String>>
 {
-	CharacterObject target;
+	PlayerObject target;
 	ProcessManager manager;
 	Pair<String> ret;
 	
-	public Interaction(CharacterObject target)
+	public Interaction(PlayerObject target)
 	{
 		this.target = target;
 	}
