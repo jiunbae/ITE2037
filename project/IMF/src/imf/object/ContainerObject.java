@@ -17,5 +17,9 @@ public class ContainerObject extends SpriteObject
 	public void add(SpriteObject o)
 	{
 		childs.add(o);
+		o.pos_x += pos_x;
+		o.pos_y += pos_y;
+		o.pos_z += pos_z;
+		o.invisible(trigger_hide);
 	}
 }

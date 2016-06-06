@@ -228,9 +228,9 @@ public class Window extends GameFrame
 						break;
 					containers.get("start").invisible(true);
 					containers.get("credit").invisible(true);
-					((TriggerObject) containers.get("loading")).invisible(false);
-					((TriggerObject) containers.get("loadAni")).trigger();
-					state = GAME_STATE.FINDING;
+					//((TriggerObject) containers.get("loading")).invisible(false);
+					//((TriggerObject) containers.get("loadAni")).trigger();
+					state = GAME_STATE.LOADING;
 					Initialize();
 					break;
 				case "credit":
@@ -252,6 +252,8 @@ public class Window extends GameFrame
 						break;
 					containers.get("start").invisible(false);
 					containers.get("credit").invisible(false);
+					((TriggerObject) containers.get("loading")).invisible(true);
+					((TriggerObject) containers.get("loadAni")).trigger();
 					me.pos_y = 50;
 					state = GAME_STATE.SPLASH;
 					Initialize();

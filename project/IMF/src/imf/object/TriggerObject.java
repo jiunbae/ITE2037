@@ -8,7 +8,8 @@ import imf.data.DataObject;
 public class TriggerObject extends ContainerObject 
 {
 	public int index = 0;
-	Timer timer = null;
+	boolean inTask = false;
+	Timer timer = new Timer();
 	WorkTask task = new WorkTask();
 	
 	public TriggerObject(DataObject o) 
@@ -19,13 +20,14 @@ public class TriggerObject extends ContainerObject
 	@Override
 	public void add(SpriteObject o)
 	{
-		if(o==null)
+		if(o == null)
 			return;
 		
-		if(!childs.isEmpty())
-			o.invisible(true);
-		
 		if(type.equals("box"))
+			o.invisible(trigger_hide);
+		else if(!childs.isEmpty())
+			o.invisible(true);
+		else if(childs.isEmpty())
 			o.invisible(false);
 		
 		childs.add(o);
@@ -35,22 +37,19 @@ public class TriggerObject extends ContainerObject
 	public void invisible(boolean value)
 	{
 		trigger_hide = value;
-		childs.get(index).invisible(value);
+		if(type.equals("box"))
+			childs.forEach((o)->o.invisible(value));
+		else
+			childs.get(index).invisible(value);
 		index = 0;
 	}
 	
 	public void trigger()
-	{
-		if (task != null)
-			task = null;
-		if (timer != null)
-		{
-			timer.cancel();
-			timer = null;
-		}
-		
+	{	
 		if (trigger_hide != true)
-			next();
+			timer.schedule(task = new WorkTask(), 0);
+		else
+			task.cancel();
 	}
 	
 	public void next()
@@ -58,18 +57,16 @@ public class TriggerObject extends ContainerObject
 		childs.get(index).invisible(true);
 		index = (++index == childs.size() ? 0 : index);
 		childs.get(index).invisible(false);
-		if(childs.get(index).interval != 0)
-		{
-			if (timer == null)
-				timer = new Timer();
-			timer.schedule(task = new WorkTask(), childs.get(index).interval);
-		}
 	}
 	
 	public class WorkTask extends TimerTask {
 		@Override
 		public void run() {
-			trigger();
+			next();
+			if (childs.get(index).interval != 0)
+				timer.schedule(task = new WorkTask(), childs.get(index).interval);
+			else
+				this.cancel();
 		}
 	}
 }
