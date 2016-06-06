@@ -16,6 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Data Parser Class
+ * 
+ * simple data parser
+ * 
+ * @package	imf.data
+ * @author MaybeS
+ * @version 1.0.0
+ */
 public class DataParser
 {	
 	private Element root;

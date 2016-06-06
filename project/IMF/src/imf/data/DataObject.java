@@ -6,6 +6,16 @@ import java.util.Random;
 
 import imf.utility.HashMapDefault;
 
+/**
+ * Data Object Class
+ * 
+ * using with DataParser.<br>
+ * Data object represent a object extends to SpriteObject -imf.object
+ * 
+ * @package	imf.data
+ * @author MaybeS
+ * @version 1.0.0
+ */
 public class DataObject 
 {
 	public String ID;

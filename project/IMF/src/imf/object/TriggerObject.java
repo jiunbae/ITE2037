@@ -44,6 +44,17 @@ public class TriggerObject extends ContainerObject
 		index = 0;
 	}
 	
+	public void trigger(String name)
+	{
+		for(int i = 0; i < childs.size(); ++i)
+			if(childs.get(i).name.equals(name))
+			{
+				if(index != i)
+					doNext(i);
+				break;
+			}
+	}
+	
 	public void trigger()
 	{	
 		if (trigger_hide != true)
@@ -52,17 +63,17 @@ public class TriggerObject extends ContainerObject
 			task.cancel();
 	}
 	
-	public void next()
+	public void doNext(int next)
 	{
 		childs.get(index).invisible(true);
-		index = (++index == childs.size() ? 0 : index);
+		index = (next == childs.size() ? 0 : next);
 		childs.get(index).invisible(false);
 	}
 	
 	public class WorkTask extends TimerTask {
 		@Override
 		public void run() {
-			next();
+			doNext(index+1);
 			if (childs.get(index).interval != 0)
 				timer.schedule(task = new WorkTask(), childs.get(index).interval);
 			else

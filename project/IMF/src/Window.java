@@ -1,6 +1,9 @@
 
+import org.json.simple.JSONObject;
+
 import imf.data.DataObject;
 import imf.data.DataParser;
+import imf.network.ConnectionManager;
 import imf.object.*;
 import imf.processor.Keyboard;
 import imf.processor.Mouse;
@@ -180,6 +183,38 @@ public class Window extends GameFrame
 			case SPLASH:
 				break;
 			case FINDING:
+				if (ConnectionManager.connect()) 
+				{
+			    	ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
+			    		if(state == GAME_STATE.FINDING)
+			    		switch ((String)data.get("type")) {
+							case "connected":
+						    	((TriggerObject)containers.get("loading")).trigger("wait");
+								break;
+			
+							case "partner_found":
+								containers.get("start").invisible(true);
+								containers.get("credit").invisible(true);
+								containers.get("loading").invisible(true);
+								state = GAME_STATE.LOADING;
+								Initialize();
+								break;
+								
+							case "partner_disconnected" :
+						    	((TriggerObject)containers.get("loading")).trigger("fail");
+								break;
+						}
+			    	});
+			    	
+			    	if (state != GAME_STATE.FINDING)
+			    		return true;
+			    	
+			    	ConnectionManager.getConnection().addOutOfConnectionEvent((Exception) -> {
+				    	((TriggerObject)containers.get("loading")).trigger("fail");
+			    	});
+			    } else {
+			    	((TriggerObject)containers.get("loading")).trigger("fail");
+			    }
 				break;
 			case LOADING:
 				break;
@@ -228,9 +263,10 @@ public class Window extends GameFrame
 						break;
 					containers.get("start").invisible(true);
 					containers.get("credit").invisible(true);
-					//((TriggerObject) containers.get("loading")).invisible(false);
-					//((TriggerObject) containers.get("loadAni")).trigger();
-					state = GAME_STATE.LOADING;
+					((TriggerObject) containers.get("loading")).invisible(false);
+			    	((TriggerObject) containers.get("loading")).trigger("connect");
+					((TriggerObject) containers.get("loadAni")).trigger();
+					state = GAME_STATE.FINDING;
 					Initialize();
 					break;
 				case "credit":

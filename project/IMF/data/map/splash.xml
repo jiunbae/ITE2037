@@ -37,9 +37,9 @@
 		<static x="800" w="287" y="-250" name="credit_cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
 
-	<container name="loading" x="-250" y="-300" w="300" h="20" collision="true" type="box" visible="false">
-		<container type="box">
-			<static x="-250" y="-315" w="90" h="11" texture="UI/text/waiting_partner.png"></static>
+	<container name="loading" x="-250" y="-300" w="300" h="20" collision="true" type="trigger" visible="false">
+		<container name="connect" type="box">
+			<static x="-250" y="-315" w="50" h="11" texture="UI/text/server_connect.png"></static>
 			<container name="loadAni" type="trigger">
 				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
 				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
@@ -51,8 +51,8 @@
 				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
 			</container>
 		</container>
-		<static x="-250" y="-315" w="90" h="11" texture="UI/text/server_connect.png.png"></static>
-		<static x="-250" y="-315" w="90" h="11" texture="UI/text/server_connect_fail.png.png"></static>
+		<static name="wait" x="-250" y="-315" w="92" h="11" texture="UI/text/waiting_partner.png"></static>
+		<static name="fail" x="-250" y="-315" w="87" h="11" texture="UI/text/server_connect_fail.png"></static>
 	</container>
 
 	<static w="10" h="500" x="-550"></static>

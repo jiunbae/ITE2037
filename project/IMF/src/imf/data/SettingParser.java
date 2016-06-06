@@ -7,6 +7,15 @@ import java.io.IOException;
 
 import loot.GameFrameSettings;
 
+/**
+ * Setting Parser Class
+ * 
+ * simple setting parser
+ * 
+ * @package	imf.data
+ * @author MaybeS
+ * @version 1.0.0
+ */
 public class SettingParser 
 {
 	GameFrameSettings settings;
