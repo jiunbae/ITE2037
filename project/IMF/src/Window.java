@@ -34,7 +34,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 		SPLASH, FINDING, LOADING, CREDIT, PLAY, OVER
 	}
 	
-	boolean isConnecting = false;
 	static GAME_STATE state = GAME_STATE.SPLASH;
 	
 	int intervalHandle = 0;
@@ -76,6 +75,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
+		
+		ConnectionManager.registerIReceiver(this);
 	}
 	
 	
@@ -89,11 +90,13 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 
 			case ConnectionEvent.PARTNER_DISCONNECTED :
+				ConnectionManager.disconnect();
+				
 				state = GAME_STATE.SPLASH;
 				Initialize();
-				isConnecting = false;
-				ConnectionManager.disconnect();
+				
 				break;
+				
 			case ConnectionEvent.DISCONNECTED :
 				if (state == GAME_STATE.FINDING)
 					((TriggerObject)containers.get("loading")).trigger("fail");
@@ -112,7 +115,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 				Initialize();
 				break;
 		}
-		isConnecting = false;
 	}
 
 	@Override
@@ -227,13 +229,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 		switch (state)
 		{
 			case FINDING:
-				if (!isConnecting) 
-				{
-					if (!ConnectionManager.connect())
-				    	((TriggerObject)containers.get("loading")).trigger("fail");
-					isConnecting = true;
-				}
 				break;
+				
 			case PLAY:
 				if (++intervalHandle == 5) {
 					intervalHandle = 0;
@@ -242,8 +239,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 						CharacterInfoSyncher.fetch();
 				}
 				break;
+				
 			case OVER:
 				break;
+				
 			default:
 				break;
 		}
@@ -251,61 +250,54 @@ public class Window extends GameFrame implements IConnectionReceiver
 		return true;
 	}
 
+	
 	@Override
 	public void Draw(long timeStamp) 
 	{
-		switch (state)
-		{
-			case SPLASH:
-				break;
-			case FINDING:
-				break;
-			case LOADING:
-				break;
-			case CREDIT:
-				break;
-			case PLAY:
-				break;
-			case OVER:
-				break;
-		}
 		BeginDraw();
 		ClearScreen();
 		viewport.Draw(g);
 		EndDraw();
 	}
 	
+	
 	public class Stage implements IProcessProperty<String, Integer> {
 		@Override
 		public void setter(String object) {
 			switch (object) {
 				case "start":
-					if(state != GAME_STATE.SPLASH)
+					if (state != GAME_STATE.SPLASH)
 						break;
+					
 					state = GAME_STATE.FINDING;
 					containers.get("start").invisible(true);
 					containers.get("credit").invisible(true);
 					((TriggerObject) containers.get("loading")).invisible(false);
 			    	((TriggerObject) containers.get("loading")).trigger("connect");
 					((TriggerObject) containers.get("loadAni")).trigger();
-					connect();
+					
+					ConnectionManager.connect();
+					
 					break;
+					
 				case "credit":
-					if(state != GAME_STATE.SPLASH)
+					if (state != GAME_STATE.SPLASH)
 						break;
 					state = GAME_STATE.CREDIT;
 					me.pos_x= 850;
 					me.pos_y = 100;
 					break;
+					
 				case "credit_cancel":
-					if(state != GAME_STATE.CREDIT)
+					if (state != GAME_STATE.CREDIT)
 						break;
 					state = GAME_STATE.SPLASH;
 					me.pos_x= -250;
 					me.pos_y = 100;
 					break;
+					
 				case "cancel":
-					if(state != GAME_STATE.FINDING)
+					if (state != GAME_STATE.FINDING)
 						break;
 					state = GAME_STATE.SPLASH;
 					containers.get("start").invisible(false);
@@ -313,6 +305,9 @@ public class Window extends GameFrame implements IConnectionReceiver
 					((TriggerObject) containers.get("loading")).invisible(true);
 					((TriggerObject) containers.get("loadAni")).trigger();
 					me.pos_y = 50;
+					
+					ConnectionManager.disconnect();
+					
 					break;
 			}
 		}
@@ -322,11 +317,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 		}
 	}
 	
-	private void connect()
-	{
-		ConnectionManager.connect();
-		ConnectionManager.registerIReceiver(this);
-	}
 	
 	private void objectInstall(SpriteObject o)
 	{

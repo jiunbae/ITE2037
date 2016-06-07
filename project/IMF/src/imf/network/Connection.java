@@ -21,7 +21,7 @@ import org.json.simple.parser.ParseException;
  * 
  * @package	imf.network
  * @author Prev
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class Connection extends Thread {
 	
@@ -52,6 +52,9 @@ public class Connection extends Thread {
 	private ArrayList< Consumer<Exception> > outOfConnectionListener = new ArrayList< Consumer<Exception> >();
 	
 	
+	private boolean isStoped = false;
+	
+	
 	/**
 	 * Constructor called by Connection.getInstance() method
 	 * @param serverAddress
@@ -66,12 +69,36 @@ public class Connection extends Thread {
 		this.start();
 	}
 	
+	/**
+	 * Close the connection
+	 */
+	public void close() {
+		try {
+			this.outStream.close();
+			this.inStream.close();
+			this.socket.close();
+			
+		}catch (IOException e) {
+			System.out.println( e.toString() );
+		}
+		
+		this.receiveListeners.clear();
+		this.outOfConnectionListener.clear();
+		
+		//this.stop();
+		isStoped = true;
+	}
 	
 	
 	/**
 	 * Thread-run process
 	 */
 	public void run() {
+		if (isStoped) {
+			this.stop();
+			return;
+		}
+			
 		try {
 			while (inStream != null) {
 	    		if (inStream.read() == -1) {

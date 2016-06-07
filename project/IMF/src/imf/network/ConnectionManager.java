@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 public class ConnectionManager {
@@ -148,12 +148,8 @@ public class ConnectionManager {
 	 *----------------------------------------------------------------------------------------
 	 * Usage:
 	 * if (ConnectionManager.connect()) {
-	 *   	ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
-	 *   		System.out.println( "Data received: " + data.toJSONString() );
-	 *   	});
-	 *   	
-	 *   	ConnectionManager.getConnection().addOutOfConnectionEvent((Exception) -> {
-	 *   		System.out.println( "Disconnected to server" );
+	 *   	ConnectionManager.registerCallback((ConnectionEvent e) -> {
+	 *   		System.out.println( "Data received: " + e.data.toJSONString() );
 	 *   	});
 	 *   	
 	 * }else {
@@ -180,8 +176,6 @@ public class ConnectionManager {
 			return false;
 		}
 		
-		
-		
 		Random rand = new Random();
 		sessionID = Integer.toString( rand.nextInt(90000000) + 10000000 );
 		
@@ -202,14 +196,12 @@ public class ConnectionManager {
 	/**
 	 * Close connection
 	 */
-	@SuppressWarnings("deprecation")
 	static public void disconnect() {
-		conn.stop();
-		//conn.destroy();
-		
+		conn.close();
 		connected = false;
 		partnerSessionID = null;
 	}
+	
 	
 	
 	
@@ -221,9 +213,6 @@ public class ConnectionManager {
 	 * @return Connection instance
 	 */
 	static public Connection getConnection() {
-		if (!connected)
-			return null;
-		
 		return conn;
 	}
 	
