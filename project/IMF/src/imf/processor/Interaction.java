@@ -32,7 +32,6 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
 		this.manager = (ProcessManager) manager;
-		
 		ConnectionManager.registerReceiver(ConnectionEvent.PARTNER_SENT, this);
 	}
 

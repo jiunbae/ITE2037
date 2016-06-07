@@ -41,14 +41,14 @@
 		<container name="connect" type="box">
 			<static x="-250" y="-315" w="50" h="11" texture="UI/text/server_connect.png"></static>
 			<container name="loadAni" type="trigger">
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading0.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading1.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading2.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading3.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading4.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading5.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading6.png"></static>
-				<static x="-250" y="-375" h="20" w="20" interval="100" texture="UI/loading/loading7.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading0.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading1.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading2.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading3.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading4.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading5.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading6.png"></static>
+				<static x="-250" y="-375" h="32" w="32" interval="150" texture="UI/loading/loading7.png"></static>
 			</container>
 		</container>
 		<static name="wait" x="-250" y="-315" w="92" h="11" texture="UI/text/waiting_partner.png"></static>
