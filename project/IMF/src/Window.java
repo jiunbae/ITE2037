@@ -1,6 +1,4 @@
 
-import java.util.TimerTask;
-
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.network.CharacterInfoSyncher;
@@ -8,7 +6,6 @@ import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
 import imf.network.IConnectionReceiver;
 import imf.object.*;
-import imf.object.TriggerObject.WorkTask;
 import imf.processor.Keyboard;
 import imf.processor.Mouse;
 import imf.processor.ProcessManager;
