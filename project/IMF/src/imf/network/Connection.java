@@ -73,7 +73,7 @@ public class Connection extends Thread {
 	 */
 	public void run() {
 		try {
-			while (inStream != null) {
+			while (!Thread.currentThread().isInterrupted() && inStream != null) {
 	    		if (inStream.read() == -1) {
 	    			callOutOfConnectionEvent(null);
 	    			return;

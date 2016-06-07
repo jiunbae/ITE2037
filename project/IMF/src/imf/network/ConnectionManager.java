@@ -205,7 +205,6 @@ public class ConnectionManager {
 	@SuppressWarnings("deprecation")
 	static public void disconnect() {
 		conn.stop();
-		//conn.destroy();
 		
 		connected = false;
 		partnerSessionID = null;

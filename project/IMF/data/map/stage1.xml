@@ -40,15 +40,19 @@
 	<static x="300" y="0" w="100" h="15" texture="floor.png"></static>
 
 	<container x="100" y="-70" z="2" w="20" h="20" type="trigger" collision="false">
-		<static z="1" w="20" h="20" texture="assets/bg_switch.png"></static>
-		<static interval="50"></static>
+		<static z="1" w="20" h="20" texture="assets/bg_switch/bg_switch0.png"></static>
+		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
+		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
+		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
 		<container type="box">
-			<static z="1" w="20" h="20" texture="assets/bg_switch_off.png"></static>
+			<static z="1" w="20" h="20" texture="assets/bg_switch/bg_switch4.png"></static>
 			<static x="600" y="100" w="100" h="15" texture="assets/foothold.png" collision="true"></static>
 			<static x="800" y="100" w="100" h="15" texture="assets/foothold_blue.png" collision="true"></static>
 			<static x="1000" y="100" w="100" h="15" texture="assets/foothold_translucent.png" collision="true"></static>
 		</container>
-		<static interval="50"></static>
+		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
+		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
+		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>
 	</container>
 
 	<container x="500" y="-40" w="37" h="50" type="trigger" collision="false">
