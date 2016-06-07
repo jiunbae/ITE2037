@@ -2,6 +2,7 @@ package imf.processor;
 
 import java.awt.event.KeyEvent;
 
+import imf.utility.Pair;
 import loot.InputManager;
 import loot.InputManager.ButtonState;
 
@@ -67,7 +68,7 @@ public class Keyboard implements IProcess<Integer, Integer>
 			state |= bs.isChanged ? STATE_CHANGE: 0;
 
 			if(state == Keyboard.STATE_CHANGE + Keyboard.STATE_PRESS)
-				manager.get("interaction").setter(bs.ID);
+				manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
 			
 			if(state == Keyboard.STATE_PRESS)
 				manager.get("physics").setter(bs.ID);

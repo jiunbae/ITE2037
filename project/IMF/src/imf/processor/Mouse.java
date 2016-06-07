@@ -14,7 +14,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	InputManager inputs;
 
 	List<SpriteObject> buttons = new ArrayList<SpriteObject>();
-	SpriteObject target, push;
+	SpriteObject target;
 	double x, y, width, height;
 	MOUSE state;
 	
@@ -44,8 +44,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if(o == null)
 			return;
-		push = o;
-		manager.get("interaction").setter(11);
+		manager.get("interaction").setter(new Pair<String>("click", o.name));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,8 +52,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if(o == null)
 			return;
-		push = o;
-		manager.get("interaction").setter(9);
+		manager.get("interaction").setter(new Pair<String>("hover", o.name));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -62,8 +60,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if(o == null)
 			return;
-		push = o;
-		manager.get("interaction").setter(10);
+		manager.get("interaction").setter(new Pair<String>("leave", o.name));
 	}
 	
 	public SpriteObject findTarget()
@@ -90,7 +87,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@Override
 	public SpriteObject getter() 
 	{
-		return push;
+		return target;
 	}
 
 	@Override

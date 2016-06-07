@@ -77,7 +77,6 @@ public class Connection extends Thread {
 			while (inStream != null) {
 	    		if (inStream.read() == -1) {
 	    			callOutOfConnectionEvent(null);
-	    			this.stop();
 	    			return;
 	    		}
 	    		String rawData = inStream.readLine();

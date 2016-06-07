@@ -1,6 +1,5 @@
 package imf.network;
 
-import org.json.*;
 import org.json.simple.JSONObject;
 
 /**

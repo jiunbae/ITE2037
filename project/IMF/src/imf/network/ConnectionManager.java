@@ -218,7 +218,6 @@ public class ConnectionManager {
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
 	static public boolean sendToPartner(JSONObject data) {
 		return sendToPartner(data, false);
 	}

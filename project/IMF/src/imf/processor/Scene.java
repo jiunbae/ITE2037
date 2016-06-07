@@ -31,10 +31,8 @@ public class Scene implements IProcess<SpriteObject, Pair<Double>>
 	public void process() 
 	{
 		if(target == null)
-		{
-			int p =3;
 			return;
-		}
+		
 		if ((Math.abs(viewport.pointOfView_x - target.pos_x) > 10) || Math.abs(viewport.pointOfView_y - target.pos_y) > 10)
 		{
 			viewport.pointOfView_x += (target.pos_x - viewport.pointOfView_x) * 0.05;

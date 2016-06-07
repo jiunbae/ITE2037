@@ -129,14 +129,14 @@ public class Window extends GameFrame
 		}
 		
 		// install processor
-		processor.install("interaction", interaction = new Interaction(me));
+		processor.install("interaction", interaction = new Interaction(me, containers));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
 		processor.install("physics", physics = new Physics(me));
 		processor.install("scene", scene = new Scene(viewport, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
 		
-		// install objects
+		// install objects	
 		sprites.loop((e)->{
 			install(e);
 		});

@@ -12,7 +12,7 @@ import imf.object.*;
  * @author Maybe
  *
  */
-public class Physics implements IProcess<Integer, ContainerObject>
+public class Physics implements IProcess<Integer, String>
 {
 	ProcessManager manager;
 	PhysicalObject target;
@@ -177,11 +177,11 @@ public class Physics implements IProcess<Integer, ContainerObject>
 	}
 
 	@Override
-	public ContainerObject getter() 
+	public String getter() 
 	{
 		for (ContainerObject o : containers)
 			if(target.relativeX(o) == 0 && target.relativeY(o) == 0 && o.type.equals("trigger"))
-				return o;
+				return o.name;
 		return null;
 	}
 }

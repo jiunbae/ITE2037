@@ -1,17 +1,22 @@
 package imf.processor;
 
+import org.json.simple.JSONObject;
+
+import imf.network.ConnectionManager;
 import imf.object.*;
 import imf.utility.Pair;
 
-public class Interaction implements IProcess<Integer, Pair<String>>
+public class Interaction implements IProcess<Pair<String>, ContainerObject>
 {
 	PlayerObject target;
 	ProcessManager manager;
-	Pair<String> ret;
+	ObjectManager<ContainerObject> objects;
+	ContainerObject ret;
 	
-	public Interaction(PlayerObject target)
+	public Interaction(PlayerObject target, ObjectManager<ContainerObject> objects)
 	{
 		this.target = target;
+		this.objects = objects;
 	}
 
 	@Override
@@ -23,7 +28,17 @@ public class Interaction implements IProcess<Integer, Pair<String>>
 	@Override
 	public void loop() 
 	{
-		
+		if(ConnectionManager.getIsConnected() == true)
+	    	ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
+	    		switch ((String)data.get("type")) {
+					case "partner_info_sent":
+						String x = (String)data.get("trigger");
+						if(x == null)
+							break;
+						setter(new Pair<String>("act_partner", (String) data.get("trigger")));
+						break;
+				}
+	    	});
 	}
 
 	@Override
@@ -40,42 +55,57 @@ public class Interaction implements IProcess<Integer, Pair<String>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setter(Integer object) 
+	public void setter(Pair<String> object) 
 	{
-		switch (object)
+		TriggerObject t = (TriggerObject) objects.get(object.second);
+		
+		if (t == null)
+			return;
+		
+		switch (object.first)
 		{
+			case "find":
+				ret = t;
+				break;
+		
 			// 상호작용 키를 눌렀을 때
-			case 5:
-				TriggerObject t = (TriggerObject) manager.get("physics").getter();
-				if (t != null)
+			case "act":
+				t.trigger();
+				
+				if (ConnectionManager.getIsConnected() == true)
+				{
+					JSONObject obj = new JSONObject();
+					obj.put("trigger:", t.name);	
+					ConnectionManager.sendToPartner(obj);
+				}
+				break;
+			
+			// 상대방이 상호작용 했을 때
+			case "act_partner":
+				t.trigger();
+				break;
+				
+			// 마우스  hover
+			case "hover":
+				if (t.index == 0)
 					t.trigger();
 				break;
-
-			// 마우스  hover
-			case 9:
-				TriggerObject c9 = (TriggerObject) manager.get("mouse").getter();
-				if (c9 != null && c9.index == 0)
-					c9.trigger();
-				break;
 			// 마우스  leave
-			case 10:
-				TriggerObject c0 = (TriggerObject) manager.get("mouse").getter();
-				if (c0 != null && c0.index != 0)
-					c0.trigger();
+			case "leave":
+				if (t.index != 0)
+					t.trigger();
 				break;
 				
 			// 마우스 클릭시
-			case 11:
-				TriggerObject c1 = (TriggerObject) manager.get("mouse").getter();
-				if (c1 != null)
-					manager.property.setter(c1.name);
+			case "click":
+				manager.property.setter(t.name);
 				break;
 		}
 	}
 
 	@Override
-	public Pair<String> getter() 
+	public ContainerObject getter() 
 	{
-		return null;
+		return ret;
 	}
 }
