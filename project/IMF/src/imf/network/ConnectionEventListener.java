@@ -1,7 +1,6 @@
 package imf.network;
 
 import java.util.function.Consumer;
-import org.json.simple.JSONObject;
 
 /**
  * ConnectionEventListener Class

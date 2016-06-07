@@ -31,6 +31,7 @@ public class ConnectionEvent {
 		this.rawData = rawData;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ConnectionEvent(String type, JSONObject data) {
 		this.type = type;
 		this.data = data;

@@ -1,7 +1,5 @@
 package imf.network;
 
-import org.json.simple.JSONObject;
-
 /**
  * IConnectionReceiver Interface
  * 
