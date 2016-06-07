@@ -9,7 +9,7 @@
 <stage w="1600" h="600" x="100" y="-100" z="-1" texture="UI/bg.png">
 	<static name="logo" x="-250" y="100" z="1000" w="225" h="30" texture="UI/logo.png"></static>
 
-	<me x="-250" y="50" w="25" h="25" texture="me.png"></me>
+	<me x="-250" y="50" w="25" h="25" texture="first.png"></me>
 
 	<container name="start" x="-250" y="-25" w="300" h="20" type="button" collision="true">
 		<static x="-250" w="287" name="start_init" texture="UI/text/start_btn.png"></static>
