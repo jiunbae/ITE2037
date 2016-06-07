@@ -68,7 +68,8 @@ public class Keyboard implements IProcess<Integer, Integer>
 			state |= bs.isChanged ? STATE_CHANGE: 0;
 
 			if(state == Keyboard.STATE_CHANGE + Keyboard.STATE_PRESS)
-				manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
+				if(bs.ID == KEYBOARD.ACTION.ordinal())
+					manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
 			
 			if(state == Keyboard.STATE_PRESS)
 				manager.get("physics").setter(bs.ID);

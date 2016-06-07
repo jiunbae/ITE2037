@@ -69,6 +69,12 @@ public class DataParser
 		for (int i = 0; attrs != null && i < attrs.getLength(); ++i)
 			data.insert(attrs.item(i).getNodeName(), attrs.item(i).getNodeValue());
 		
+		if(data.ID.equals("stage"))
+		{
+			data.rename();
+			return data;
+		}
+		
 		for (Node child = node.getFirstChild(); child != node.getLastChild(); child = child.getNextSibling())
 		{
 			if (child.getNodeType() != 1)
@@ -76,6 +82,7 @@ public class DataParser
 			DataObject childData = getNodeData(new DataObject(child.getNodeName(), data), child);
 			data.insertChild(childData);
 		}
+		data.rename();
 		return data;
 	}
 	

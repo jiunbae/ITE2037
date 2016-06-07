@@ -24,7 +24,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	
 	@Override
 	public void onReceived(JSONObject data) {
-		setter(new Pair<String>("act_partner", (String) data.get("trigger")));
+		setter(new Pair<String>("act_partner", (String) ( (JSONObject) data.get("data") ).get("trigger")));
 	}
 	
 	

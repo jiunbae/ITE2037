@@ -28,7 +28,7 @@ public class DataObject
 	{
 		this.ID = ID;
 		//default parameter
-		insert("name", hash(10));
+		insert("name", "NULL");
 		insert("x", "0");
 		insert("y", "0");
 		insert("z", "0");
@@ -44,29 +44,32 @@ public class DataObject
 	}
 	public DataObject(String ID, DataObject o)
 	{
-		this.ID = ID;
+		this(ID);
 		o.attrs.forEach((k, v)-> {
-			if(k.equals("x") || k.equals("y") || k.equals("w") || k.equals("h"))
+			if(k.equals("x") || k.equals("y") || k.equals("w") || k.equals("h") || k.equals("collision"))
 				insert(k,v);	
 		});
-		insert("name", hash(10));
+		insert("name", "NULL");
 	}
 	
-	public static String hash(int size) 
+	public void rename()
 	{
-		StringBuffer buffer = new StringBuffer();
-		Random random = new Random();
-				
-		for (int i = 0; i < size; i++)
-			buffer.append(Integer.toString(random.nextInt(10)));
-		
-		String ID = buffer.toString();
-		
-		for(String id : IDs)
-			if(ID.equals(id))
-				ID = hash(size);
-		
-		return ID;
+		if (get("name").equals("NULL"))
+		{
+			String name = ID;
+			int counter = 0;
+			name += get("x");
+			name += get("y");
+			name += get("z");
+			name += get("w");
+			name += get("h");
+			name += childs.size();
+			name += counter + get("texture").substring(0, (get("texture").length() > 3 ? get("texture").length() -3 : get("texture").length()));
+			name += get("type").charAt(0);
+			name += get("collision").charAt(0);
+			name += get("visible").charAt(0);
+			insert("name", name);
+		}
 	}
 	
 	protected void insert(String name, String option)
@@ -81,6 +84,7 @@ public class DataObject
 	
 	protected void insertChild(DataObject o)
 	{
+		o.rename();
 		childs.add(o);
 	}
 	

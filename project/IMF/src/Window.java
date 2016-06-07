@@ -82,10 +82,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 		switch ((String)data.get("type")) {
 			
 			case ConnectionEvent.CONNECTED:
-		    	((TriggerObject)containers.get("loading")).trigger("wait");
-				break;
-			
-			case ConnectionEvent.DISCONNECTED :
+			    	((TriggerObject)containers.get("loading")).trigger("wait");
+					break;
+				
+				case ConnectionEvent.DISCONNECTED :
 				((TriggerObject)containers.get("loading")).trigger("fail");
 				break;
 				
@@ -98,14 +98,17 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 				
 			case ConnectionEvent.PARTNER_DISCONNECTED :
-		    	((TriggerObject)containers.get("loading")).trigger("fail");
+				if (state == GAME_STATE.FINDING)
+					((TriggerObject)containers.get("loading")).trigger("fail");
+				else if(state == GAME_STATE.PLAY)
+				{
+					
+				}
 				break;
 		}
 
 	}
 
-	
-	
 	@Override
 	public boolean Initialize() 
 	{
@@ -119,7 +122,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 			case FINDING:
 				ConnectionManager.connect();
 				ConnectionManager.registerReceiver(this);
-				
 				break;
 				
 			case LOADING:
