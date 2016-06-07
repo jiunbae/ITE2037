@@ -4,10 +4,11 @@ import org.json.simple.JSONObject;
 
 import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
+import imf.network.IConnectionReceiver;
 import imf.object.*;
 import imf.utility.Pair;
 
-public class Interaction implements IProcess<Pair<String>, ContainerObject>
+public class Interaction implements IProcess<Pair<String>, ContainerObject>, IConnectionReceiver
 {
 	PlayerObject target;
 	ProcessManager manager;
@@ -20,14 +21,19 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>
 		this.objects = objects;
 	}
 
+	
+	@Override
+	public void onReceived(JSONObject data) {
+		setter(new Pair<String>("act_partner", (String) data.get("trigger")));
+	}
+	
+	
 	@Override
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
 		this.manager = (ProcessManager) manager;
-		if(ConnectionManager.getIsConnected() == true)
-			ConnectionManager.addEventListener(ConnectionEvent.PARTNER_SENT, (JSONObject data) -> 
-				setter(new Pair<String>("act_partner", (String) data.get("trigger")))
-			);
+		
+		ConnectionManager.registerReceiver(ConnectionEvent.PARTNER_SENT, this);
 	}
 
 	@Override
@@ -103,4 +109,5 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>
 	{
 		return ret;
 	}
+
 }

@@ -13,7 +13,7 @@ public class ConnectionEvent {
 	final static public String DISCONNECTED = "disconnected";
 	
 	final static public String PARTNER_FOUND = "partner_found";
-	final static public String PARTNER_DISCONNECTED = "connected";
+	final static public String PARTNER_DISCONNECTED = "partner_disconnected";
 	
 	final static public String PARTNER_SENT = "partner_sent";
 	final static public String PARTNER_INFO_SENT = "partner_info_sent";

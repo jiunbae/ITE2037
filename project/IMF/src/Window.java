@@ -4,7 +4,9 @@ import org.json.simple.JSONObject;
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.network.CharacterInfoSyncher;
+import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
+import imf.network.IConnectionReceiver;
 import imf.object.*;
 import imf.processor.Keyboard;
 import imf.processor.Mouse;
@@ -18,7 +20,7 @@ import loot.GameFrameSettings;
 import loot.graphics.TextBox;
 import loot.graphics.Viewport;
 
-public class Window extends GameFrame
+public class Window extends GameFrame implements IConnectionReceiver
 {
 	/**
 	 * serialVersionUID 
@@ -73,6 +75,37 @@ public class Window extends GameFrame
 		text = new TextBox();
 	}
 	
+	
+	@Override
+	public void onReceived(JSONObject data) {
+		
+		switch ((String)data.get("type")) {
+			
+			case ConnectionEvent.CONNECTED:
+		    	((TriggerObject)containers.get("loading")).trigger("wait");
+				break;
+			
+			case ConnectionEvent.DISCONNECTED :
+				((TriggerObject)containers.get("loading")).trigger("fail");
+				break;
+				
+			case ConnectionEvent.PARTNER_FOUND:
+				containers.get("start").invisible(true);
+				containers.get("credit").invisible(true);
+				containers.get("loading").invisible(true);
+				state = GAME_STATE.LOADING;
+				Initialize();
+				break;
+				
+			case ConnectionEvent.PARTNER_DISCONNECTED :
+		    	((TriggerObject)containers.get("loading")).trigger("fail");
+				break;
+		}
+
+	}
+
+	
+	
 	@Override
 	public boolean Initialize() 
 	{
@@ -82,45 +115,26 @@ public class Window extends GameFrame
 			case SPLASH:
 				data = new DataParser(path.MAP + "splash.xml", 0);
 				break;
+				
 			case FINDING:
-				ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
-		    		if(state == GAME_STATE.FINDING)
-			    		switch ((String)data.get("type")) {
-							case "connected":
-						    	((TriggerObject)containers.get("loading")).trigger("wait");
-								break;
-			
-							case "partner_found":
-								containers.get("start").invisible(true);
-								containers.get("credit").invisible(true);
-								containers.get("loading").invisible(true);
-								state = GAME_STATE.LOADING;
-								Initialize();
-								break;
-								
-							case "partner_disconnected" :
-						    	((TriggerObject)containers.get("loading")).trigger("fail");
-								break;
-						}
-		    	});
-		    	
-		    	if (state != GAME_STATE.FINDING)
-		    		break;
-		    	
-		    	ConnectionManager.getConnection().addOutOfConnectionEvent((Exception) -> {
-			    	((TriggerObject)containers.get("loading")).trigger("fail");
-		    	});
+				ConnectionManager.connect();
+				ConnectionManager.registerReceiver(this);
+				
 				break;
+				
 			case LOADING:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
 				Destroy();
 				reload = true;
 				state = GAME_STATE.PLAY;
 				break;
+				
 			case CREDIT:
 				break;
+				
 			case PLAY:
 				break;
+				
 			case OVER:
 				break;
 		}
