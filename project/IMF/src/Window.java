@@ -31,7 +31,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 		SPLASH, FINDING, LOADING, CREDIT, PLAY, OVER
 	}
 	
-	boolean reload = true;
 	static GAME_STATE state = GAME_STATE.SPLASH;
 	
 	int intervalHandle = 0;
@@ -102,8 +101,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 					((TriggerObject)containers.get("loading")).trigger("fail");
 				else if(state == GAME_STATE.PLAY)
 				{
-					Destroy();
-					reload = true;
 					state = GAME_STATE.SPLASH;
 					Initialize();
 				}
@@ -115,6 +112,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	@Override
 	public boolean Initialize() 
 	{
+		Destroy();
 		switch (state)
 		{
 			// load data
@@ -123,14 +121,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 				
 			case FINDING:
-				ConnectionManager.connect();
-				ConnectionManager.registerReceiver(this);
 				break;
 				
 			case LOADING:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
-				Destroy();
-				reload = true;
 				state = GAME_STATE.PLAY;
 				break;
 				
@@ -143,9 +137,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 			case OVER:
 				break;
 		}
-		
-		if (!reload)
-			return true;
 		
 		data.loop((e)->{
 			if(e.ID.equals("me") && me == null)
@@ -214,7 +205,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 			viewport.children.add(me);
 		//viewport.children.add(text);
 		
-		reload = false;
 		return true;
 	}
 	
@@ -239,19 +229,9 @@ public class Window extends GameFrame implements IConnectionReceiver
 		inputs.AcceptInputs();
 		switch (state)
 		{
-			case SPLASH:
-				break;
 			case FINDING:
-				if (ConnectionManager.connect()) 
-				{
-			    	
-			    } else {
+				if (!ConnectionManager.connect()) 
 			    	((TriggerObject)containers.get("loading")).trigger("fail");
-			    }
-				break;
-			case LOADING:
-				break;
-			case CREDIT:
 				break;
 			case PLAY:
 				if (++intervalHandle == 5) {
@@ -262,6 +242,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 				}
 				break;
 			case OVER:
+				break;
+			default:
 				break;
 		}
 		processor.loop();
@@ -299,13 +281,13 @@ public class Window extends GameFrame implements IConnectionReceiver
 				case "start":
 					if(state != GAME_STATE.SPLASH)
 						break;
+					state = GAME_STATE.FINDING;
 					containers.get("start").invisible(true);
 					containers.get("credit").invisible(true);
 					((TriggerObject) containers.get("loading")).invisible(false);
 			    	((TriggerObject) containers.get("loading")).trigger("connect");
 					((TriggerObject) containers.get("loadAni")).trigger();
-					state = GAME_STATE.FINDING;
-					Initialize();
+					connect();
 					break;
 				case "credit":
 					if(state != GAME_STATE.SPLASH)
@@ -324,13 +306,12 @@ public class Window extends GameFrame implements IConnectionReceiver
 				case "cancel":
 					if(state != GAME_STATE.FINDING)
 						break;
+					state = GAME_STATE.SPLASH;
 					containers.get("start").invisible(false);
 					containers.get("credit").invisible(false);
 					((TriggerObject) containers.get("loading")).invisible(true);
 					((TriggerObject) containers.get("loadAni")).trigger();
 					me.pos_y = 50;
-					state = GAME_STATE.SPLASH;
-					Initialize();
 					break;
 			}
 		}
@@ -338,6 +319,12 @@ public class Window extends GameFrame implements IConnectionReceiver
 		public Integer getter() {
 			return state.ordinal();
 		}
+	}
+	
+	private void connect()
+	{
+		ConnectionManager.connect();
+		ConnectionManager.registerReceiver(this);
 	}
 	
 	private void install(SpriteObject o)
