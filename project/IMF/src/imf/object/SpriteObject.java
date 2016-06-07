@@ -4,6 +4,16 @@ import imf.data.DataObject;
 import loot.graphics.DrawableObject3D;
 import loot.graphics.VisualObject3D;
 
+/**
+ * Sprite Object class
+ * 
+ * @property
+ * name, ID, type, texture, collision, interval
+ * 
+ * @package	imf.object
+ * @author Maybe
+ * @version 1.0.0
+ */
 public class SpriteObject extends DrawableObject3D
 {
 	public String name, ID, type, texture;
@@ -93,24 +103,6 @@ public class SpriteObject extends DrawableObject3D
 	public double distanceY(VisualObject3D o)
 	{
 		return (this.pos_y - o.pos_y);
-	}
-	
-	/**
-	 * @param o
-	 * @return aperture X position to o
-	 */
-	public double apertureX(VisualObject3D o)
-	{
-		return Math.abs(distanceX(o)) - (this.radius_x + o.radius_x);
-	}
-	
-	/**
-	 * @param o
-	 * @return aperture Y position to o
-	 */
-	public double apertureY(VisualObject3D o)
-	{
-		return Math.abs(distanceY(o)) - (this.radius_y + o.radius_y);
 	}
 	
 	/**

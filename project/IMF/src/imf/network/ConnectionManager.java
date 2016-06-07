@@ -83,7 +83,7 @@ public class ConnectionManager {
 	/*
 	 * callOutOfConnectionEvent listener
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unchecked")
 	static private Consumer<Exception> outOfConnectionListener = (Exception e) -> {
 		connected = false;
 		

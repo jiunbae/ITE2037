@@ -13,8 +13,6 @@ import org.json.simple.JSONObject;
  * @author Prev
  * @version 1.0.0
  */
-
-
 public class CharacterInfoSyncher {
 	
 	/*

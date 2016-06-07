@@ -3,6 +3,15 @@ package imf.object;
 import imf.data.DataObject;
 import imf.utility.*;
 
+/**
+ * Physical Object class
+ * 
+ * velocity and acceleration.
+ * 
+ * @package	imf.object
+ * @author Maybe
+ * @version 1.0.0
+ */
 public class PhysicalObject extends SpriteObject
 {
 	public double v_x = 0, v_y = 0, v_z = 0, a_x = 0, a_y = 0, a_z = 0;

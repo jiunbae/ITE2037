@@ -6,6 +6,15 @@ import java.util.function.Consumer;
 
 import imf.data.DataObject;
 
+/**
+ * Object Manager Class
+ * 
+ * HashMap object can contain Objects
+ * 
+ * @package	imf.object
+ * @author Maybe
+ * @version 1.0.0
+ */
 public class ObjectManager<T> {
 	HashMap<String, T> objects = new HashMap<String, T>();	
 	

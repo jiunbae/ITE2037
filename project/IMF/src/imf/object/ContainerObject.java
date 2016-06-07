@@ -5,6 +5,15 @@ import java.util.List;
 
 import imf.data.DataObject;
 
+/**
+ * Container Object class
+ * 
+ * can contain child using add()
+ * 
+ * @package	imf.object
+ * @author Maybe
+ * @version 1.0.0
+ */
 public class ContainerObject extends SpriteObject 
 {
 	public List<SpriteObject> childs = new ArrayList<SpriteObject>();

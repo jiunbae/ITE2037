@@ -5,6 +5,17 @@ import java.util.TimerTask;
 
 import imf.data.DataObject;
 
+/**
+ * Trigger Object class
+ * 
+ * It's container object and can trigger.
+ * trigger change visible of child and callback interaction.
+ * Also can animate child's.
+ * 
+ * @package	imf.object
+ * @author Maybe
+ * @version 1.0.0
+ */
 public class TriggerObject extends ContainerObject 
 {
 	public int index = 0;
@@ -17,6 +28,12 @@ public class TriggerObject extends ContainerObject
 		super(o);
 	}
 	
+	/**
+	 * Override Container's add method to set child's visible.
+	 * <br>
+	 * box: inherit all child visible.<br> 
+	 * else: first child = visible true, else false.<br>
+	 */
 	@Override
 	public void add(SpriteObject o)
 	{
@@ -33,6 +50,9 @@ public class TriggerObject extends ContainerObject
 		childs.add(o);
 	}
 	
+	/**
+	 * Override invisible method to set child's visible.
+	 */
 	@Override
 	public void invisible(boolean value)
 	{
@@ -44,6 +64,10 @@ public class TriggerObject extends ContainerObject
 		index = 0;
 	}
 	
+	/**
+	 * trigger using name, trigger child who have 'name' 
+	 * @param name
+	 */
 	public void trigger(String name)
 	{
 		for(int i = 0; i < childs.size(); ++i)
@@ -55,6 +79,10 @@ public class TriggerObject extends ContainerObject
 			}
 	}
 	
+	/**
+	 * trigger next child.
+	 * if interval > 0, sleep while interval
+	 */
 	public void trigger()
 	{	
 		if (trigger_hide != true)

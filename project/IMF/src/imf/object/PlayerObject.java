@@ -5,8 +5,19 @@ import org.json.simple.JSONObject;
 import imf.data.DataObject;
 import imf.network.IPlayerConnected;
 
+/**
+ * Player Object Class
+ * 
+ * It's PhysicalObject and implements IPlayerConnected
+ * send data to partner
+ * 
+ * @package	imf.object
+ * @author Maybe
+ * @version 1.0.0
+ */
 public class PlayerObject extends PhysicalObject implements IPlayerConnected
 {
+	
 	public PlayerObject(DataObject e) 
 	{
 		super(e);

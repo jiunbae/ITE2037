@@ -102,7 +102,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 					((TriggerObject)containers.get("loading")).trigger("fail");
 				else if(state == GAME_STATE.PLAY)
 				{
-					
+					Destroy();
+					reload = true;
+					state = GAME_STATE.SPLASH;
+					Initialize();
 				}
 				break;
 		}
