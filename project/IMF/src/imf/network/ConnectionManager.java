@@ -77,8 +77,7 @@ public class ConnectionManager {
 				break;
 		}
 		
-		for (int i=0; i<listeners.size(); i++)
-			listeners.get(i).call(evt);
+		dispatchEventToListeners(evt);
 	};
 	
 	
@@ -93,9 +92,17 @@ public class ConnectionManager {
 		oocData.put("exception", e);
 		ConnectionEvent evt = new ConnectionEvent(ConnectionEvent.DISCONNECTED, oocData);
 		
-		for (int i=0; i<listeners.size(); i++)
-			listeners.get(i).call(evt);
+		dispatchEventToListeners(evt);
 	};
+	
+	/*
+	 * Dispatch event to listeners
+	 */
+	static private void dispatchEventToListeners(ConnectionEvent e) {
+		for (int i=0; i<listeners.size(); i++)
+			listeners.get(i).call(e);
+	}
+	
 	
 	
 	/**
@@ -166,6 +173,10 @@ public class ConnectionManager {
 			
 		}catch (Exception e) {
 			System.out.println( e.toString() );
+			
+			ConnectionEvent evt = new ConnectionEvent(ConnectionEvent.DISCONNECTED, null);
+			dispatchEventToListeners(evt);
+			
 			return false;
 		}
 		

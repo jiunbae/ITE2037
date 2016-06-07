@@ -83,6 +83,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 				
 			case ConnectionEvent.DISCONNECTED :
+				System.out.println("disconnected to server");
 				((TriggerObject)containers.get("loading")).trigger("fail");
 				break;
 				
