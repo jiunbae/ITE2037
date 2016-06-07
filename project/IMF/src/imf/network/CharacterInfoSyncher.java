@@ -31,9 +31,7 @@ public class CharacterInfoSyncher {
 	 * On data receiving listener
 	 */
 	static private Consumer<JSONObject> receivedListener = (JSONObject data) -> {
-		if (((String)data.get("type")).equals("partner_info_sent")) {
-			partner.onInfoReceived( (JSONObject) data.get("data") );
-		}
+		partner.onInfoReceived( (JSONObject) data.get("data") );
 	};
 	
 	
@@ -46,11 +44,9 @@ public class CharacterInfoSyncher {
 	static public void registerPlayer(IPlayerConnected _player) {
 		player = _player;
 		
-		if (!ConnectionManager.getIsConnected())
-			System.out.println("WARNING: CharacterInfoSyncher.registerPlayer SHOULD BE CALLED after ConnectionManager is connected");
 		
 		if (!isReceiverResgisterd) {
-			ConnectionManager.getConnection().addReceivedEvent(receivedListener);
+			ConnectionManager.addEventListener(ConnectionEvent.PARTNER_INFO_SENT, receivedListener);
 			isReceiverResgisterd = true;
 		}
 	}

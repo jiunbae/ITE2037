@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 public class ConnectionManager {
@@ -56,7 +56,7 @@ public class ConnectionManager {
 	 * Receivers objects implements IConnectionReceiver
 	 * When data is received, call receivers[i].onReceived(JSONData data)
 	 */
-	static private ArrayList<IConnectionReceiver> receivers = new ArrayList<IConnectionReceiver>();
+	static private ArrayList< ConnectionEventListener > listners = new ArrayList< ConnectionEventListener >();
 	
 	
 	
@@ -65,20 +65,35 @@ public class ConnectionManager {
 	 */
 	static private Consumer<JSONObject> receivedListener = (JSONObject data) -> {
 		switch ((String)data.get("type")) {
-			case "partner_found":
+			case ConnectionEvent.PARTNER_FOUND:
 				partnerSessionID = (String) data.get("partner_sess_id");
 				break;
 	
-			case "partner_disconnected":
+			case ConnectionEvent.PARTNER_DISCONNECTED:
 				partnerSessionID = null;
 				break;
 		}
 		
 		
-		for (int i=0; i<receivers.size(); i++)
-			receivers.get(i).onReceived(data);
+		for (int i=0; i<listners.size(); i++)
+			listners.get(i).call(data);
 	};
 	
+	
+	/*
+	 * callOutOfConnectionEvent listener
+	 */
+	@SuppressWarnings("unused")
+	static private Consumer<Exception> outOfConnectionListener = (Exception e) -> {
+		connected = false;
+		
+		JSONObject oocData = new JSONObject();
+		oocData.put("type", ConnectionEvent.DISCONNECTED);
+		oocData.put("exception", e);
+		
+		for (int i=0; i<listners.size(); i++)
+			listners.get(i).call(oocData);
+	};
 	
 	
 	/**
@@ -162,9 +177,7 @@ public class ConnectionManager {
 		sendee.put("type", "connect");
 		
 		conn.addReceivedEvent(receivedListener);
-		conn.addOutOfConnectionEvent((Exception e) -> {
-			connected = false;
-		});
+		conn.addOutOfConnectionEvent(outOfConnectionListener);
 		conn.send(sendee);
 		
 		
@@ -191,9 +204,30 @@ public class ConnectionManager {
 	 * When data is received, call onReceive(JSONObject data) method registered to this manager
 	 * 
 	 * @param receiver: instance that implements IConnectionReceiver
+	 * @param eventType: if null receive all datas, else receive set data.
 	 */
 	static public void registerReceiver(IConnectionReceiver receiver) {
-		receivers.add(receiver);
+		listners.add( new ConnectionEventListener(null, receiver) );
+	}
+	
+	static public void registerReceiver(String eventType, IConnectionReceiver receiver) {
+		listners.add( new ConnectionEventListener(eventType, receiver) );
+	}
+	
+	
+	/**
+	 * Register lambda callback (Consumer<JSONDATA>)
+	 * When data is received, lambda function is called 
+	 * 
+	 * @param receiver: lambda function
+	 * @param eventType: if null receive all datas, else receive set data.
+	 */
+	static public void addEventListener(Consumer<JSONObject> receiver) {
+		listners.add( new ConnectionEventListener(null, receiver) );
+	}
+	
+	static public void addEventListener(String eventType, Consumer<JSONObject> receiver) {
+		listners.add( new ConnectionEventListener(eventType, receiver) );
 	}
 	
 	
