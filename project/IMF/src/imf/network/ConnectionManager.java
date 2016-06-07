@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  * 
  * @package	imf.network
  * @author Prev
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 public class ConnectionManager {
@@ -56,17 +56,20 @@ public class ConnectionManager {
 	 * Receivers objects implements IConnectionReceiver
 	 * When data is received, call receivers[i].onReceived(JSONData data)
 	 */
-	static private ArrayList< ConnectionEventListener > listners = new ArrayList< ConnectionEventListener >();
+	static private ArrayList< ConnectionEventListener > listeners = new ArrayList< ConnectionEventListener >();
 	
 	
 	
 	/*
 	 * On data receiving listener
 	 */
-	static private Consumer<JSONObject> receivedListener = (JSONObject data) -> {
-		switch ((String)data.get("type")) {
+	static private Consumer<JSONObject> receivedListener = (JSONObject rawData) -> {
+		
+		ConnectionEvent evt = new ConnectionEvent(rawData);
+		
+		switch (evt.type) {
 			case ConnectionEvent.PARTNER_FOUND:
-				partnerSessionID = (String) data.get("partner_sess_id");
+				partnerSessionID = (String) rawData.get("partner_sess_id");
 				break;
 	
 			case ConnectionEvent.PARTNER_DISCONNECTED:
@@ -74,9 +77,8 @@ public class ConnectionManager {
 				break;
 		}
 		
-		
-		for (int i=0; i<listners.size(); i++)
-			listners.get(i).call(data);
+		for (int i=0; i<listeners.size(); i++)
+			listeners.get(i).call(evt);
 	};
 	
 	
@@ -88,11 +90,11 @@ public class ConnectionManager {
 		connected = false;
 		
 		JSONObject oocData = new JSONObject();
-		oocData.put("type", ConnectionEvent.DISCONNECTED);
 		oocData.put("exception", e);
+		ConnectionEvent evt = new ConnectionEvent(ConnectionEvent.DISCONNECTED, oocData);
 		
-		for (int i=0; i<listners.size(); i++)
-			listners.get(i).call(oocData);
+		for (int i=0; i<listeners.size(); i++)
+			listeners.get(i).call(evt);
 	};
 	
 	
@@ -199,35 +201,44 @@ public class ConnectionManager {
 		return conn;
 	}
 	
-	/**
-	 * Register instance that implements IConnectionReceiver
-	 * When data is received, call onReceive(JSONObject data) method registered to this manager
-	 * 
-	 * @param receiver: instance that implements IConnectionReceiver
-	 * @param eventType: if null receive all datas, else receive set data.
-	 */
-	static public void registerReceiver(IConnectionReceiver receiver) {
-		listners.add( new ConnectionEventListener(null, receiver) );
-	}
-	
-	static public void registerReceiver(String eventType, IConnectionReceiver receiver) {
-		listners.add( new ConnectionEventListener(eventType, receiver) );
-	}
-	
 	
 	/**
-	 * Register lambda callback (Consumer<JSONDATA>)
-	 * When data is received, lambda function is called 
+	 * Functions of register event listener
 	 * 
-	 * @param receiver: lambda function
-	 * @param eventType: if null receive all datas, else receive set data.
+	 * Basic type: registerEventListener
+	 * 		@param listener: listener instance
+	 * 
+	 * 
+	 * Interface type: 
+	 * 		@param eventType: EventType, constants are in ConnectionEvent
+	 * 			If null, receive all types
+	 * 		@param receiver: IConnectionReceiver instance
+	 * 
+	 * 
+	 * Lambda type:
+	 * 		@param eventType: EventType, constants are in ConnectionEvent
+	 * 			If null, receive all types
+	 * 		@param receiver: lambda instance
+	 * 
 	 */
-	static public void addEventListener(Consumer<JSONObject> receiver) {
-		listners.add( new ConnectionEventListener(null, receiver) );
+	static public void registerEventListener(ConnectionEventListener listener) {
+		listeners.add( listener );
 	}
 	
-	static public void addEventListener(String eventType, Consumer<JSONObject> receiver) {
-		listners.add( new ConnectionEventListener(eventType, receiver) );
+	static public void registerIReceiver(IConnectionReceiver receiver) {
+		registerEventListener( new ConnectionEventListener(null, receiver) );
+	}
+	
+	static public void registerIReceiver(String eventType, IConnectionReceiver receiver) {
+		registerEventListener( new ConnectionEventListener(eventType, receiver) );
+	}
+
+	static public void registerCallback(Consumer<ConnectionEvent> receiver) {
+		registerEventListener( new ConnectionEventListener(null, receiver) );
+	}
+	
+	static public void registerCallback(String eventType, Consumer<ConnectionEvent> receiver) {
+		registerEventListener( new ConnectionEventListener(eventType, receiver) );
 	}
 	
 	

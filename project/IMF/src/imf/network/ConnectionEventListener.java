@@ -14,7 +14,7 @@ import org.json.simple.JSONObject;
 public class ConnectionEventListener {
 	protected String eventType;
 	protected IConnectionReceiver iReceiver = null;
-	protected Consumer<JSONObject> lambdaReceiver = null;
+	protected Consumer<ConnectionEvent> lambdaReceiver = null;
 	
 	
 	public ConnectionEventListener(String eventType, IConnectionReceiver iReceiver) {
@@ -23,21 +23,21 @@ public class ConnectionEventListener {
 	}
 	
 	
-	public ConnectionEventListener(String eventType, Consumer<JSONObject> lambdaReceiver) {
+	public ConnectionEventListener(String eventType, Consumer<ConnectionEvent> lambdaReceiver) {
 		this.eventType = eventType;
 		this.lambdaReceiver = lambdaReceiver;
 	}
 	
 	
-	public void call(JSONObject data) {
-		if (eventType != null && !eventType.equals( (String)data.get("type") ) )
+	public void call(ConnectionEvent e) {
+		if (eventType != null && !eventType.equals( e.type ) )
 			return;
 		
 		if (iReceiver != null)
-			iReceiver.onReceived(data);
+			iReceiver.onReceived(e);
 		
 		if (lambdaReceiver != null)
-			lambdaReceiver.accept(data);
+			lambdaReceiver.accept(e);
 	}
 	
 }

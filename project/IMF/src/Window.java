@@ -1,6 +1,4 @@
-
 import org.json.simple.JSONObject;
-
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.network.CharacterInfoSyncher;
@@ -76,15 +74,15 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	
 	@Override
-	public void onReceived(JSONObject data) {
+	public void onReceived(ConnectionEvent e) {
 		
-		switch ((String)data.get("type")) {
+		switch (e.type) {
 			
 			case ConnectionEvent.CONNECTED:
-			    	((TriggerObject)containers.get("loading")).trigger("wait");
-					break;
+			    ((TriggerObject)containers.get("loading")).trigger("wait");
+				break;
 				
-				case ConnectionEvent.DISCONNECTED :
+			case ConnectionEvent.DISCONNECTED :
 				((TriggerObject)containers.get("loading")).trigger("fail");
 				break;
 				
@@ -99,6 +97,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			case ConnectionEvent.PARTNER_DISCONNECTED :
 				if (state == GAME_STATE.FINDING)
 					((TriggerObject)containers.get("loading")).trigger("fail");
+				
 				else if(state == GAME_STATE.PLAY)
 				{
 					state = GAME_STATE.SPLASH;
@@ -324,7 +323,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	private void connect()
 	{
 		ConnectionManager.connect();
-		ConnectionManager.registerReceiver(this);
+		ConnectionManager.registerIReceiver(this);
 	}
 	
 	private void install(SpriteObject o)

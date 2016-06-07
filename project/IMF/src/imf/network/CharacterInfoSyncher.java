@@ -28,8 +28,8 @@ public class CharacterInfoSyncher {
 	/*
 	 * On data receiving listener
 	 */
-	static private Consumer<JSONObject> receivedListener = (JSONObject data) -> {
-		partner.onInfoReceived( (JSONObject) data.get("data") );
+	static private Consumer<ConnectionEvent> receivedListener = (ConnectionEvent e) -> {
+		partner.onInfoReceived( e.data );
 	};
 	
 	
@@ -44,7 +44,7 @@ public class CharacterInfoSyncher {
 		
 		
 		if (!isReceiverResgisterd) {
-			ConnectionManager.addEventListener(ConnectionEvent.PARTNER_INFO_SENT, receivedListener);
+			ConnectionManager.registerCallback(ConnectionEvent.PARTNER_INFO_SENT, receivedListener);
 			isReceiverResgisterd = true;
 		}
 	}

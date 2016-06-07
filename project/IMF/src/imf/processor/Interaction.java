@@ -23,8 +23,8 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 
 	
 	@Override
-	public void onReceived(JSONObject data) {
-		setter(new Pair<String>("act_partner", (String) ( (JSONObject) data.get("data") ).get("trigger")));
+	public void onReceived(ConnectionEvent e) {		
+		setter( new Pair<String>("act_partner", (String) (e.data).get("trigger")) );
 	}
 	
 	
@@ -32,7 +32,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
 		this.manager = (ProcessManager) manager;
-		ConnectionManager.registerReceiver(ConnectionEvent.PARTNER_SENT, this);
+		ConnectionManager.registerIReceiver(ConnectionEvent.PARTNER_SENT, this);
 	}
 
 	@Override
