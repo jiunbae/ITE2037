@@ -1,4 +1,6 @@
-import org.json.simple.JSONObject;
+
+import java.util.TimerTask;
+
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.network.CharacterInfoSyncher;
@@ -6,6 +8,7 @@ import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
 import imf.network.IConnectionReceiver;
 import imf.object.*;
+import imf.object.TriggerObject.WorkTask;
 import imf.processor.Keyboard;
 import imf.processor.Mouse;
 import imf.processor.ProcessManager;
@@ -18,6 +21,11 @@ import loot.GameFrameSettings;
 import loot.graphics.TextBox;
 import loot.graphics.Viewport;
 
+/**
+ * LOOT Game Frame window
+ * @author Maybe
+ *
+ */
 public class Window extends GameFrame implements IConnectionReceiver
 {
 	/**
@@ -29,6 +37,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		SPLASH, FINDING, LOADING, CREDIT, PLAY, OVER
 	}
 	
+	boolean isConnecting = false;
 	static GAME_STATE state = GAME_STATE.SPLASH;
 	
 	int intervalHandle = 0;
@@ -74,16 +83,22 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	
 	@Override
-	public void onReceived(ConnectionEvent e) {
-		
+	public void onReceived(ConnectionEvent e) 
+	{
 		switch (e.type) {
 			
 			case ConnectionEvent.CONNECTED:
 			    ((TriggerObject)containers.get("loading")).trigger("wait");
 				break;
-				
+
+			case ConnectionEvent.PARTNER_DISCONNECTED :
 			case ConnectionEvent.DISCONNECTED :
-				((TriggerObject)containers.get("loading")).trigger("fail");
+				if (state == GAME_STATE.FINDING)
+					((TriggerObject)containers.get("loading")).trigger("fail");
+				else
+				{
+					
+				}
 				break;
 				
 			case ConnectionEvent.PARTNER_FOUND:
@@ -93,19 +108,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 				state = GAME_STATE.LOADING;
 				Initialize();
 				break;
-				
-			case ConnectionEvent.PARTNER_DISCONNECTED :
-				if (state == GAME_STATE.FINDING)
-					((TriggerObject)containers.get("loading")).trigger("fail");
-				
-				else if(state == GAME_STATE.PLAY)
-				{
-					state = GAME_STATE.SPLASH;
-					Initialize();
-				}
-				break;
 		}
-
+		isConnecting = false;
 	}
 
 	@Override
@@ -174,11 +178,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 		
 		// install objects	
 		sprites.loop((e)->{
-			install(e);
+			objectInstall(e);
 		});
 		
 		containers.loop((e)->{
-			install(e);
+			objectInstall(e);
 		});
 		
 		// scene setting
@@ -209,8 +213,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	public void Destroy()
 	{
-		sprites.loop((o)->uninstall(o));
-		containers.loop((o)->uninstall(o));
+		sprites.loop((o)->objectUninstall(o));
+		containers.loop((o)->objectUninstall(o));
 		
 		sprites = new ObjectManager<SpriteObject>();
 		containers = new ObjectManager<ContainerObject>();
@@ -229,8 +233,12 @@ public class Window extends GameFrame implements IConnectionReceiver
 		switch (state)
 		{
 			case FINDING:
-				if (!ConnectionManager.connect()) 
-			    	((TriggerObject)containers.get("loading")).trigger("fail");
+				if (!isConnecting) 
+				{
+					if (!ConnectionManager.connect())
+				    	((TriggerObject)containers.get("loading")).trigger("fail");
+					isConnecting = true;
+				}
 				break;
 			case PLAY:
 				if (++intervalHandle == 5) {
@@ -326,7 +334,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		ConnectionManager.registerIReceiver(this);
 	}
 	
-	private void install(SpriteObject o)
+	private void objectInstall(SpriteObject o)
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
@@ -336,7 +344,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			mouse.install(o);
 	}
 	
-	private void install(ContainerObject o)
+	private void objectInstall(ContainerObject o)
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
@@ -346,7 +354,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			mouse.install(o);
 	}
 	
-	private void uninstall(SpriteObject o)
+	private void objectUninstall(SpriteObject o)
 	{
 		physics.uninstall(o);
 		viewport.children.remove(o);
@@ -356,7 +364,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			ContainerObject c = (ContainerObject) o;
 			containers.remove(c);
 			for (SpriteObject s : c.childs)
-				uninstall(s);
+				objectUninstall(s);
 		}
 		if(o.type.equals("button"))
 			mouse.uninstall(o);
@@ -369,7 +377,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		{
 			case "stage":
 				ret = new SpriteObject(e);
-				install(ret);
+				objectInstall(ret);
 				break;
 			case "static":
 				ret = new SpriteObject(e);
