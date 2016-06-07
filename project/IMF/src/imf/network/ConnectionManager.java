@@ -202,6 +202,7 @@ public class ConnectionManager {
 	/**
 	 * Close connection
 	 */
+	@SuppressWarnings("deprecation")
 	static public void disconnect() {
 		conn.stop();
 		//conn.destroy();

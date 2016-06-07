@@ -89,6 +89,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 
 			case ConnectionEvent.PARTNER_DISCONNECTED :
+				state = GAME_STATE.SPLASH;
+				Initialize();
+				isConnecting = false;
+				ConnectionManager.disconnect();
+				break;
 			case ConnectionEvent.DISCONNECTED :
 				if (state == GAME_STATE.FINDING)
 					((TriggerObject)containers.get("loading")).trigger("fail");
@@ -121,21 +126,12 @@ public class Window extends GameFrame implements IConnectionReceiver
 				data = new DataParser(path.MAP + "splash.xml", 0);
 				break;
 				
-			case FINDING:
-				break;
-				
 			case LOADING:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
 				state = GAME_STATE.PLAY;
 				break;
 				
-			case CREDIT:
-				break;
-				
-			case PLAY:
-				break;
-				
-			case OVER:
+			default:
 				break;
 		}
 		
@@ -299,14 +295,14 @@ public class Window extends GameFrame implements IConnectionReceiver
 						break;
 					state = GAME_STATE.CREDIT;
 					me.pos_x= 850;
-					me.pos_y = 0;
+					me.pos_y = 100;
 					break;
 				case "credit_cancel":
 					if(state != GAME_STATE.CREDIT)
 						break;
 					state = GAME_STATE.SPLASH;
 					me.pos_x= -250;
-					me.pos_y = 50;
+					me.pos_y = 100;
 					break;
 				case "cancel":
 					if(state != GAME_STATE.FINDING)
