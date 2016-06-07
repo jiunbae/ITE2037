@@ -83,6 +83,33 @@ public class Window extends GameFrame
 				data = new DataParser(path.MAP + "splash.xml", 0);
 				break;
 			case FINDING:
+				ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
+		    		if(state == GAME_STATE.FINDING)
+			    		switch ((String)data.get("type")) {
+							case "connected":
+						    	((TriggerObject)containers.get("loading")).trigger("wait");
+								break;
+			
+							case "partner_found":
+								containers.get("start").invisible(true);
+								containers.get("credit").invisible(true);
+								containers.get("loading").invisible(true);
+								state = GAME_STATE.LOADING;
+								Initialize();
+								break;
+								
+							case "partner_disconnected" :
+						    	((TriggerObject)containers.get("loading")).trigger("fail");
+								break;
+						}
+		    	});
+		    	
+		    	if (state != GAME_STATE.FINDING)
+		    		break;
+		    	
+		    	ConnectionManager.getConnection().addOutOfConnectionEvent((Exception) -> {
+			    	((TriggerObject)containers.get("loading")).trigger("fail");
+		    	});
 				break;
 			case LOADING:
 				data = new DataParser(path.MAP + "stage1.xml", 0);
@@ -198,33 +225,7 @@ public class Window extends GameFrame
 			case FINDING:
 				if (ConnectionManager.connect()) 
 				{
-			    	ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
-			    		if(state == GAME_STATE.FINDING)
-			    		switch ((String)data.get("type")) {
-							case "connected":
-						    	((TriggerObject)containers.get("loading")).trigger("wait");
-								break;
-			
-							case "partner_found":
-								containers.get("start").invisible(true);
-								containers.get("credit").invisible(true);
-								containers.get("loading").invisible(true);
-								state = GAME_STATE.LOADING;
-								Initialize();
-								break;
-								
-							case "partner_disconnected" :
-						    	((TriggerObject)containers.get("loading")).trigger("fail");
-								break;
-						}
-			    	});
 			    	
-			    	if (state != GAME_STATE.FINDING)
-			    		return true;
-			    	
-			    	ConnectionManager.getConnection().addOutOfConnectionEvent((Exception) -> {
-				    	((TriggerObject)containers.get("loading")).trigger("fail");
-			    	});
 			    } else {
 			    	((TriggerObject)containers.get("loading")).trigger("fail");
 			    }

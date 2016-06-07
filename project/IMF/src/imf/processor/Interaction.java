@@ -2,6 +2,7 @@ package imf.processor;
 
 import org.json.simple.JSONObject;
 
+import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
 import imf.object.*;
 import imf.utility.Pair;
@@ -23,22 +24,16 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
 		this.manager = (ProcessManager) manager;
+		if(ConnectionManager.getIsConnected() == true)
+			ConnectionManager.addEventListener(ConnectionEvent.PARTNER_SENT, (JSONObject data) -> 
+				setter(new Pair<String>("act_partner", (String) data.get("trigger")))
+			);
 	}
 
 	@Override
 	public void loop() 
 	{
-		if(ConnectionManager.getIsConnected() == true)
-	    	ConnectionManager.getConnection().addReceivedEvent((JSONObject data) -> {
-	    		switch ((String)data.get("type")) {
-					case "partner_info_sent":
-						String x = (String)data.get("trigger");
-						if(x == null)
-							break;
-						setter(new Pair<String>("act_partner", (String) data.get("trigger")));
-						break;
-				}
-	    	});
+		
 	}
 
 	@Override
@@ -75,7 +70,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>
 				if (ConnectionManager.getIsConnected() == true)
 				{
 					JSONObject obj = new JSONObject();
-					obj.put("trigger:", t.name);	
+					obj.put("trigger", t.name);	
 					ConnectionManager.sendToPartner(obj);
 				}
 				break;

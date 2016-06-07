@@ -3,7 +3,9 @@ package imf.object;
 import org.json.simple.JSONObject;
 
 import imf.data.DataObject;
+import imf.network.ConnectionManager;
 import imf.network.IPartnerConnected;
+import imf.utility.Pair;
 
 public class PartnerObject extends PhysicalObject implements IPartnerConnected {
 
