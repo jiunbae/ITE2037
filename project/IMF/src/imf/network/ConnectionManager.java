@@ -198,6 +198,20 @@ public class ConnectionManager {
 		return true;
 	}
 	
+	
+	/**
+	 * Close connection
+	 */
+	static public void disconnect() {
+		conn.stop();
+		//conn.destroy();
+		
+		connected = false;
+		partnerSessionID = null;
+	}
+	
+	
+	
 	/**
 	 * Get Connection Class Instance
 	 * 
