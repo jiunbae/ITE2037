@@ -33,9 +33,9 @@
 	<!-- @DEFAULT you는 상대 플레이어의 캐릭터를 나타냅니다. -->
 	<you x="0" y="50" w="25" h="25" texture="second.png"></you>
 
-	<container name="help" type="trigger" collision="false">
+	<container name="help" type="trigger" collision="false" absolute="true">
 		<static></static>
-		<static y="-100" w="600" h="300" z="100" texture="UI/help/popup.png"></static>
+		<static w="600" h="250" z="100" texture="UI/help/popup.png"></static>
 	</container>
 	
 	<container name="foot" type="trigger" collision="false">

@@ -17,7 +17,7 @@ import loot.graphics.VisualObject3D;
 public class SpriteObject extends DrawableObject3D
 {
 	public String name, ID, type, texture, trigger_object, trigger_object_target;
-	public boolean collision;
+	public boolean collision, absolute;
 	public int interval;
 	public double box_top = 0, box_bottom = 0, box_left = 0, box_right = 0;
 
@@ -33,6 +33,7 @@ public class SpriteObject extends DrawableObject3D
 	{
 		this(Integer.valueOf(o.get("x")), Integer.valueOf(o.get("y")), Integer.valueOf(o.get("z")), Integer.valueOf(o.get("w")), Integer.valueOf(o.get("h")));
 		this.collision = o.get("collision").equals("true");
+		this.absolute = o.get("absolute").equals("true");
 		this.interval = Integer.valueOf(o.get("interval"));
 		this.texture = o.get("texture");
 		this.type = o.get("type");

@@ -6,12 +6,16 @@ import java.util.function.Consumer;
 
 import imf.object.ContainerObject;
 import imf.object.ObjectManager;
+import imf.object.PartnerObject;
+import imf.object.PlayerObject;
 import imf.object.SpriteObject;
 import imf.processor.Interaction;
 
 public class DataManager 
 {
 	static Interaction interaction;
+	public static PlayerObject me;
+	public static PartnerObject you;
 	static HashMap<String, SpriteObject> sprites = new HashMap<String, SpriteObject>();
 	static HashMap<String, ContainerObject> containers = new HashMap<String, ContainerObject>();
 

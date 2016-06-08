@@ -42,7 +42,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	Constant path;
 	DataParser data;
 	
-	Viewport viewport;
+	Viewport viewport, absolute;
 	TextBox text;
 	
 	/**
@@ -67,12 +67,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		
 		// load settings
 		path = new Constant(settings);
-		
-		// create new instance
-		processor = new ProcessManager(new Stage());
-		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
-		text = new TextBox();
-		
+
 		ConnectionManager.registerIReceiver(this);
 	}
 	
@@ -80,8 +75,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 	@Override
 	public void onReceived(ConnectionEvent e) 
 	{
-		switch (e.type) {
-			
+		switch (e.type) 
+		{
 			case ConnectionEvent.CONNECTED:
 			    ((TriggerObject)DataManager.get_containers("loading")).trigger("wait");
 				break;
@@ -137,7 +132,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		data.loop((e)->{
 			if(e.ID.equals("me") && me == null)
 			{
-				me = new PlayerObject(e);
+				DataManager.me = me = new PlayerObject(e);
 				images.LoadImage(path.RES + me.texture, "me");
 				me.image = images.GetImage("me");
 				viewport.children.add(me);
@@ -145,7 +140,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			}
 			else if (e.ID.equals("you") && you == null)
 			{
-				you = new PartnerObject(e);
+				DataManager.you = you = new PartnerObject(e);
 				images.LoadImage(path.RES + you.texture, "you");
 				you.image = images.GetImage("you");
 				viewport.children.add(you);
@@ -165,7 +160,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		processor.install("interaction", interaction = new Interaction(me));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
 		processor.install("physics", physics = new Physics(me));
-		processor.install("scene", scene = new Scene(viewport, stage = newObject(data.stage)));
+		processor.install("scene", scene = new Scene(viewport, absolute, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
 		
@@ -184,14 +179,14 @@ public class Window extends GameFrame implements IConnectionReceiver
 		text.y = 0;
 		
 		// viewport setting
-		viewport.radius_x = 25;
-		viewport.radius_y = 25;
-		viewport.pointOfView_z = 10000;
-		viewport.view_baseDistance = 10000;
-		viewport.view_minDistance = 1000;
-		viewport.view_maxDistance = 100000;
-		viewport.view_width = settings.canvas_width;
-		viewport.view_height = settings.canvas_height;
+		absolute.radius_x = viewport.radius_x = 25;
+		absolute.radius_y = viewport.radius_y = 25;
+		absolute.pointOfView_z =  viewport.pointOfView_z = 10000;
+		absolute.view_baseDistance = viewport.view_baseDistance = 10000;
+		absolute.view_minDistance = viewport.view_minDistance = 1000;
+		absolute.view_maxDistance = viewport.view_maxDistance = 100000;
+		absolute.view_width = viewport.view_width = settings.canvas_width;
+		absolute.view_height = viewport.view_height = settings.canvas_height;
 		
 		if(me != null)
 			viewport.children.add(me);
@@ -203,21 +198,21 @@ public class Window extends GameFrame implements IConnectionReceiver
 	public void Destroy()
 	{
 		DataManager.removeAll();
-		//DataManager.loop_sprites((o)->objectUninstall(o));
-		//DataManager.loop_containers((o)->objectUninstall(o));
 		DataManager.setAction(null);
-		processor.finalize();
-		processor.uninstall("interaction");
-		processor.uninstall("keyboard");
-		processor.uninstall("physics");
-		processor.uninstall("mouse");
-		processor.uninstall("scene");
-		/**
-		 * 리스너에서 삭제할수있어야함.
-		 */
+		
+		if(processor != null)
+		{
+			processor.finalize();
+			processor.uninstall("interaction");
+			processor.uninstall("keyboard");
+			processor.uninstall("physics");
+			processor.uninstall("mouse");
+			processor.uninstall("scene");
+		}
 		
 		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		absolute = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
 		
 		me = null;
@@ -259,6 +254,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		BeginDraw();
 		ClearScreen();
 		viewport.Draw(g);
+		absolute.Draw(g);
 		EndDraw();
 	}
 	
@@ -318,41 +314,36 @@ public class Window extends GameFrame implements IConnectionReceiver
 		}
 	}
 	
-	
 	private void objectInstall(SpriteObject o)
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
-		physics.install(o);
-		viewport.children.add(o);
-		if (o.type.equals("button"))
-			mouse.install(o);
+		if (o.absolute == true)
+			absolute.children.add(o);
+		else
+		{
+			physics.install(o);
+			viewport.children.add(o);
+			if (o.type.equals("button"))
+				mouse.install(o);
+		}
 	}
 	
 	private void objectInstall(ContainerObject o)
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
-		physics.install(o);
-		viewport.children.add(o);
-		if (o.type.equals("button"))
-			mouse.install(o);
-	}
-	
-	private void objectUninstall(SpriteObject o)
-	{
-		physics.uninstall(o);
-		viewport.children.remove(o);
-		DataManager.remove(o.name);
-		if (o.ID.equals("container"))
+		
+		if (o.absolute == true)
+			absolute.children.add(o);
+		else
 		{
-			ContainerObject c = (ContainerObject) o;
-			DataManager.remove(c.name);
-			for (SpriteObject s : c.childs)
-				objectUninstall(s);
+			physics.install(o);
+			viewport.children.add(o);
+			if (o.type.equals("button"))
+				mouse.install(o);
 		}
-		if(o.type.equals("button"))
-			mouse.uninstall(o);
+		
 	}
 	
 	private SpriteObject newObject(DataObject e)

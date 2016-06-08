@@ -75,12 +75,7 @@ public class Keyboard implements IProcess<Integer, Integer>
 				if(bs.ID == KEYBOARD.ACTION.ordinal())
 					manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
 				if(bs.ID == KEYBOARD.HELP.ordinal())
-				{
-					DataManager.get_containers("help").pos_x = DataManager.get_sprites("me").pos_x;
-					DataManager.get_containers("help").pos_y = DataManager.get_sprites("me").pos_y;
-					
-					manager.get("interaction").setter(new Pair<String> ("act_child", "help"));	
-				}
+					manager.get("interaction").setter(new Pair<String> ("act_child", "help"));
 			}
 			
 			if(state >= Keyboard.STATE_PRESS)		

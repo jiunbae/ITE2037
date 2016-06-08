@@ -6,13 +6,14 @@ import loot.graphics.Viewport;
 
 public class Scene implements IProcess<SpriteObject, Pair<Double>>
 {
-	Viewport viewport;
+	Viewport viewport, absolute;
 	SpriteObject target, background;
 	ProcessManager manager;
 	
-	public Scene(Viewport viewport, SpriteObject back)
+	public Scene(Viewport viewport, Viewport absolute, SpriteObject back)
 	{
 		this.viewport = viewport;
+		this.absolute = absolute;
 	}
 	
 	@Override
@@ -43,9 +44,10 @@ public class Scene implements IProcess<SpriteObject, Pair<Double>>
 	@Override
 	public void finalize() 
 	{
-		viewport = null;
-		target = null;
 		background = null;
+		viewport = null;
+		absolute = null;
+		target = null;
 		manager = null;
 	}
 	

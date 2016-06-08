@@ -36,6 +36,7 @@ public class DataObject
 		insert("texture", "");
 		insert("type", "box");
 		insert("trigger", "");
+		insert("absolute", "false");
 		insert("trigger_object", "");
 		insert("collision", "true");
 		insert("interval", "0");
@@ -48,7 +49,7 @@ public class DataObject
 		this(ID);
 		// 아래의 속성들은 부모 컨테이너에서 상속받습니다.
 		o.attrs.forEach((k, v)-> {
-			if(k.equals("x") || k.equals("y") || k.equals("y") || k.equals("w") || k.equals("h") || k.equals("collision"))
+			if(k.equals("x") || k.equals("y") || k.equals("y") || k.equals("w") || k.equals("h") || k.equals("collision")|| k.equals("absolute"))
 				insert(k,v);	
 		});
 		insert("name", "NULL");
