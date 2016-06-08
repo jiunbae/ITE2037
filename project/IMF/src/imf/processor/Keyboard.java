@@ -2,6 +2,7 @@ package imf.processor;
 
 import java.awt.event.KeyEvent;
 
+import imf.data.DataManager;
 import imf.utility.Pair;
 import loot.InputManager;
 import loot.InputManager.ButtonState;
@@ -19,6 +20,7 @@ public class Keyboard implements IProcess<Integer, Integer>
 		RIGHT(KeyEvent.VK_D),
 		JUMP(KeyEvent.VK_SPACE),
 		ACTION(KeyEvent.VK_E),
+		HELP(KeyEvent.VK_F1),
 		/**
 		 * FINAL, count enum elements;
 		 */
@@ -52,6 +54,7 @@ public class Keyboard implements IProcess<Integer, Integer>
 		inputs.BindKey(KEYBOARD.RIGHT.getKey(), KEYBOARD.RIGHT.ordinal());
 		inputs.BindKey(KEYBOARD.JUMP.getKey(), KEYBOARD.JUMP.ordinal());	
 		inputs.BindKey(KEYBOARD.ACTION.getKey(), KEYBOARD.ACTION.ordinal());
+		inputs.BindKey(KEYBOARD.HELP.getKey(), KEYBOARD.HELP.ordinal());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -68,11 +71,21 @@ public class Keyboard implements IProcess<Integer, Integer>
 			state |= bs.isChanged ? STATE_CHANGE: 0;
 
 			if(state == Keyboard.STATE_CHANGE + Keyboard.STATE_PRESS)
+			{
 				if(bs.ID == KEYBOARD.ACTION.ordinal())
 					manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
+				if(bs.ID == KEYBOARD.HELP.ordinal())
+				{
+					DataManager.get_containers("help").pos_x = DataManager.get_sprites("me").pos_x;
+					DataManager.get_containers("help").pos_y = DataManager.get_sprites("me").pos_y;
+					
+					manager.get("interaction").setter(new Pair<String> ("act_child", "help"));	
+				}
+			}
 			
-			if(state == Keyboard.STATE_PRESS)
-				manager.get("physics").setter(bs.ID);
+			if(state >= Keyboard.STATE_PRESS)		
+				manager.get("physics").setter(bs.ID);	
+		
 		}
 	}
 	

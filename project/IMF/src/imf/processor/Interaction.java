@@ -23,7 +23,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	
 	@Override
 	public void onReceived(ConnectionEvent e) {		
-		System.out.println(e.rawData.toJSONString());
+		setter( new Pair<String>("act_partner", (String) (e.data).get("trigger")) );
 	}
 	
 	
