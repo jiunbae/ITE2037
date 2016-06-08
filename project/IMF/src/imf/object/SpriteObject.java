@@ -38,7 +38,7 @@ public class SpriteObject extends DrawableObject3D
 		this.type = o.get("type");
 		this.name = o.get("name");
 		this.trigger_object = o.get("trigger");
-		this.trigger_object_target = o.get("trigger_target");
+		this.trigger_object_target = o.get("trigger_object");
 		this.ID = o.ID;
 	}
 	

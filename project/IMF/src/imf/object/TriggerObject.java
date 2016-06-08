@@ -19,7 +19,7 @@ import imf.utility.Pair;
  * @author Maybe
  * @version 1.0.0
  */
-public class TriggerObject extends ContainerObject 
+public class TriggerObject extends ContainerObject
 {
 	public int index = 0;
 	boolean inTask = false;
@@ -100,17 +100,13 @@ public class TriggerObject extends ContainerObject
 		index = (next == childs.size() ? 0 : next);
 		childs.get(index).invisible(false);
 		if (!childs.get(index).trigger_object.equals(""))
+		{
 			if(!childs.get(index).trigger_object_target.equals(""))
-			{
-				
-			}
+				DataManager.action().setter(new Pair<String>("act_child", childs.get(index).trigger_object + "@" + childs.get(index).trigger_object_target));	
 			else
-			{
-				
-			}
-			//interaction.setter(new Pair<String>("act", childs.get(index).trigger_object));
+				DataManager.action().setter(new Pair<String>("act_child", childs.get(index).trigger_object));
+		}
 	}
-	
 	public class WorkTask extends TimerTask {
 		@Override
 		public void run() {

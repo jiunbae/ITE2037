@@ -7,12 +7,23 @@ import java.util.function.Consumer;
 import imf.object.ContainerObject;
 import imf.object.ObjectManager;
 import imf.object.SpriteObject;
+import imf.processor.Interaction;
 
 public class DataManager 
 {
+	static Interaction interaction;
 	static HashMap<String, SpriteObject> sprites = new HashMap<String, SpriteObject>();
 	static HashMap<String, ContainerObject> containers = new HashMap<String, ContainerObject>();
 
+	public static void setAction(Interaction interaction)
+	{
+		DataManager.interaction = interaction;
+	}
+	public static Interaction action()
+	{
+		return DataManager.interaction;
+	}
+	
 	public static void add(String name, ContainerObject o)
 	{
 		containers.put(name, o);

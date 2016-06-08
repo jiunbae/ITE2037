@@ -170,6 +170,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		processor.initilize(processor);
 		
 		// install objects
+		DataManager.setAction(interaction);
 		DataManager.loop_sprites((e)->objectInstall(e));
 		DataManager.loop_containers((e)->objectInstall(e));
 		
@@ -201,8 +202,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	public void Destroy()
 	{
-		DataManager.loop_sprites((o)->objectUninstall(o));
-		DataManager.loop_containers((o)->objectUninstall(o));
+		DataManager.removeAll();
+		//DataManager.loop_sprites((o)->objectUninstall(o));
+		//DataManager.loop_containers((o)->objectUninstall(o));
+		DataManager.setAction(null);
 		processor.finalize();
 		processor.uninstall("interaction");
 		processor.uninstall("keyboard");

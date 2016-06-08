@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <!--
 	@DEFAULT: 무조건 지정해야 합니다.
 	@RECOMMAND: 지정하는것을 권장합니다.
@@ -67,11 +67,11 @@
 	</container>
 
 	<container x="100" y="-70" z="1" w="20" h="20" type="trigger" collision="false">
-		<static z="1" texture="assets/bg_switch/bg_switch0.png" trigger="foot"></static>
+		<static z="1" texture="assets/bg_switch/bg_switch0.png" trigger="foot" trigger_object="foot_off"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
-		<static z="1" texture="assets/bg_switch/bg_switch4.png" trigger="foot"></static>
+		<static z="1" texture="assets/bg_switch/bg_switch4.png" trigger="foot" trigger_object="foot_on"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>

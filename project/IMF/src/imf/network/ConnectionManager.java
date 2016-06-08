@@ -257,6 +257,40 @@ public class ConnectionManager {
 	}
 	
 	
+	/**
+	 * Unregister event listener
+	 */
+	static public boolean unregisterEventListener(ConnectionEventListener listener) {
+		for (int i=0; i<listeners.size(); i++) {
+			if (listeners.get(i) == listener ) {
+				listeners.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	static public boolean unregisterIReceiver(IConnectionReceiver receiver) {
+		for (int i=0; i<listeners.size(); i++) {
+			if (listeners.get(i).iReceiver == receiver ) {
+				listeners.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	static public boolean unregisterCallback(Consumer<ConnectionEvent> receiver) {
+		for (int i=0; i<listeners.size(); i++) {
+			if (listeners.get(i).lambdaReceiver == receiver ) {
+				listeners.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	
 	/**
 	 * Send data to partner if partner is found

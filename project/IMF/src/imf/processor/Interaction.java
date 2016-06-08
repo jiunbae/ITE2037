@@ -23,7 +23,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	
 	@Override
 	public void onReceived(ConnectionEvent e) {		
-		setter( new Pair<String>("act_partner", (String) (e.data).get("trigger")) );
+		System.out.println(e.rawData.toJSONString());
 	}
 	
 	
@@ -49,6 +49,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	@Override
 	public void finalize()
 	{
+		ConnectionManager.unregisterIReceiver(this);
 		manager = null;
 		target = null;
 		ret = null;
@@ -58,10 +59,18 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	@Override
 	public void setter(Pair<String> object) 
 	{
+		if (object.second == null)
+			return;
+		String arg = "";
+		if (object.second.indexOf("@") !=-1)
+		{
+			arg = object.second.substring(object.second.indexOf("@")+1);
+			object.second = object.second.substring(0, object.second.indexOf("@"));
+		}
 		TriggerObject t = (TriggerObject) DataManager.get_containers(object.second);
 		if (t == null)
 			return;
-		
+			
 		switch (object.first)
 		{
 			case "find":
@@ -75,11 +84,16 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 				if (ConnectionManager.getIsConnected() == true)
 				{
 					JSONObject obj = new JSONObject();
-					obj.put("trigger", t.name);	
+					obj.put("trigger", t.name);
 					ConnectionManager.sendToPartner(obj);
 				}
 				break;
-			
+			case "act_child":
+				if (arg.equals(""))
+					t.trigger();
+				else
+					t.trigger(arg);
+				break;
 			// 상대방이 상호작용 했을 때
 			case "act_partner":
 				t.trigger();
