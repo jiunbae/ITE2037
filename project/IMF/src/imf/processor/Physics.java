@@ -52,7 +52,7 @@ public class Physics implements IProcess<Integer, String>
 	{
 		boolean state_next_jump = jump;
 		
-		if (!target.zPosition(o) || o.collision == false || o.trigger_hide == true || o == null)
+		if (!target.zPosition(o) || o.collision == false || o.trigger_hide == true || o == null || (o.radius_x == 0 && o.radius_y == 0))
 			return state_next_jump;
 		
 		if (target.relativeY(o) == 0 && next.relativeY(o) == 0)
@@ -144,7 +144,10 @@ public class Physics implements IProcess<Integer, String>
 	@Override
 	public void finalize() 
 	{
-		
+		manager = null;
+		target = null;
+		containers = null;
+		sprites = null;
 	}
 	
 	@Override

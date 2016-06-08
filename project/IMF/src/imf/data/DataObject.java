@@ -35,6 +35,8 @@ public class DataObject
 		insert("h", "0");
 		insert("texture", "");
 		insert("type", "box");
+		insert("trigger", "");
+		insert("trigger_object", "");
 		insert("collision", "true");
 		insert("interval", "0");
 		insert("visible", "true");
@@ -44,14 +46,15 @@ public class DataObject
 	public DataObject(String ID, DataObject o)
 	{
 		this(ID);
+		// 아래의 속성들은 부모 컨테이너에서 상속받습니다.
 		o.attrs.forEach((k, v)-> {
-			if(k.equals("x") || k.equals("y") || k.equals("w") || k.equals("h") || k.equals("collision"))
+			if(k.equals("x") || k.equals("y") || k.equals("y") || k.equals("w") || k.equals("h") || k.equals("collision"))
 				insert(k,v);	
 		});
 		insert("name", "NULL");
 	}
 	
-	public void rename()
+	public void rename(int index)
 	{
 		if (get("name").equals("NULL"))
 		{
@@ -67,6 +70,7 @@ public class DataObject
 			name += get("type").charAt(0);
 			name += get("collision").charAt(0);
 			name += get("visible").charAt(0);
+			name += index;
 			insert("name", name);
 		}
 	}
@@ -83,7 +87,7 @@ public class DataObject
 	
 	protected void insertChild(DataObject o)
 	{
-		o.rename();
+		o.rename(childs.size());
 		childs.add(o);
 	}
 	

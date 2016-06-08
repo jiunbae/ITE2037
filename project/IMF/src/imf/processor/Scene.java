@@ -43,7 +43,10 @@ public class Scene implements IProcess<SpriteObject, Pair<Double>>
 	@Override
 	public void finalize() 
 	{
-	
+		viewport = null;
+		target = null;
+		background = null;
+		manager = null;
 	}
 	
 	@Override

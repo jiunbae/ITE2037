@@ -21,38 +21,60 @@
 -->
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
-<stage w="1600" h="800" z="-1" texture="UI/bg.png">
+<stage w="3200" h="1600" z="-10000" texture="UI/bg.png">
 	<!-- @RECOMMAND stage의 바닥을 정합니다. -->
 	<static x="0" y="-400" w="5000" h="15" texture="floor.png"></static>
-	<!-- @IF stage 천장을 정합니다. -->
-	<static x="0" y="300" w="5000" h="15" texture="floor.png"></static>
 
 	<static x="0" y="-100" w="5000" h="15" texture="floor.png"></static>
 
 	<!-- @DEFAULT me는 플레이어블 캐릭터를 나타냅니다. -->
-	<me x="0" y="50" w="25" h="25" texture="first.png"></me>
+	<me x="0" y="50" z="0" w="25" h="25" texture="first.png"></me>
 
 	<!-- @DEFAULT you는 상대 플레이어의 캐릭터를 나타냅니다. -->
 	<you x="0" y="50" w="25" h="25" texture="second.png"></you>
 
-	<static x="-100" y="200" w="100" h="15" texture="floor.png"></static>
-	<static x="100" y="100" w="100" h="15" texture="floor.png"></static>
-	<static x="300" y="0" w="100" h="15" texture="floor.png"></static>
-
-	<container x="100" y="-70" z="2" w="20" h="20" type="trigger" collision="false">
-		<static z="1" w="20" h="20" texture="assets/bg_switch/bg_switch0.png"></static>
-		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
-		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
-		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
-		<container type="box">
-			<static z="1" w="20" h="20" texture="assets/bg_switch/bg_switch4.png"></static>
-			<static x="600" y="100" w="100" h="15" texture="assets/foothold.png" collision="true"></static>
-			<static x="800" y="100" w="100" h="15" texture="assets/foothold_blue.png" collision="true"></static>
-			<static x="1000" y="100" w="100" h="15" texture="assets/foothold_translucent.png" collision="true"></static>
+	<container name="foot" type="trigger" collision="false">
+		<container name="foot_on" w="0" h="0" type="box" collision="true">
+			<container type="box" collision="true">
+				<static x="100" y="000" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+				<static x="300" y="100" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+				<static x="500" y="200" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+				<static x="750" y="300" w="100" h="15" texture="assets/foothold_translucent.png"></static>
+			</container>
+			<container type="box" collision="false">
+				<static x="1000" y="300" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="1200" y="200" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="1200" y="400" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="1400" y="300" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="1600" y="400" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="1800" y="300" w="50" h="50" texture="assets/foothold_empty.png"></static>
+			</container>
 		</container>
-		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
-		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
-		<static z="1" w="20" h="20" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>
+		<container name="foot_off" type="box" w="0" h="0" collision="true">
+			<container type="box" collision="false">
+				<static x="100" y="000" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="300" y="100" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="500" y="200" w="50" h="15" texture="assets/foothold_empty.png"></static>
+				<static x="750" y="300" w="100" h="15" texture="assets/foothold_empty.png"></static>
+			</container>
+			<container type="box" collision="true">
+				<static x="1000" y="300" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+				<static x="1200" y="200" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+				<static x="1200" y="400" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+				<static x="1400" y="300" w="50" h="15" texture="assets/foothold_translucent.png"></static>
+			</container>
+		</container>
+	</container>
+
+	<container x="100" y="-70" z="1" w="20" h="20" type="trigger" collision="false">
+		<static z="1" texture="assets/bg_switch/bg_switch0.png" trigger="foot"></static>
+		<static z="1" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
+		<static z="1" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
+		<static z="1" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
+		<static z="1" texture="assets/bg_switch/bg_switch4.png" trigger="foot"></static>
+		<static z="1" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
+		<static z="1" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
+		<static z="1" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>
 	</container>
 
 	<container x="500" y="-40" w="37" h="50" type="trigger" collision="false">

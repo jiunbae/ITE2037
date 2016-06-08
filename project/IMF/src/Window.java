@@ -1,4 +1,5 @@
 
+import imf.data.DataManager;
 import imf.data.DataObject;
 import imf.data.DataParser;
 import imf.network.CharacterInfoSyncher;
@@ -56,8 +57,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 	Mouse mouse;
 	Scene scene;
 	
-	ObjectManager<SpriteObject> sprites;
-	ObjectManager<ContainerObject> containers;
 	PlayerObject me = null;
 	PartnerObject you = null;
 	SpriteObject stage;
@@ -70,8 +69,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 		path = new Constant(settings);
 		
 		// create new instance
-		sprites = new ObjectManager<SpriteObject>();
-		containers = new ObjectManager<ContainerObject>();
 		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
@@ -86,7 +83,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		switch (e.type) {
 			
 			case ConnectionEvent.CONNECTED:
-			    ((TriggerObject)containers.get("loading")).trigger("wait");
+			    ((TriggerObject)DataManager.get_containers("loading")).trigger("wait");
 				break;
 
 			case ConnectionEvent.PARTNER_DISCONNECTED :
@@ -99,7 +96,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 				
 			case ConnectionEvent.DISCONNECTED :
 				if (state == GAME_STATE.FINDING)
-					((TriggerObject)containers.get("loading")).trigger("fail");
+					((TriggerObject)DataManager.get_containers("loading")).trigger("fail");
 				else
 				{
 					state = GAME_STATE.SPLASH;
@@ -108,9 +105,9 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 				
 			case ConnectionEvent.PARTNER_FOUND:
-				containers.get("start").invisible(true);
-				containers.get("credit").invisible(true);
-				containers.get("loading").invisible(true);
+				DataManager.get_containers("start").invisible(true);
+				DataManager.get_containers("credit").invisible(true);
+				DataManager.get_containers("loading").invisible(true);
 				state = GAME_STATE.LOADING;
 				Initialize();
 				break;
@@ -165,21 +162,16 @@ public class Window extends GameFrame implements IConnectionReceiver
 		}
 		
 		// install processor
-		processor.install("interaction", interaction = new Interaction(me, containers));
+		processor.install("interaction", interaction = new Interaction(me));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
 		processor.install("physics", physics = new Physics(me));
 		processor.install("scene", scene = new Scene(viewport, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
 		
-		// install objects	
-		sprites.loop((e)->{
-			objectInstall(e);
-		});
-		
-		containers.loop((e)->{
-			objectInstall(e);
-		});
+		// install objects
+		DataManager.loop_sprites((e)->objectInstall(e));
+		DataManager.loop_containers((e)->objectInstall(e));
 		
 		// scene setting
 		scene.setter(me);
@@ -209,11 +201,18 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	public void Destroy()
 	{
-		sprites.loop((o)->objectUninstall(o));
-		containers.loop((o)->objectUninstall(o));
+		DataManager.loop_sprites((o)->objectUninstall(o));
+		DataManager.loop_containers((o)->objectUninstall(o));
+		processor.finalize();
+		processor.uninstall("interaction");
+		processor.uninstall("keyboard");
+		processor.uninstall("physics");
+		processor.uninstall("mouse");
+		processor.uninstall("scene");
+		/**
+		 * 리스너에서 삭제할수있어야함.
+		 */
 		
-		sprites = new ObjectManager<SpriteObject>();
-		containers = new ObjectManager<ContainerObject>();
 		processor = new ProcessManager(new Stage());
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		text = new TextBox();
@@ -270,12 +269,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 						break;
 					
 					state = GAME_STATE.FINDING;
-					containers.get("start").invisible(true);
-					containers.get("credit").invisible(true);
-					((TriggerObject) containers.get("loading")).invisible(false);
-			    	((TriggerObject) containers.get("loading")).trigger("connect");
-					((TriggerObject) containers.get("loadAni")).trigger();
-					
+					DataManager.get_containers("start").invisible(true);
+					DataManager.get_containers("credit").invisible(true);
+					((TriggerObject) DataManager.get_containers("loading")).invisible(false);
+			    	((TriggerObject) DataManager.get_containers("loading")).trigger("connect");
+					((TriggerObject) DataManager.get_containers("loadAni")).trigger();
 					ConnectionManager.connect();
 					
 					break;
@@ -300,10 +298,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 					if (state != GAME_STATE.FINDING)
 						break;
 					state = GAME_STATE.SPLASH;
-					containers.get("start").invisible(false);
-					containers.get("credit").invisible(false);
-					((TriggerObject) containers.get("loading")).invisible(true);
-					((TriggerObject) containers.get("loadAni")).trigger();
+					DataManager.get_containers("start").invisible(false);
+					DataManager.get_containers("credit").invisible(false);
+					((TriggerObject) DataManager.get_containers("loading")).invisible(true);
+					((TriggerObject) DataManager.get_containers("loadAni")).trigger();
 					me.pos_y = 50;
 					
 					ConnectionManager.disconnect();
@@ -324,7 +322,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		o.image = images.GetImage(o.texture);
 		physics.install(o);
 		viewport.children.add(o);
-		if(o.type.equals("button"))
+		if (o.type.equals("button"))
 			mouse.install(o);
 	}
 	
@@ -334,7 +332,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		o.image = images.GetImage(o.texture);
 		physics.install(o);
 		viewport.children.add(o);
-		if(o.type.equals("button"))
+		if (o.type.equals("button"))
 			mouse.install(o);
 	}
 	
@@ -342,11 +340,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 	{
 		physics.uninstall(o);
 		viewport.children.remove(o);
-		sprites.remove(o);
+		DataManager.remove(o.name);
 		if (o.ID.equals("container"))
 		{
 			ContainerObject c = (ContainerObject) o;
-			containers.remove(c);
+			DataManager.remove(c.name);
 			for (SpriteObject s : c.childs)
 				objectUninstall(s);
 		}
@@ -365,18 +363,18 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 			case "static":
 				ret = new SpriteObject(e);
-				sprites.insert(e.get("name"), ret);
+				DataManager.add(e.get("name"), ret);
 				break;
 			case "container":
 				switch (e.get("type"))
 				{
 					case "box":
 						ret = new ContainerObject(e);
-						containers.insert(e.get("name"), (ContainerObject) ret);
+						DataManager.add(e.get("name"), (ContainerObject) ret);
 					case "button":
 					case "trigger":
 						ret = new TriggerObject(e);
-						containers.insert(e.get("name"), (TriggerObject) ret);
+						DataManager.add(e.get("name"), (TriggerObject) ret);
 				}
 				for (DataObject o : e.getChild())
 					((ContainerObject) ret).add(newObject(o));

@@ -3,7 +3,10 @@ package imf.object;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import imf.data.DataManager;
 import imf.data.DataObject;
+import imf.processor.Interaction;
+import imf.utility.Pair;
 
 /**
  * Trigger Object class
@@ -96,6 +99,16 @@ public class TriggerObject extends ContainerObject
 		childs.get(index).invisible(true);
 		index = (next == childs.size() ? 0 : next);
 		childs.get(index).invisible(false);
+		if (!childs.get(index).trigger_object.equals(""))
+			if(!childs.get(index).trigger_object_target.equals(""))
+			{
+				
+			}
+			else
+			{
+				
+			}
+			//interaction.setter(new Pair<String>("act", childs.get(index).trigger_object));
 	}
 	
 	public class WorkTask extends TimerTask {

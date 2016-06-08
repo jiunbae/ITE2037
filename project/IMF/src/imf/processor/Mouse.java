@@ -122,6 +122,9 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@Override
 	public void finalize()
 	{
-		
+		manager = null;
+		inputs = null;
+		buttons = null;
+		target = null;
 	}
 }

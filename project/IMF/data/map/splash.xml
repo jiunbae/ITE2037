@@ -37,7 +37,7 @@
 		<static x="800" w="287" y="-250" name="credit_cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
 
-	<container name="loading" x="-250" y="-300" w="300" h="20" collision="true" type="trigger" visible="false">
+	<container name="loading" x="-250" y="-300" w="500" h="20" collision="true" type="trigger" visible="false">
 		<container name="connect" type="box">
 			<static x="-250" y="-315" w="50" h="11" texture="UI/text/server_connect.png"></static>
 			<container name="loadAni" type="trigger">

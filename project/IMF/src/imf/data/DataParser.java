@@ -59,7 +59,10 @@ public class DataParser
 	{
 		for (int i = 0; i < nodes.getLength(); ++i)
 			if (nodes.item(i).getParentNode() == root)
+			{
 				datas.add(getNodeData(new DataObject(nodes.item(i).getNodeName()), nodes.item(i)));
+				datas.get(datas.size() - 1).rename(datas.size());
+			}
 	}
 	
 	private DataObject getNodeData(DataObject data, Node node)
@@ -71,7 +74,7 @@ public class DataParser
 		
 		if(data.ID.equals("stage"))
 		{
-			data.rename();
+			data.rename(0);
 			return data;
 		}
 		
@@ -82,7 +85,6 @@ public class DataParser
 			DataObject childData = getNodeData(new DataObject(child.getNodeName(), data), child);
 			data.insertChild(childData);
 		}
-		data.rename();
 		return data;
 	}
 	

@@ -85,7 +85,8 @@ public class Keyboard implements IProcess<Integer, Integer>
 	@Override
 	public void finalize() 
 	{
-		
+		manager = null;
+		inputs = null;
 	}
 
 	@Override

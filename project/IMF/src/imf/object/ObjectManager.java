@@ -15,12 +15,9 @@ import imf.data.DataObject;
  * @author Maybe
  * @version 1.0.0
  */
-public class ObjectManager<T> {
-	HashMap<String, T> objects = new HashMap<String, T>();	
-	
-	public void create(DataObject o)
-	{
-	}
+public class ObjectManager<T> 
+{
+	public HashMap<String, T> objects = new HashMap<String, T>();	
 	
 	public void insert(String name, T object)
 	{
@@ -38,7 +35,7 @@ public class ObjectManager<T> {
 	{
 		objects.remove(object);
 	}
-
+	
 	public void loop(Consumer<T> func)
 	{
 		for(Entry<String, T> e : objects.entrySet())

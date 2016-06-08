@@ -56,7 +56,7 @@ public class ConnectionManager {
 	 * Receivers objects implements IConnectionReceiver
 	 * When data is received, call receivers[i].onReceived(JSONData data)
 	 */
-	static private ArrayList< ConnectionEventListener > listeners = new ArrayList< ConnectionEventListener >();
+	static public ArrayList< ConnectionEventListener > listeners = new ArrayList< ConnectionEventListener >();
 	
 	
 	

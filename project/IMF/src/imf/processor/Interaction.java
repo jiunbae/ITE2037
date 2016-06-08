@@ -2,6 +2,7 @@ package imf.processor;
 
 import org.json.simple.JSONObject;
 
+import imf.data.DataManager;
 import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
 import imf.network.IConnectionReceiver;
@@ -12,13 +13,11 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 {
 	PlayerObject target;
 	ProcessManager manager;
-	ObjectManager<ContainerObject> objects;
 	ContainerObject ret;
 	
-	public Interaction(PlayerObject target, ObjectManager<ContainerObject> objects)
+	public Interaction(PlayerObject target)
 	{
 		this.target = target;
-		this.objects = objects;
 	}
 
 	
@@ -50,15 +49,16 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	@Override
 	public void finalize()
 	{
-		
+		manager = null;
+		target = null;
+		ret = null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setter(Pair<String> object) 
 	{
-		TriggerObject t = (TriggerObject) objects.get(object.second);
-		
+		TriggerObject t = (TriggerObject) DataManager.get_containers(object.second);
 		if (t == null)
 			return;
 		
