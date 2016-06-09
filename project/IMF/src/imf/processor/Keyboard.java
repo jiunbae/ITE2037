@@ -20,6 +20,15 @@ public class Keyboard implements IProcess<Integer, Integer>
 		JUMP(KeyEvent.VK_SPACE),
 		ACTION(KeyEvent.VK_E),
 		HELP(KeyEvent.VK_F1),
+		EMOTION1(KeyEvent.VK_1),
+		EMOTION2(KeyEvent.VK_2),
+		EMOTION3(KeyEvent.VK_3),
+		EMOTION4(KeyEvent.VK_4),
+		EMOTION5(KeyEvent.VK_5),
+		EMOTION6(KeyEvent.VK_6),
+		EMOTION7(KeyEvent.VK_7),
+		EMOTION8(KeyEvent.VK_8),
+		EMOTION9(KeyEvent.VK_9),
 		/**
 		 * FINAL, count enum elements;
 		 */
@@ -54,6 +63,15 @@ public class Keyboard implements IProcess<Integer, Integer>
 		inputs.BindKey(KEYBOARD.JUMP.getKey(), KEYBOARD.JUMP.ordinal());	
 		inputs.BindKey(KEYBOARD.ACTION.getKey(), KEYBOARD.ACTION.ordinal());
 		inputs.BindKey(KEYBOARD.HELP.getKey(), KEYBOARD.HELP.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION1.getKey(), KEYBOARD.EMOTION1.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION2.getKey(), KEYBOARD.EMOTION2.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION3.getKey(), KEYBOARD.EMOTION3.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION4.getKey(), KEYBOARD.EMOTION4.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION5.getKey(), KEYBOARD.EMOTION5.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION6.getKey(), KEYBOARD.EMOTION6.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION7.getKey(), KEYBOARD.EMOTION7.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION8.getKey(), KEYBOARD.EMOTION8.ordinal());
+		inputs.BindKey(KEYBOARD.EMOTION9.getKey(), KEYBOARD.EMOTION9.ordinal());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -75,11 +93,12 @@ public class Keyboard implements IProcess<Integer, Integer>
 					manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
 				if(bs.ID == KEYBOARD.HELP.ordinal())
 					manager.get("interaction").setter(new Pair<String> ("act_child", "help"));
+				if(bs.ID >= KEYBOARD.EMOTION1.ordinal()  && bs.ID <= KEYBOARD.EMOTION9.ordinal())
+					manager.get("interaction").setter(new Pair<String> ("act_emotion", "emotion@emo_" + (bs.ID - 6)));
 			}
 			
 			if(state >= Keyboard.STATE_PRESS)		
-				manager.get("physics").setter(bs.ID);	
-		
+				manager.get("physics").setter(bs.ID);
 		}
 	}
 	

@@ -15,6 +15,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 
 	List<SpriteObject> buttons = new ArrayList<SpriteObject>();
 	SpriteObject target;
+	static int BIND_ID = 17;
 	double x, y, width, height;
 	MOUSE state;
 	
@@ -75,7 +76,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
 	{
 		this.manager = (ProcessManager) manager;
-		inputs.BindMouseButton(MouseEvent.BUTTON1, 7);
+		inputs.BindMouseButton(MouseEvent.BUTTON1, BIND_ID);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 		if (inputs.isMouseCursorMoved)
 			process();
 		
-		if (inputs.buttons[7].isChanged && inputs.buttons[7].isPressed)
+		if (inputs.buttons[BIND_ID].isChanged && inputs.buttons[BIND_ID].isPressed)
 			click(findTarget());
 	}
 

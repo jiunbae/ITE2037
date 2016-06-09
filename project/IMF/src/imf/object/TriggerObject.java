@@ -100,8 +100,8 @@ public class TriggerObject extends ContainerObject
 			{
 				if(name.equals(""))
 					timer.schedule(task = new TriggerTask((e)->e.interval != 0), 0);
-				else
-					timer.schedule(task = new TriggerTask((e)->!e.name.equals(name) || e.interval != 0), 0);	
+				else if (!childs.get(index).name.equals(name))
+					timer.schedule(task = new TriggerTask((e)->!e.name.equals(name)), 0);	
 			}
 		} catch (Exception e) {
 			
@@ -132,15 +132,7 @@ public class TriggerObject extends ContainerObject
 			return;
 		childs.get(index).invisible(true, execute_forbidden);
 		index = (next == childs.size() ? 0 : next);
-		//childs.get(index).execute = execute & execute_trigger;
 		childs.get(index).invisible(false, execute_forbidden);
-		/*if (!childs.get(index).trigger_object.equals(""))
-		{
-			if(!childs.get(index).trigger_object_target.equals(""))
-				DataManager.action().setter(new Pair<String>("act_child", childs.get(index).trigger_object + "@" + childs.get(index).trigger_object_target));	
-			else
-				DataManager.action().setter(new Pair<String>("act_child", childs.get(index).trigger_object));
-		}*/
 	}
 
 	public void stop()
@@ -156,7 +148,7 @@ public class TriggerObject extends ContainerObject
 		}
 		@Override
 		public void run() {
-			doNext(index + 1);
+			doNext(index+1);
 			try {
 				if (test.test(childs.get(index)))
 					timer.schedule(task = new TriggerTask(test), childs.get(index).interval); 	

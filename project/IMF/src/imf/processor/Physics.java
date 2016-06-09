@@ -15,7 +15,7 @@ import imf.object.*;
 public class Physics implements IProcess<Integer, String>
 {
 	ProcessManager manager;
-	PhysicalObject target;
+	PhysicalObject target, partner;
 	List<ContainerObject> containers = new ArrayList<ContainerObject>();
 	List<SpriteObject> sprites = new ArrayList<SpriteObject>();
 
@@ -26,9 +26,10 @@ public class Physics implements IProcess<Integer, String>
 	*/
 	public int 		state_move = 0;
 	
-	public Physics(PhysicalObject tar)
+	public Physics(PhysicalObject tar, PhysicalObject par)
 	{
 		target = tar;
+		partner = par;
 	}
 	
 	public void install(ContainerObject o)
@@ -51,6 +52,17 @@ public class Physics implements IProcess<Integer, String>
 	private boolean doCollisionUtil(boolean jump, SpriteObject o, PhysicalObject next)
 	{
 		boolean state_next_jump = jump;
+		
+		if (o.absolute.equals(target.name))
+		{
+			o.pos_x = target.pos_x;
+			o.pos_y = target.pos_y+75;
+		}
+		else if(partner != null && o.absolute.equals(partner.name))
+		{
+			o.pos_x = target.pos_x;
+			o.pos_y = target.pos_y+75;
+		}
 		
 		if (!target.zPosition(o) || o.collision == false || o.trigger_hide == true || o == null || (o.radius_x == 0 && o.radius_y == 0))
 			return state_next_jump;

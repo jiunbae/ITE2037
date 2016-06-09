@@ -1,5 +1,8 @@
 package imf.processor;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.json.simple.JSONObject;
 
 import imf.data.DataManager;
@@ -14,18 +17,19 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	PlayerObject target;
 	ProcessManager manager;
 	ContainerObject ret;
+	Timer timer = new Timer();
+	InteractionTask task;
 	
 	public Interaction(PlayerObject target)
 	{
 		this.target = target;
 	}
 
-	
 	@Override
 	public void onReceived(ConnectionEvent e) {		
 		setter( new Pair<String>("act_partner", (String) (e.data).get("trigger")) );
+		setter( new Pair<String>("act_emotion_partner", (String) (e.data).get("emotion")) );
 	}
-	
 	
 	@Override
 	public void initilize(@SuppressWarnings("rawtypes") IProcess manager) 
@@ -61,12 +65,20 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 	{
 		if (object.second == null)
 			return;
+		
 		String arg = "";
-		if (object.second.indexOf("@") !=-1)
+		
+		if(object.first.equals("act_emotion_partner"))
+		{
+			arg = object.second.substring(object.second.indexOf("@")+1) + "_get";
+			object.second = object.second.substring(0, object.second.indexOf("@")) + "_get";
+		}
+		else if (object.second.indexOf("@") !=-1)
 		{
 			arg = object.second.substring(object.second.indexOf("@")+1);
 			object.second = object.second.substring(0, object.second.indexOf("@"));
 		}
+		
 		TriggerObject t = (TriggerObject) DataManager.get_containers(object.second);
 		if (t == null)
 			return;
@@ -76,47 +88,39 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 			case "find":
 				ret = t;
 				break;
-			// 상호작용 키를 눌렀을 때
+			case "hover":
+			case "leave":
+				if(object.first.equals("hover") ? (t.index != 0) : (t.index == 0))
+					break;
 			case "act":
-				t.trigger();
-				
-				if (ConnectionManager.getIsConnected() == true)
+				if (object.first.equals("act") && ConnectionManager.getIsConnected() == true)
 				{
 					JSONObject obj = new JSONObject();
 					obj.put("trigger", t.name);
 					ConnectionManager.sendToPartner(obj);
 				}
-				break;
-				
+			case "act_emotion":
+				if (object.first.equals("act_emotion") && ConnectionManager.getIsConnected() == true)
+				{
+					JSONObject obj = new JSONObject();
+					obj.put("emotion", t.name + "@" + arg);
+					ConnectionManager.sendToPartner(obj);
+				}
+			case "act_emotion_partner":
+				if (object.first.indexOf("emotion") != -1)
+				{
+					timer.purge();
+					((TriggerObject) DataManager.get_containers(t.name+"_")).trigger(t.name);
+					DataManager.get_containers(t.name).trigger_hide = false;
+					timer.schedule(task = new InteractionTask(t.name+"_"), 1000);
+				}
+			case "act_partner":
+			case "act_child_only_animation":
 			case "act_child":
 				if (arg.equals(""))
 					t.trigger();
 				else
-					t.trigger(arg);
-				break;
-				
-			case "act_child_only_animation":
-				//((TriggerObject) DataManager.get_containers(arg)).execute_forbidden = true;
-				if (arg.equals(""))
-					t.trigger(true);
-				else
-					t.trigger(arg, true);
-				break;
-				
-			// 상대방이 상호작용 했을 때
-			case "act_partner":
-				t.trigger();
-				break;
-				
-			// 마우스  hover
-			case "hover":
-				if (t.index == 0)
-					t.trigger();
-				break;
-			// 마우스  leave
-			case "leave":
-				if (t.index != 0)
-					t.trigger();
+					t.trigger(arg, object.first.equals("act_child_only_animation"));
 				break;
 				
 			// 마우스 클릭시
@@ -132,4 +136,14 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 		return ret;
 	}
 
+	public class InteractionTask extends TimerTask {
+		String name;
+		public InteractionTask(String name) {
+			this.name = name;
+		}
+		@Override
+		public void run() {
+			((TriggerObject) DataManager.get_containers(name)).trigger(name + "0");
+		}
+	}
 }

@@ -160,7 +160,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		// install processor
 		processor.install("interaction", interaction = new Interaction(me));
 		processor.install("keyboard", keyboard = new Keyboard(inputs));
-		processor.install("physics", physics = new Physics(me));
+		processor.install("physics", physics = new Physics(me, you));
 		processor.install("scene", scene = new Scene(viewport, absolute, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
@@ -200,6 +200,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 	@Override
 	public boolean Update(long timeStamp) 
 	{
+		if (loading)
+			return true;
 		inputs.AcceptInputs();
 		switch (state)
 		{
@@ -322,7 +324,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
-		if (o.absolute == true)
+		if (o.absolute.equals("true"))
 			absolute.children.add(o);
 		else
 		{
@@ -337,8 +339,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 	{
 		images.LoadImage(path.RES + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
-		
-		if (o.absolute == true)
+
+		if (o.absolute.equals("true"))
 			absolute.children.add(o);
 		else
 		{
@@ -347,7 +349,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 			if (o.type.equals("button"))
 				mouse.install(o);
 		}
-		
 	}
 	
 	private SpriteObject newObject(DataObject e)

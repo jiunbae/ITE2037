@@ -33,9 +33,40 @@
 	<!-- @DEFAULT you는 상대 플레이어의 캐릭터를 나타냅니다. -->
 	<you x="0" y="50" w="25" h="25" texture="second.png"></you>
 
+	<!-- @DEFAULT 이 컨테이너는 도움말을 표시합니다. -->
 	<container name="help" type="trigger" collision="false" absolute="true">
 		<static></static>
 		<static w="600" h="250" z="100" texture="UI/help/popup.png"></static>
+	</container>
+
+	<!-- @DEFAULT 이 컨테이너는 감정표현을 표시합니다. -->
+	<container name="emotion_" type="trigger" collision="false">
+		<static name="emotion_0"></static>
+		<container name="emotion" type="trigger" absolute="me">
+			<static name="emo_1" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_1.png"></static>
+			<static name="emo_2" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_2.png"></static>
+			<static name="emo_3" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_3.png"></static>
+			<static name="emo_4" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_4.png"></static>
+			<static name="emo_5" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_5.png"></static>
+			<static name="emo_6" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_6.png"></static>
+			<static name="emo_7" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_7.png"></static>
+			<static name="emo_8" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_8.png"></static>
+			<static name="emo_9" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_9.png"></static>
+		</container>
+	</container>
+	<container name="emotion_get_" type="trigger" collision="false" absolute="you">
+		<static name="emotion_get_0"></static>
+		<container name="emotion_get" type="trigger" absolut="you">
+			<static name="emo_1_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_1.png"></static>
+			<static name="emo_2_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_2.png"></static>
+			<static name="emo_3_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_3.png"></static>
+			<static name="emo_4_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_4.png"></static>
+			<static name="emo_5_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_5.png"></static>
+			<static name="emo_6_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_6.png"></static>
+			<static name="emo_7_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_7.png"></static>
+			<static name="emo_8_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_8.png"></static>
+			<static name="emo_9_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_9.png"></static>
+		</container>
 	</container>
 
 	<container type="box">

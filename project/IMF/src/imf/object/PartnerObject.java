@@ -2,6 +2,7 @@ package imf.object;
 
 import org.json.simple.JSONObject;
 
+import imf.data.DataManager;
 import imf.data.DataObject;
 import imf.network.IPartnerConnected;
 
@@ -27,6 +28,13 @@ public class PartnerObject extends PhysicalObject implements IPartnerConnected {
 	{
 		pos_x = Double.parseDouble((String) (info.get("x")));
 		pos_y = Double.parseDouble((String) (info.get("y")));
+		DataManager.loop_sprites((e)->{
+			if (e.absolute.equals("you"))
+			{
+				e.pos_x = pos_x;
+				e.pos_y = pos_y + 75;
+			}
+		});
 	}
 
 }

@@ -2,8 +2,6 @@ package imf.processor;
 
 import java.util.HashMap;
 
-import javax.annotation.processing.Processor;
-
 @SuppressWarnings("rawtypes")
 public class ProcessManager implements IProcess<String, IProcess>
 {
