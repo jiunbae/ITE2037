@@ -122,8 +122,9 @@ public class Connection extends Thread {
 			}
 	    
 		}catch(IOException e) {
-	    	e.printStackTrace();
-	    }
+	    	//e.printStackTrace();
+			System.out.println(e.toString());
+		}
 	}
 	
 	
