@@ -21,11 +21,15 @@
 -->
 
 <!-- @DEFAULT 창 크기는 600x1200 -->
-<stage w="3200" h="1600" z="-10000" texture="UI/bg.png">
-	<!-- @RECOMMAND stage의 바닥을 정합니다. -->
-	<static x="0" y="-400" w="5000" h="15" texture="floor.png"></static>
+<stage>
+	<!-- @DEFAULT bg -->
+	<container name="bg" type="trigger" collision="false">
+		<static name="bg_on" x="1500" y="300" w="3200" h="1600" z="-10000" texture="UI/bg.png"></static>
+		<static name="bg_off" x="1500" y="300" w="3200" h="1600" z="-10000" texture="UI/bg_inverse.png"></static>
+	</container>
 
-	<static x="0" y="-100" w="5000" h="15" texture="floor.png"></static>
+	<!-- @RECOMMAND stage의 바닥을 정합니다. -->
+	<static x="1250" y="-100" w="3000" h="15" texture="floor.png"></static>
 
 	<!-- @DEFAULT me는 플레이어블 캐릭터를 나타냅니다. -->
 	<me x="0" y="50" z="0" w="25" h="25" texture="first.png"></me>
@@ -33,10 +37,15 @@
 	<!-- @DEFAULT you는 상대 플레이어의 캐릭터를 나타냅니다. -->
 	<you x="0" y="50" w="25" h="25" texture="second.png"></you>
 
+	<!-- @DEFAULT 벽 -->
+	<static x="-500" y="100" w="25" h="200"></static>
+	<static x="3500" y="100" w="25" h="200"></static>
+
+
 	<!-- @DEFAULT 이 컨테이너는 도움말을 표시합니다. -->
 	<container name="help" type="trigger" collision="false" absolute="true">
 		<static></static>
-		<static w="600" h="250" z="100" texture="UI/help/popup.png"></static>
+		<static w="600" h="300" z="100" texture="UI/help/popup.png"></static>
 	</container>
 
 	<!-- @DEFAULT 이 컨테이너는 감정표현을 표시합니다. -->
@@ -122,12 +131,14 @@
 	<container name="bg_switch_script" type="trigger" collision="false">
 		<container name="bg_switch_script_on" type="box">
 			<static trigger="foot" trigger_object="foot_off"></static>
+			<static trigger="bg" trigger_object="bg_on"></static>
 			<static trigger="bg_switch1" trigger_object="bg_switch1_on" execute_trigger="false"></static>
 			<static trigger="bg_switch2" trigger_object="bg_switch2_on" execute_trigger="false"></static>
 			<static trigger="bg_switch3" trigger_object="bg_switch3_on" execute_trigger="false"></static>
 		</container>
 		<container name="bg_switch_script_off" type="box">
 			<static trigger="foot" trigger_object="foot_on"></static>
+			<static trigger="bg" trigger_object="bg_off"></static>
 			<static trigger="bg_switch1" trigger_object="bg_switch1_off" execute_trigger="false"></static>
 			<static trigger="bg_switch2" trigger_object="bg_switch2_off" execute_trigger="false"></static>
 			<static trigger="bg_switch3" trigger_object="bg_switch3_off" execute_trigger="false"></static>

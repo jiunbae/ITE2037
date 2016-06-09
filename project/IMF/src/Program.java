@@ -17,7 +17,7 @@ public class Program
 	    settings.canvas_height = HEIGHT;
 	    settings.canvas_width = WIDTH;
 	    settings.window_title = "pair";
-	    settings.canvas_backgroundColor = Color.black;
+	    settings.canvas_backgroundColor = Color.white;
 	    settings.numberOfButtons = 18;
 	    settings.gameLoop_interval_ns = 1000000000 / 75;
 	    
