@@ -78,13 +78,13 @@
 		</container>
 	</container>
 
-	<container type="box">
-		<container type="box" collision="false">
+	<container name="box" type="trigger">
+		<container name="box_off" type="box" collision="false">
 			<static x="0900" y="400" w="50" h="15" texture="assets/foothold_translucent.png"></static>
 			<static x="1050" y="500" w="50" h="15" texture="assets/foothold_translucent.png"></static>
 			<static x="1250" y="600" w="100" h="15" texture="assets/foothold_translucent.png"></static>
 		</container>
-		<container type="box" collision="true">
+		<container name="box_on" type="box" collision="true">
 			<static x="0900" y="400" w="50" h="15" texture="assets/foothold_translucent.png"></static>
 			<static x="1050" y="500" w="50" h="15" texture="assets/foothold_translucent.png"></static>
 			<static x="1250" y="600" w="100" h="15" texture="assets/foothold_translucent.png"></static>
