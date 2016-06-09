@@ -88,47 +88,47 @@
 		</container>
 	</container>
 
-	<container name="trigger" type="trigger" collision="false">
-		<container name="trigger_on" type="box">
+	<container name="bg_switch_script" type="trigger" collision="false">
+		<container name="bg_switch_script_on" type="box">
 			<static trigger="foot" trigger_object="foot_off"></static>
-			<static trigger="trigger1" trigger_object="trigger1_on"></static>
-			<static trigger="trigger2" trigger_object="trigger2_on"></static>
-			<static trigger="trigger3" trigger_object="trigger3_on"></static>
+			<static trigger="bg_switch1" trigger_object="bg_switch1_on" execute_trigger="false"></static>
+			<static trigger="bg_switch2" trigger_object="bg_switch2_on" execute_trigger="false"></static>
+			<static trigger="bg_switch3" trigger_object="bg_switch3_on" execute_trigger="false"></static>
 		</container>
-		<container name="trigger_off" type="box">
+		<container name="bg_switch_script_off" type="box">
 			<static trigger="foot" trigger_object="foot_on"></static>
-			<static trigger="trigger1" trigger_object="trigger1_off"></static>
-			<static trigger="trigger2" trigger_object="trigger2_off"></static>
-			<static trigger="trigger3" trigger_object="trigger3_off"></static>
+			<static trigger="bg_switch1" trigger_object="bg_switch1_off" execute_trigger="false"></static>
+			<static trigger="bg_switch2" trigger_object="bg_switch2_off" execute_trigger="false"></static>
+			<static trigger="bg_switch3" trigger_object="bg_switch3_off" execute_trigger="false"></static>
 		</container>
 	</container>
 
-	<container name="trigger1" x="750" y="350" z="1" w="20" h="20" type="trigger" collision="false">
-		<static z="1" texture="assets/bg_switch/bg_switch0.png" name="trigger1_on" trigger="trigger" trigger_object="trigger_on"></static>
+	<container name="bg_switch1" x="750" y="350" z="1" w="20" h="20" type="trigger" collision="false">
+		<static z="1" texture="assets/bg_switch/bg_switch0.png" name="bg_switch1_on" trigger="bg_switch_script" trigger_object="bg_switch_script_on"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
-		<static z="1" texture="assets/bg_switch/bg_switch4.png" name="trigger1_off" trigger="trigger" trigger_object="trigger_off"></static>
+		<static z="1" texture="assets/bg_switch/bg_switch4.png" name="bg_switch1_off" trigger="bg_switch_script" trigger_object="bg_switch_script_off"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>
 	</container>
-	<container name="trigger2" x="1800" y="375" z="1" w="20" h="20" type="trigger" collision="false">
-		<static z="1" texture="assets/bg_switch/bg_switch0.png" name="trigger2_on" trigger="trigger" trigger_object="trigger_on"></static>
+	<container name="bg_switch2" x="1800" y="375" z="1" w="20" h="20" type="trigger" collision="false">
+		<static z="1" texture="assets/bg_switch/bg_switch0.png" name="bg_switch2_on" trigger="bg_switch_script" trigger_object="bg_switch_script_on"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
-		<static z="1" texture="assets/bg_switch/bg_switch4.png" name="trigger2_off" trigger="trigger" trigger_object="trigger_off"></static>
+		<static z="1" texture="assets/bg_switch/bg_switch4.png" name="bg_switch2_off" trigger="bg_switch_script" trigger_object="bg_switch_script_off"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>
 	</container>
-	<container name="trigger3" x="2700" y="550" z="1" w="20" h="20" type="trigger" collision="false">
-		<static z="1" texture="assets/bg_switch/bg_switch0.png" name="trigger3_on" trigger="trigger" trigger_object="trigger_on"></static>
+	<container name="bg_switch3" x="2700" y="550" z="1" w="20" h="20" type="trigger" collision="false">
+		<static z="1" texture="assets/bg_switch/bg_switch0.png" name="bg_switch3_on" trigger="bg_switch_script" trigger_object="bg_switch_script_on"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch1.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch2.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch3.png"></static>
-		<static z="1" texture="assets/bg_switch/bg_switch4.png" name="trigger3_off" trigger="trigger" trigger_object="trigger_off"></static>
+		<static z="1" texture="assets/bg_switch/bg_switch4.png" name="bg_switch3_off" trigger="bg_switch_script" trigger_object="bg_switch_script_off"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch5.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch6.png"></static>
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>

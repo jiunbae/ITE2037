@@ -4,9 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Predicate;
 
-import imf.data.DataManager;
 import imf.data.DataObject;
-import imf.utility.Pair;
 
 /**
  * Trigger Object class
@@ -25,6 +23,8 @@ public class TriggerObject extends ContainerObject
 	boolean inTask = false;
 	Timer timer = new Timer();
 	TriggerTask task;
+	
+	public boolean execute_forbidden = false;
 
 	public TriggerObject(DataObject o) 
 	{
@@ -64,17 +64,26 @@ public class TriggerObject extends ContainerObject
 		index = 0;
 	}
 	
+	
+	public void invisible(boolean value)
+	{
+		invisible(value, execute_forbidden);
+	}
 	/**
 	 * Override invisible method to set child's visible.
 	 */
 	@Override
-	public void invisible(boolean value)
+	public void invisible(boolean value, boolean trigger_forbiden)
 	{
 		trigger_hide = value;
 		if(type.equals("box"))
-			childs.forEach((o)->o.invisible(value));
+			childs.forEach((o)->{
+				o.invisible(value, trigger_forbiden);	
+			});
 		else
-			childs.get(index).invisible(value);
+		{
+			childs.get(index).invisible(value, trigger_forbiden);
+		}
 		index = 0;
 	}
 	
@@ -82,24 +91,21 @@ public class TriggerObject extends ContainerObject
 	 * trigger using name, trigger child who have 'name' 
 	 * @param name
 	 */
-	public void trigger(String name)
+	public void trigger(String name, boolean execute_forbidden)
 	{
-		/*for(int i = 0; i < childs.size(); ++i)
-			if(childs.get(i).name.equals(name))
+		this.execute_forbidden = execute_forbidden;
+		
+		try {
+			if (trigger_hide != true)
 			{
-				if(index != i)
-					doNext(i);
-				break;
-			}*/
-		if (trigger_hide != true)
-		{
-			if(name.equals(""))
-				timer.schedule(task = new TriggerTask((e)->e.interval != 0), 0);
-			else
-				timer.schedule(task = new TriggerTask((e)->!e.name.equals(name) || e.interval != 0), 0);
+				if(name.equals(""))
+					timer.schedule(task = new TriggerTask((e)->e.interval != 0), 0);
+				else
+					timer.schedule(task = new TriggerTask((e)->!e.name.equals(name) || e.interval != 0), 0);	
+			}
+		} catch (Exception e) {
+			
 		}
-		else
-			task.cancel();
 	}
 	
 	/**
@@ -108,20 +114,26 @@ public class TriggerObject extends ContainerObject
 	 */
 	public void trigger()
 	{	
-		trigger("");
-		/*if (trigger_hide != true)
-			timer.schedule(task = new TriggerTask(), 0);
-		else
-			task.cancel();*/
+		trigger("", false);
 	}
+	
+	public void trigger(boolean execute_forbidden) {
+		trigger("", execute_forbidden);
+	}
+	
+	public void trigger(String name) {
+		trigger(name, false);
+	}
+	
 	
 	public void doNext(int next)
 	{
 		if(index == next)
 			return;
-		childs.get(index).invisible(true);
+		childs.get(index).invisible(true, execute_forbidden);
 		index = (next == childs.size() ? 0 : next);
-		childs.get(index).invisible(false);
+		//childs.get(index).execute = execute & execute_trigger;
+		childs.get(index).invisible(false, execute_forbidden);
 		/*if (!childs.get(index).trigger_object.equals(""))
 		{
 			if(!childs.get(index).trigger_object_target.equals(""))
@@ -133,9 +145,8 @@ public class TriggerObject extends ContainerObject
 
 	public void stop()
 	{
-		timer.purge();
-		timer = null;
-		task = null;
+		if(task != null)
+			task.cancel();
 	}
 	
 	public class TriggerTask extends TimerTask {
@@ -149,12 +160,6 @@ public class TriggerObject extends ContainerObject
 			try {
 				if (test.test(childs.get(index)))
 					timer.schedule(task = new TriggerTask(test), childs.get(index).interval); 	
-				else
-				{
-					task.cancel();
-					task = null;
-					timer.purge();
-				}
 			} catch (Exception e) {
 			}
 		}

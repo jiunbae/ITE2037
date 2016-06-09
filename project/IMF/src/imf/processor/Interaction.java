@@ -76,7 +76,6 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 			case "find":
 				ret = t;
 				break;
-	
 			// 상호작용 키를 눌렀을 때
 			case "act":
 				t.trigger();
@@ -88,12 +87,22 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 					ConnectionManager.sendToPartner(obj);
 				}
 				break;
+				
 			case "act_child":
 				if (arg.equals(""))
 					t.trigger();
 				else
 					t.trigger(arg);
 				break;
+				
+			case "act_child_only_animation":
+				//((TriggerObject) DataManager.get_containers(arg)).execute_forbidden = true;
+				if (arg.equals(""))
+					t.trigger(true);
+				else
+					t.trigger(arg, true);
+				break;
+				
 			// 상대방이 상호작용 했을 때
 			case "act_partner":
 				t.trigger();

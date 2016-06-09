@@ -304,7 +304,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 					DataManager.get_containers("start").invisible(false);
 					DataManager.get_containers("credit").invisible(false);
 					((TriggerObject) DataManager.get_containers("loading")).invisible(true);
-					((TriggerObject) DataManager.get_containers("loadAni")).trigger();
+					((TriggerObject) DataManager.get_containers("loadAni")).stop();
 					me.pos_y = 50;
 					
 					ConnectionManager.disconnect();

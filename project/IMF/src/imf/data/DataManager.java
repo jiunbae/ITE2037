@@ -52,7 +52,13 @@ public class DataManager
 		sprites.forEach((key, o)-> o = null);
 		sprites.clear();
 	}
-	
+	public static SpriteObject get(String name)
+	{
+		SpriteObject ret = sprites.get(name);
+		if(ret == null)
+			ret = containers.get(name);
+		return ret;
+	}
 	public static SpriteObject get_sprites(String name)
 	{
 		return sprites.get(name);

@@ -40,6 +40,7 @@ public class DataObject
 		insert("trigger_object", "");
 		insert("collision", "true");
 		insert("interval", "0");
+		insert("execute_trigger", "true");
 		insert("visible", "true");
 		if(ID.equals("me"))
 			insert("name", "me");
@@ -74,6 +75,7 @@ public class DataObject
 			name += get("trigger");
 			name += get("trigger_object");
 			name += get("absolute").charAt(0);
+			name += get("execute_trigger").charAt(0);
 			name += index;
 			insert("name", name);
 		}
