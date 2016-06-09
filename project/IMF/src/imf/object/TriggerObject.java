@@ -2,10 +2,10 @@ package imf.object;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Predicate;
 
 import imf.data.DataManager;
 import imf.data.DataObject;
-import imf.processor.Interaction;
 import imf.utility.Pair;
 
 /**
@@ -24,8 +24,8 @@ public class TriggerObject extends ContainerObject
 	public int index = 0;
 	boolean inTask = false;
 	Timer timer = new Timer();
-	WorkTask task = new WorkTask();
-	
+	TriggerTask task;
+
 	public TriggerObject(DataObject o) 
 	{
 		super(o);
@@ -44,13 +44,24 @@ public class TriggerObject extends ContainerObject
 			return;
 		
 		if(type.equals("box"))
-			o.invisible(trigger_hide);
+			o.invisibleSup(trigger_hide);
 		else if(!childs.isEmpty())
-			o.invisible(true);
+			o.invisibleSup(true);
 		else if(childs.isEmpty())
-			o.invisible(false);
+			o.invisibleSup(false);
 		
 		childs.add(o);
+	}
+	
+	@Override
+	public void invisibleSup(boolean value)
+	{
+		trigger_hide = value;
+		if(type.equals("box"))
+			childs.forEach((o)->o.invisibleSup(value));
+		else
+			childs.get(index).invisibleSup(value);
+		index = 0;
 	}
 	
 	/**
@@ -73,13 +84,22 @@ public class TriggerObject extends ContainerObject
 	 */
 	public void trigger(String name)
 	{
-		for(int i = 0; i < childs.size(); ++i)
+		/*for(int i = 0; i < childs.size(); ++i)
 			if(childs.get(i).name.equals(name))
 			{
 				if(index != i)
 					doNext(i);
 				break;
-			}
+			}*/
+		if (trigger_hide != true)
+		{
+			if(name.equals(""))
+				timer.schedule(task = new TriggerTask((e)->e.interval != 0), 0);
+			else
+				timer.schedule(task = new TriggerTask((e)->!e.name.equals(name) || e.interval != 0), 0);
+		}
+		else
+			task.cancel();
 	}
 	
 	/**
@@ -88,33 +108,55 @@ public class TriggerObject extends ContainerObject
 	 */
 	public void trigger()
 	{	
-		if (trigger_hide != true)
-			timer.schedule(task = new WorkTask(), 0);
+		trigger("");
+		/*if (trigger_hide != true)
+			timer.schedule(task = new TriggerTask(), 0);
 		else
-			task.cancel();
+			task.cancel();*/
 	}
 	
 	public void doNext(int next)
 	{
+		if(index == next)
+			return;
 		childs.get(index).invisible(true);
 		index = (next == childs.size() ? 0 : next);
 		childs.get(index).invisible(false);
-		if (!childs.get(index).trigger_object.equals(""))
+		/*if (!childs.get(index).trigger_object.equals(""))
 		{
 			if(!childs.get(index).trigger_object_target.equals(""))
 				DataManager.action().setter(new Pair<String>("act_child", childs.get(index).trigger_object + "@" + childs.get(index).trigger_object_target));	
 			else
 				DataManager.action().setter(new Pair<String>("act_child", childs.get(index).trigger_object));
-		}
+		}*/
 	}
-	public class WorkTask extends TimerTask {
+
+	public void stop()
+	{
+		timer.purge();
+		timer = null;
+		task = null;
+	}
+	
+	public class TriggerTask extends TimerTask {
+		Predicate<SpriteObject> test;
+		public TriggerTask(Predicate<SpriteObject> test) {
+			this.test = test;
+		}
 		@Override
 		public void run() {
-			doNext(index+1);
-			if (childs.get(index).interval != 0)
-				timer.schedule(task = new WorkTask(), childs.get(index).interval);
-			else
-				this.cancel();
+			doNext(index + 1);
+			try {
+				if (test.test(childs.get(index)))
+					timer.schedule(task = new TriggerTask(test), childs.get(index).interval); 	
+				else
+				{
+					task.cancel();
+					task = null;
+					timer.purge();
+				}
+			} catch (Exception e) {
+			}
 		}
 	}
 }

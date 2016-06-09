@@ -5,10 +5,10 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import imf.object.ContainerObject;
-import imf.object.ObjectManager;
 import imf.object.PartnerObject;
 import imf.object.PlayerObject;
 import imf.object.SpriteObject;
+import imf.object.TriggerObject;
 import imf.processor.Interaction;
 
 public class DataManager 
@@ -43,7 +43,13 @@ public class DataManager
 	}
 	public static void removeAll()
 	{
+		containers.forEach((key, o)->{
+			if (o.type.equals("trigger"))
+				((TriggerObject) o).stop();
+			o = null;
+		});
 		containers.clear();
+		sprites.forEach((key, o)-> o = null);
 		sprites.clear();
 	}
 	

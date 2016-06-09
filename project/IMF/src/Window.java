@@ -37,6 +37,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	static GAME_STATE state = GAME_STATE.SPLASH;
 	
+	boolean loading;
 	int intervalHandle = 0;
 	
 	Constant path;
@@ -192,31 +193,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 			viewport.children.add(me);
 		//viewport.children.add(text);
 		
+		loading = false;
 		return true;
-	}
-	
-	public void Destroy()
-	{
-		DataManager.removeAll();
-		DataManager.setAction(null);
-		
-		if(processor != null)
-		{
-			processor.finalize();
-			processor.uninstall("interaction");
-			processor.uninstall("keyboard");
-			processor.uninstall("physics");
-			processor.uninstall("mouse");
-			processor.uninstall("scene");
-		}
-		
-		processor = new ProcessManager(new Stage());
-		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
-		absolute = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
-		text = new TextBox();
-		
-		me = null;
-		you = null;
 	}
 	
 	@Override
@@ -251,13 +229,39 @@ public class Window extends GameFrame implements IConnectionReceiver
 	@Override
 	public void Draw(long timeStamp) 
 	{
+		if (loading)
+			return;
 		BeginDraw();
 		ClearScreen();
 		viewport.Draw(g);
 		absolute.Draw(g);
 		EndDraw();
 	}
-	
+
+	public void Destroy()
+	{
+		loading = true;
+		DataManager.removeAll();
+		DataManager.setAction(null);
+		
+		if(processor != null)
+		{
+			processor.finalize();
+			processor.uninstall("interaction");
+			processor.uninstall("keyboard");
+			processor.uninstall("physics");
+			processor.uninstall("mouse");
+			processor.uninstall("scene");
+		}
+		
+		processor = new ProcessManager(new Stage());
+		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		absolute = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		text = new TextBox();
+		
+		me = null;
+		you = null;
+	}
 	
 	public class Stage implements IProcessProperty<String, Integer> {
 		@Override
@@ -375,7 +379,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 				break;
 		}
 		if (e.get("visible").equals("false"))
-			ret.invisible(true);
+			ret.invisibleSup(true);
 		return ret;
 	}
 }

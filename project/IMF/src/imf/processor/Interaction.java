@@ -76,7 +76,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 			case "find":
 				ret = t;
 				break;
-		
+	
 			// 상호작용 키를 눌렀을 때
 			case "act":
 				t.trigger();

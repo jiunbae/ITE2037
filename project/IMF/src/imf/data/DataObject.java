@@ -71,6 +71,9 @@ public class DataObject
 			name += get("type").charAt(0);
 			name += get("collision").charAt(0);
 			name += get("visible").charAt(0);
+			name += get("trigger");
+			name += get("trigger_object");
+			name += get("absolute").charAt(0);
 			name += index;
 			insert("name", name);
 		}

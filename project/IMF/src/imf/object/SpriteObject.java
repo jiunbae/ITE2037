@@ -1,6 +1,8 @@
 package imf.object;
 
+import imf.data.DataManager;
 import imf.data.DataObject;
+import imf.utility.Pair;
 import loot.graphics.DrawableObject3D;
 import loot.graphics.VisualObject3D;
 
@@ -43,9 +45,19 @@ public class SpriteObject extends DrawableObject3D
 		this.ID = o.ID;
 	}
 	
+	public void invisibleSup(boolean value)
+	{
+		trigger_hide = value;	
+	}
+	
 	public void invisible(boolean value)
 	{
-		trigger_hide = value;
+		invisibleSup(value);
+		if (value == false && !trigger_object.equals(""))
+			if(!trigger_object_target.equals(""))
+				DataManager.action().setter(new Pair<String>("act_child", trigger_object + "@" + trigger_object_target));	
+			else
+				DataManager.action().setter(new Pair<String>("act_child", trigger_object));
 	}
 	
 	public void setPositionAbove(SpriteObject o)

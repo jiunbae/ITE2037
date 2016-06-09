@@ -2,7 +2,6 @@ package imf.processor;
 
 import java.awt.event.KeyEvent;
 
-import imf.data.DataManager;
 import imf.utility.Pair;
 import loot.InputManager;
 import loot.InputManager.ButtonState;

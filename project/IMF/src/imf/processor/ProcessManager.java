@@ -2,6 +2,8 @@ package imf.processor;
 
 import java.util.HashMap;
 
+import javax.annotation.processing.Processor;
+
 @SuppressWarnings("rawtypes")
 public class ProcessManager implements IProcess<String, IProcess>
 {
@@ -38,7 +40,10 @@ public class ProcessManager implements IProcess<String, IProcess>
 	@Override
 	public void loop()
 	{
-		processors.forEach((name, processor)->processor.loop());
+		processors.forEach((name, processor)-> {
+			if(processor != null)
+				processor.loop();
+		});
 	}
 	
 	@Override
