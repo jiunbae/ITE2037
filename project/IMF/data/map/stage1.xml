@@ -236,9 +236,9 @@
 	<container name="finish_trigger" type="trigger" collision="false" absolute="true">
 		<static></static>
 		<container name="finish" type="box" collision="false" absolute="true">
-			<static w="600" h="300" texture="UI/text/mask.png"></static>
-			<static y="100" w="275" h="35" z="100" texture="UI/text/stage_clear.png"></static>
-			<container y="-100" name="finish_button" w="300" h="20" type="button" collision="false">
+			<static w="600" h="300" z="5" texture="UI/text/mask.png"></static>
+			<static y="100" w="275" h="35" z="10" texture="UI/text/stage_clear.png"></static>
+			<container y="-100" z="7" name="finish_button" w="300" h="20" type="button" collision="false">
 				<static w="287" name="finish_leave" texture="UI/text/next_btn.png"></static>
 				<static w="287" name="finish_hover" texture="UI/text/next_btn_hover.png"></static>
 			</container>
@@ -249,7 +249,7 @@
 		<static></static>
 		<container name="dead" type="box" collision="false" absolute="true">
 			<static w="600" h="300" texture="UI/text/mask.png"></static>
-			<static y="100" w="275" h="35" z="100" texture="UI/text/game_over.png"></static>
+			<static y="100" w="275" h="35" z="10" texture="UI/text/game_over.png"></static>
 		</container>
 	</container>
 </stage>

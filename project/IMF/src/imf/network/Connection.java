@@ -93,6 +93,7 @@ public class Connection extends Thread {
 	/**
 	 * Thread-run process
 	 */
+	@SuppressWarnings("deprecation")
 	public void run() {
 		if (isStoped) {
 			this.stop();
