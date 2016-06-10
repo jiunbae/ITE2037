@@ -33,7 +33,7 @@
 	</container>
 
 	<container name="credit_cancel" x="800" w="287" y="-250" h="20" type="button" collision="true">
-		<static x="800" w="287" y="-250" name="credit_cancel_init" texture="UI/text/cancel_btn.png"></static>
+		<static x="800" w="287" y="-250" name="credit_cancel_leave" texture="UI/text/cancel_btn.png"></static>
 		<static x="800" w="287" y="-250" name="credit_cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
 	
