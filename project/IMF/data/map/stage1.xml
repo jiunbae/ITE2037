@@ -48,6 +48,8 @@
 		<static w="600" h="300" z="100" texture="UI/help/popup.png"></static>
 	</container>
 
+	<static x="525" y="-250" w="45" h="18" texture="UI/help/tooltip.png" collision="false" absolute="true"></static>
+
 	<!-- @DEFAULT 이 컨테이너는 감정표현을 표시합니다. -->
 	<container name="emotion_" type="trigger" collision="false">
 		<static name="emotion_0"></static>

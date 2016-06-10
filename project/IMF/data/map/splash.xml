@@ -36,8 +36,6 @@
 		<static x="800" w="287" y="-250" name="credit_cancel_init" texture="UI/text/cancel_btn.png"></static>
 		<static x="800" w="287" y="-250" name="credit_cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
-
-	<static x="200" y="-100" w="45" h="18" texture="UI/help/tooltip.png" collision="false"></static>
 	
 	<container name="loading" x="-250" y="-300" w="500" h="20" collision="true" type="trigger" visible="false">
 		<container name="connect" type="box">
