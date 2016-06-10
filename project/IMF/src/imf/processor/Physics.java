@@ -2,8 +2,11 @@ package imf.processor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import imf.object.*;
+import imf.utility.Pair;
 
 /**
  * Constructor argument <br>
@@ -18,6 +21,8 @@ public class Physics implements IProcess<Integer, String>
 	PhysicalObject target, partner;
 	List<ContainerObject> containers = new ArrayList<ContainerObject>();
 	List<SpriteObject> sprites = new ArrayList<SpriteObject>();
+	Timer timer = new Timer();
+	
 
 	public boolean 	state_jump = true,
 					state_do = false;
@@ -49,6 +54,7 @@ public class Physics implements IProcess<Integer, String>
 		sprites.remove(o);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private boolean doCollisionUtil(boolean jump, SpriteObject o, PhysicalObject next)
 	{
 		boolean state_next_jump = jump;
@@ -62,6 +68,13 @@ public class Physics implements IProcess<Integer, String>
 		{
 			o.pos_x = target.pos_x;
 			o.pos_y = target.pos_y+75;
+		}
+
+		if (next.relativeX(o) == 0 && next.relativeY(o) == 0 && o.name.indexOf("thorn") != -1)
+		{
+			manager.get("interaction").setter(new Pair<String> ("dead", "dead_trigger@dead"));
+			timer.schedule(new DeadTask(), 5000);
+			return state_next_jump;
 		}
 		
 		if (!target.zPosition(o) || o.collision == false || o.trigger_hide == true || o == null || (o.radius_x == 0 && o.radius_y == 0))
@@ -112,6 +125,7 @@ public class Physics implements IProcess<Integer, String>
 				}
 			}
 		}	
+		
 		return state_next_jump;
 	}
 	private void doCollision(PhysicalObject next)
@@ -119,11 +133,16 @@ public class Physics implements IProcess<Integer, String>
 		boolean state_next_jump = true;
 		boolean exc = false;
 		
-		for (SpriteObject o : sprites)
-			state_next_jump = doCollisionUtil(state_next_jump, o, next);
+		try {
+			for (SpriteObject o : sprites)
+				state_next_jump = doCollisionUtil(state_next_jump, o, next);
+			
+			for (SpriteObject o : containers)
+				state_next_jump = doCollisionUtil(state_next_jump, o, next);	
+		} catch (Exception e) {
+			return;
+		}
 		
-		for (SpriteObject o : containers)
-			state_next_jump = doCollisionUtil(state_next_jump, o, next);
 		
 		if (!exc)
 		{
@@ -198,5 +217,13 @@ public class Physics implements IProcess<Integer, String>
 			if(target.relativeX(o) == 0 && target.relativeY(o) == 0 && o.type.equals("trigger"))
 				return o.name;
 		return null;
+	}
+
+	public class DeadTask extends TimerTask {
+		@SuppressWarnings("unchecked")
+		@Override
+		public void run() {
+			manager.property.setter("dead");
+		}
 	}
 }

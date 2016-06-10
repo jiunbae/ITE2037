@@ -113,6 +113,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 					DataManager.get_containers(t.name).trigger_hide = false;
 					timer.schedule(task = new InteractionTask(t.name+"_"), 1000);
 				}
+			case "dead":
 			case "act_partner":
 			case "act_child_only_animation":
 			case "act_child":

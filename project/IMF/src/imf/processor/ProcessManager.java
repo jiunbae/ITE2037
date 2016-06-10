@@ -38,10 +38,14 @@ public class ProcessManager implements IProcess<String, IProcess>
 	@Override
 	public void loop()
 	{
-		processors.forEach((name, processor)-> {
-			if(processor != null)
-				processor.loop();
-		});
+		try {
+			processors.forEach((name, processor)-> {
+				if(processor != null)
+					processor.loop();
+			});	
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	@Override

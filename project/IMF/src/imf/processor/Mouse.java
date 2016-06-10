@@ -16,7 +16,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	List<SpriteObject> buttons = new ArrayList<SpriteObject>();
 	SpriteObject target;
 	static int BIND_ID = 17;
-	double x, y, width, height;
+	double x, y, width, height, ax, ay;
 	MOUSE state;
 	
 	public enum MOUSE {
@@ -67,7 +67,9 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	public SpriteObject findTarget()
 	{
 		for(SpriteObject o : buttons)
-			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x && o.trigger_hide == false)
+			if(o.box_bottom < y && o.box_top > y && o.box_left < x && o.box_right > x && o.trigger_hide == false && o.absolute.equals("false"))
+				return o;
+			else if(o.box_bottom < ay && o.box_top > ay && o.box_left < ax && o.box_right > ax && o.trigger_hide == false && o.absolute.equals("true"))
 				return o;
 		return null;
 	}
@@ -107,8 +109,10 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		Pair<Double> view = (Pair<Double>) manager.get("scene").getter();
 		
-		x = inputs.pos_mouseCursor.getX() - width/2 + view.first;
-		y = -inputs.pos_mouseCursor.getY() + height/2 + view.second;
+		ax = inputs.pos_mouseCursor.getX();
+		ay = -inputs.pos_mouseCursor.getY();
+		x = ax - width / 2 + view.first;
+		y = ay + height / 2 + view.second;
 		
 		SpriteObject target_next = findTarget();
 		

@@ -31,11 +31,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 	 */
 	private static final long serialVersionUID = 2015004584L;
 
-	private enum GAME_STATE{
+	public static enum GAME_STATE{
 		SPLASH, FINDING, LOADING, CREDIT, PLAY, OVER
 	}
 	
-	static GAME_STATE state = GAME_STATE.SPLASH;
+	public static GAME_STATE state = GAME_STATE.SPLASH;
 	
 	boolean loading;
 	int intervalHandle = 0;
@@ -269,6 +269,12 @@ public class Window extends GameFrame implements IConnectionReceiver
 		@Override
 		public void setter(String object) {
 			switch (object) {
+				case "dead":
+					if(state != GAME_STATE.PLAY)
+						break;
+					state=GAME_STATE.SPLASH;
+					ConnectionManager.disconnect();
+					Initialize();
 				case "start":
 					if (state != GAME_STATE.SPLASH)
 						break;
@@ -310,7 +316,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 					me.pos_y = 50;
 					
 					ConnectionManager.disconnect();
-					
 					break;
 			}
 		}
