@@ -90,15 +90,14 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 				break;
 			case "hover":
 			case "leave":
-				if(object.first.equals("hover") ? (t.index != 0) : (t.index == 0))
-					break;
+				arg = object.second + "_" + object.first;
 			case "act":
-				/*if (object.first.equals("act") && ConnectionManager.getIsConnected() == true)
+				if (object.first.equals("act") && ConnectionManager.getIsConnected() == true && t.name.indexOf("bg_switch") == -1)
 				{
 					JSONObject obj = new JSONObject();
 					obj.put("trigger", t.name);
 					ConnectionManager.sendToPartner(obj);
-				}*/
+				}
 			case "act_emotion":
 				if (object.first.equals("act_emotion") && ConnectionManager.getIsConnected() == true)
 				{

@@ -85,25 +85,44 @@
 			<static x="1250" y="600" w="100" h="15" texture="assets/foothold_translucent.png"></static>
 		</container>
 		<container name="box_on" type="box" collision="true">
-			<static x="0900" y="400" w="50" h="15" texture="assets/foothold_translucent.png"></static>
-			<static x="1050" y="500" w="50" h="15" texture="assets/foothold_translucent.png"></static>
-			<static x="1250" y="600" w="100" h="15" texture="assets/foothold_translucent.png"></static>
+			<static x="0900" y="400" w="50" h="15" texture="assets/foothold.png"></static>
+			<static x="1050" y="500" w="50" h="15" texture="assets/foothold.png"></static>
+			<static x="1250" y="600" w="100" h="15" texture="assets/foothold.png"></static>
 		</container>
 	</container>
 
-	<container name="switch_foothold" x="1800" y="350" type="trigger" collision="false">
-		<static z="1" w="25" h="10" texture="assets/switch.png"></static>
-		<static z="1" w="25" h="10" texture="assets/switch_on.png"></static>
+	<container name="goal_1" x="2900" y="550" w="37" h="50" type="trigger" collision="false">
+		<static name="goal_1_off" z="1" w="37" h="50" texture="assets/goal.png" trigger="goal" trigger_object="goal_off"></static>
+		<static name="goal_1_on" z="2" w="37" h="50" texture="assets/goal_half.png" trigger="goal"></static>
+	</container>
+
+	<container name="goal_2" x="2900" y="550" w="37" h="50" type="trigger" collision="false">
+		<static name="goal_2_off" z="1" w="37" h="50" texture="assets/goal.png" trigger="goal" trigger_object="goal_off"></static>
+		<static name="goal_2_on"  z="2" w="37" h="50" texture="assets/goal_half.png" trigger="goal"></static>
+	</container>
+
+	<container name="goal" x="2900" y="550" w="37" h="50" type="trigger" collision="false">
+		<static name="goal_off" z="1" w="37" h="50" texture="assets/goal.png"></static>
+		<static z="1" w="37" h="50" texture="assets/goal.png"></static>
+		<container type="box">
+			<static trigger="finish_button"></static>
+			<static z="3" w="37" h="50" texture="assets/goal_on.png"></static>
+		</container>
+	</container>
+
+	<container name="switch_foothold" x="1600" y="420" type="trigger" collision="false">
+		<static z="1" w="25" h="10" texture="assets/switch_w.png" trigger="box" trigger_object="box_off"></static>
+		<static z="1" w="25" h="10" texture="assets/switch_on.png" trigger="box" trigger_object="box_on"></static>
 	</container>
 
 	<container name="switch_goal_1" x="1250" y="620" type="trigger" collision="false">
-		<static z="1" w="25" h="10" texture="assets/switch.png"></static>
-		<static z="1" w="25" h="10" texture="assets/switch_on.png"></static>
+		<static z="1" w="25" h="10" texture="assets/switch.png" trigger="goal_1" trigger_object="goal_1_off"></static>
+		<static z="1" w="25" h="10" texture="assets/switch_on.png" trigger="goal_1" trigger_object="goal_1_on"></static>
 	</container>
 
 	<container name="switch_goal_2" x="2700" y="220" type="trigger" collision="false">
-		<static z="1" w="25" h="10" texture="assets/switch.png"></static>
-		<static z="1" w="25" h="10" texture="assets/switch_on.png"></static>
+		<static z="1" w="25" h="10" texture="assets/switch.png" trigger="goal_2" trigger_object="goal_2_off"></static>
+		<static z="1" w="25" h="10" texture="assets/switch_on.png" trigger="goal_2" trigger_object="goal_2_on"></static>
 	</container>
 
 	<container name="foot" type="trigger" collision="false">
@@ -190,14 +209,12 @@
 		<static z="1" interval="50" texture="assets/bg_switch/bg_switch7.png"></static>
 	</container>
 
-	<container x="500" y="-40" w="37" h="50" type="trigger" collision="false">
-		<static z="1" w="37" h="50" texture="assets/goal.png"></static>
-		<static z="1" w="37" h="50" texture="assets/goal_on.png"></static>
+	<container name="finish_button" type="trigger" collision="false" absolute="true">
+		<static></static>
+		<container name="finish" w="300" h="20" type="button" collision="false" absolute="true">
+			<static w="0" h="0"></static>
+			<static w="287" name="finish_leave" texture="UI/text/next_btn.png"></static>
+			<static w="287" name="finish_hover" texture="UI/text/next_btn_hover.png"></static>
+		</container>
 	</container>
-
-	<container x="700" y="-80" w="25" h="10" type="trigger" collision="false">
-		<static z="1" w="25" h="10" texture="assets/switch.png"></static>
-		<static z="1" w="25" h="10" texture="assets/switch_on.png"></static>
-	</container>
-
 </stage>

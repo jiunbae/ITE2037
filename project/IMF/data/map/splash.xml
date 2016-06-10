@@ -12,17 +12,17 @@
 	<me x="-250" y="50" w="25" h="25" texture="first.png"></me>
 	
 	<container name="start" x="-250" y="-25" w="300" h="20" type="button" collision="true">
-		<static x="-250" w="287" name="start_init" texture="UI/text/start_btn.png"></static>
+		<static x="-250" w="287" name="start_leave" texture="UI/text/start_btn.png"></static>
 		<static x="-250" w="287" name="start_hover" texture="UI/text/start_btn_hover.png"></static>
 	</container>
 
 	<container name="credit" x="-250" y="-100" z="1" w="300" h="20" type="button" collision="false">
-		<static x="-250" w="287" name="credit_init" texture="UI/text/credit_btn.png"></static>
+		<static x="-250" w="287" name="credit_leave" texture="UI/text/credit_btn.png"></static>
 		<static x="-250" w="287" name="credit_hover" texture="UI/text/credit_btn_hover.png"></static>
 	</container>
 
 	<container name="cancel" x="-250" y="-475" w="300" h="20" type="button" collision="true">
-		<static x="-250" w="287" name="cancel_init" texture="UI/text/cancel_btn.png"></static>
+		<static x="-250" w="287" name="cancel_leave" texture="UI/text/cancel_btn.png"></static>
 		<static x="-250" w="287" name="cancel_hover" texture="UI/text/cancel_btn_hover.png"></static>
 	</container>
 
