@@ -164,7 +164,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		processor.install("scene", scene = new Scene(viewport, absolute, stage = newObject(data.stage)));
 		processor.install("mouse", mouse = new Mouse(inputs, settings.canvas_width, settings.canvas_height));
 		processor.initilize(processor);
-		
+
 		// install objects
 		DataManager.setAction(interaction);
 		DataManager.loop_sprites((e)->objectInstall(e));
