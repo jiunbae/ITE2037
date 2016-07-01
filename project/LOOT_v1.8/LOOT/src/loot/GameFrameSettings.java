@@ -62,8 +62,6 @@ public class GameFrameSettings
 	 */
 	public int numberOfButtons = 8;
 	
-	public HashMap<String, String> path = new HashMap<String, String>();
-	
 	public GameFrameSettings()
 	{
 	}

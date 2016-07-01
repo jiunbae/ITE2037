@@ -1,4 +1,4 @@
-package imf.utility;
+package imfg.utility;
 
 public class Pair<T> 
 {

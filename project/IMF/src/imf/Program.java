@@ -1,6 +1,6 @@
+package imf;
 import java.awt.Color;
 
-import imf.data.SettingParser;
 import loot.GameFrameSettings;
 
 public class Program 
@@ -11,12 +11,9 @@ public class Program
 	{	
 	    GameFrameSettings settings = new GameFrameSettings();
 	    
-	    @SuppressWarnings("unused")
-		SettingParser parser = new SettingParser("data/IMF.inf", settings);
-	    
 	    settings.canvas_height = HEIGHT;
 	    settings.canvas_width = WIDTH;
-	    settings.window_title = "pair";
+	    settings.window_title = "IMF - It's (not) My Fault";
 	    settings.canvas_backgroundColor = Color.white;
 	    settings.numberOfButtons = 18;
 	    settings.gameLoop_interval_ns = 1000000000 / 75;
@@ -24,5 +21,4 @@ public class Program
 	    Window window = new Window(settings);
 	    window.setVisible(true);
 	}
-
 }

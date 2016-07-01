@@ -54,6 +54,12 @@ public class Physics implements IProcess<Integer, String>
 		sprites.remove(o);
 	}
 	
+	public static boolean collision(SpriteObject target, SpriteObject objects)
+	{
+		
+		return true;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private boolean doCollisionUtil(boolean jump, SpriteObject o, PhysicalObject next)
 	{
@@ -62,12 +68,12 @@ public class Physics implements IProcess<Integer, String>
 		if (o.absolute.equals(target.name))
 		{
 			o.pos_x = target.pos_x;
-			o.pos_y = target.pos_y+75;
+			o.pos_y = target.pos_y + 75;
 		}
 		else if(partner != null && o.absolute.equals(partner.name))
 		{
 			o.pos_x = target.pos_x;
-			o.pos_y = target.pos_y+75;
+			o.pos_y = target.pos_y + 75;
 		}
 
 		if (next.relativeX(o) == 0 && next.relativeY(o) == 0 && o.name.indexOf("thorn") != -1)

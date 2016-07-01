@@ -1,7 +1,11 @@
+package imf;
+
+import java.util.HashMap;
 
 import imf.data.DataManager;
 import imf.data.DataObject;
 import imf.data.DataParser;
+import imf.data.SettingParser;
 import imf.network.CharacterInfoSyncher;
 import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
@@ -36,11 +40,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 	}
 	
 	public static GAME_STATE state = GAME_STATE.SPLASH;
+	private HashMap<String, String> path = new HashMap<String, String>();
 	
 	boolean loading;
 	int intervalHandle = 0;
 	
-	Constant path;
 	DataParser data;
 	
 	Viewport viewport, absolute;
@@ -66,9 +70,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	{
 		super(settings);
 		
-		// load settings
-		path = new Constant(settings);
-
+		SettingParser.parse("data/IMF.inf", path);
 		ConnectionManager.registerIReceiver(this);
 	}
 	
@@ -118,11 +120,11 @@ public class Window extends GameFrame implements IConnectionReceiver
 		{
 			// load data
 			case SPLASH:
-				data = new DataParser(path.MAP + "splash.xml", 0);
+				data = new DataParser(path.get("default") + "splash.xml", 0);
 				break;
 				
 			case LOADING:
-				data = new DataParser(path.MAP + "stage1.xml", 0);
+				data = new DataParser(path.get("map") + "stage1.xml", 0);
 				state = GAME_STATE.PLAY;
 				break;
 				
@@ -134,7 +136,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			if(e.ID.equals("me") && me == null)
 			{
 				DataManager.me = me = new PlayerObject(e);
-				images.LoadImage(path.RES + me.texture, "me");
+				images.LoadImage(path.get("res") + me.texture, "me");
 				me.image = images.GetImage("me");
 				viewport.children.add(me);
 				me.a_y = -0.98;
@@ -142,7 +144,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 			else if (e.ID.equals("you") && you == null)
 			{
 				DataManager.you = you = new PartnerObject(e);
-				images.LoadImage(path.RES + you.texture, "you");
+				images.LoadImage(path.get("res") + you.texture, "you");
 				you.image = images.GetImage("you");
 				viewport.children.add(you);
 				you.a_y = -0.98;
@@ -327,7 +329,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	private void objectInstall(SpriteObject o)
 	{
-		images.LoadImage(path.RES + o.texture, o.texture);
+		images.LoadImage(path.get("res") + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
 		if (o.absolute.equals("true"))
 			absolute.children.add(o);
@@ -342,7 +344,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	
 	private void objectInstall(ContainerObject o)
 	{
-		images.LoadImage(path.RES + o.texture, o.texture);
+		images.LoadImage(path.get("res") + o.texture, o.texture);
 		o.image = images.GetImage(o.texture);
 
 		if (o.absolute.equals("true"))

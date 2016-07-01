@@ -1,9 +1,9 @@
-package imf.data;
+package imfg.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import imf.utility.HashMapDefault;
+import imfg.utility.HashMapDefault;
 
 /**
  * Data Object Class
