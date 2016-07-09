@@ -12,7 +12,7 @@ import imf.network.IConnectionReceiver;
 import imf.object.*;
 import imf.utility.Pair;
 
-public class Interaction implements IProcess<Pair<String>, ContainerObject>, IConnectionReceiver
+public class Interaction implements IProcess<Pair<String, String>, ContainerObject>, IConnectionReceiver
 {
 	PlayerObject target;
 	ProcessManager manager;
@@ -27,8 +27,8 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 
 	@Override
 	public void onReceived(ConnectionEvent e) {		
-		setter( new Pair<String>("act_partner", (String) (e.data).get("trigger")) );
-		setter( new Pair<String>("act_emotion_partner", (String) (e.data).get("emotion")) );
+		setter( new Pair<String, String>("act_partner", (String) (e.data).get("trigger")) );
+		setter( new Pair<String, String>("act_emotion_partner", (String) (e.data).get("emotion")) );
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class Interaction implements IProcess<Pair<String>, ContainerObject>, ICo
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setter(Pair<String> object) 
+	public void setter(Pair<String, String> object) 
 	{
 		if (object.second == null)
 			return;

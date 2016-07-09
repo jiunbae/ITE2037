@@ -4,7 +4,7 @@ import imf.object.SpriteObject;
 import imf.utility.Pair;
 import loot.graphics.Viewport;
 
-public class Scene implements IProcess<SpriteObject, Pair<Double>>
+public class Scene implements IProcess<SpriteObject, Pair<Double, Double>>
 {
 	Viewport viewport, absolute;
 	SpriteObject target, background;
@@ -58,8 +58,8 @@ public class Scene implements IProcess<SpriteObject, Pair<Double>>
 	}
 
 	@Override
-	public Pair<Double> getter() 
+	public Pair<Double, Double> getter() 
 	{
-		return new Pair<Double>(viewport.pointOfView_x, viewport.pointOfView_y);
+		return new Pair<Double, Double>(viewport.pointOfView_x, viewport.pointOfView_y);
 	}
 }

@@ -59,11 +59,9 @@ public abstract class VisualObject3D extends VisualObject
 	 */
 	public boolean trigger_coordination;
 
-	/**
-	 * 이 생성자는 새 요소를 2차원 평면에 놓일 요소로 간주합니다.
-	 */
-	public VisualObject3D()
-	{
+	// NamedObject
+	public VisualObject3D(String name) {
+		super(name);
 	}
 
 	/**
@@ -133,6 +131,10 @@ public abstract class VisualObject3D extends VisualObject
 	 * 적중 테스트를 위한 메서드들
 	 * 
 	 */
+	
+	public boolean HitTest3D(VisualObject3D object) {
+		return HitTest3D(object.pos_x, object.pos_y, object.pos_z);
+	}
 	
 	/**
 	 * 3차원 공간 안에서, 이 요소가 차지하는 영역 위에 해당 좌표가 있는지(마우스 커서를 예로 들면, 커서가 이 요소 위에 있는지) 여부를 반환합니다.<br>

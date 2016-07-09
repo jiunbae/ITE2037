@@ -19,6 +19,11 @@ public class DrawableObject3D extends VisualObject3D
 	 * 참고: Image는 이 요소의 크기(width와 height)에 따라 자동으로 확대 / 축소되어 그려집니다. 
 	 */
 	public Image image;
+
+	// NamedObject
+	public DrawableObject3D(String name) {
+		super(name);
+	}
 	
 	/**
 	 * 이 생성자는 새 요소를 3차원 공간에 그릴 요소로 간주합니다.

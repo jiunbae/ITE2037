@@ -90,11 +90,11 @@ public class Keyboard implements IProcess<Integer, Integer>
 			if(state == Keyboard.STATE_CHANGE + Keyboard.STATE_PRESS)
 			{
 				if(bs.ID == KEYBOARD.ACTION.ordinal())
-					manager.get("interaction").setter(new Pair<String> ("act", (String) manager.get("physics").getter()));
+					manager.get("interaction").setter(new Pair<String, String> ("act", (String) manager.get("physics").getter()));
 				if(bs.ID == KEYBOARD.HELP.ordinal())
-					manager.get("interaction").setter(new Pair<String> ("act_child", "help"));
+					manager.get("interaction").setter(new Pair<String, String> ("act_child", "help"));
 				if(bs.ID >= KEYBOARD.EMOTION1.ordinal()  && bs.ID <= KEYBOARD.EMOTION9.ordinal())
-					manager.get("interaction").setter(new Pair<String> ("act_emotion", "emotion@emo_" + (bs.ID - 6)));
+					manager.get("interaction").setter(new Pair<String, String> ("act_emotion", "emotion@emo_" + (bs.ID - 6)));
 			}
 			
 			if(state >= Keyboard.STATE_PRESS)		

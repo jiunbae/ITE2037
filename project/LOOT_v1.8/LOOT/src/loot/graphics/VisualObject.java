@@ -9,7 +9,7 @@ import java.awt.Point;
  * @author Racin
  *
  */
-public abstract class VisualObject
+public abstract class VisualObject extends NamedObject
 {
 	/**
 	 * 이 요소가 2차원 평면 내(게임 화면 자체, 또는 Layer 안)에 위치할 x좌표(width가 양수인 경우 가장 왼쪽 픽셀의 좌표)입니다.<br>
@@ -56,6 +56,11 @@ public abstract class VisualObject
 	 * 만약 이 요소가 어떤 Layer에도 포함되어 있지 않는 경우 이 필드는 아무 영향도 주지 않습니다.
 	 */
 	public boolean trigger_remove;
+	
+	// NamedObject
+	public VisualObject(String name) {
+		super(name);
+	}
 	
 	public VisualObject()
 	{

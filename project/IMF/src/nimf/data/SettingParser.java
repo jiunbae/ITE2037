@@ -1,4 +1,4 @@
-package imf.data;
+package nimf.data;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -37,6 +37,7 @@ public class SettingParser
 						int first = s[1].indexOf("$"), last = s[1].lastIndexOf("$");
 						if (first != -1 && last != -1 && first != last)
 							s[1] = s[1].replace(s[1].substring(first, last + 1), (String)path.get(s[1].substring(first + 1, last)));
+						s[1] = s[1].replace("//", "/");
 					}
 					path.put(s[0], s[1]);
 				}

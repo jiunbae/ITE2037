@@ -52,17 +52,17 @@ public class PhysicalObject extends SpriteObject
 		this.pos_x = x;
 		this.pos_y = y;
 	}
-	public void doPosition(Pair<Double> pos)
+	public void doPosition(Pair<Double, Double> pos)
 	{
 		doPosition(pos.first, pos.second);
 	}
-	public Pair<Double> nowPosition()
+	public Pair<Double, Double> nowPosition()
 	{
-		return new Pair<Double>(this.pos_x, this.pos_y);
+		return new Pair<Double, Double>(this.pos_x, this.pos_y);
 	}
-	public Pair<Double> nextPosition()
+	public Pair<Double, Double> nextPosition()
 	{
-		return new Pair<Double>(this.pos_x + this.v_x, this.pos_y + this.v_y);
+		return new Pair<Double, Double>(this.pos_x + this.v_x, this.pos_y + this.v_y);
 	}
 	
 	public void doVelocity(double vx, double vy)
@@ -70,16 +70,16 @@ public class PhysicalObject extends SpriteObject
 		this.v_x = vx;
 		this.v_y = vy;
 	}
-	public void doVelocity(Pair<Double> vel)
+	public void doVelocity(Pair<Double, Double> vel)
 	{
 		doVelocity(vel.first, vel.second);
 	}
-	public Pair<Double> nowVelocity()
+	public Pair<Double, Double> nowVelocity()
 	{
-		return new Pair<Double>(this.v_x, this.v_y);
+		return new Pair<Double, Double>(this.v_x, this.v_y);
 	}
-	public Pair<Double> nextVelocity()
+	public Pair<Double, Double> nextVelocity()
 	{
-		return new Pair<Double>(this.v_x + this.a_x, this.v_y + this.a_y);
+		return new Pair<Double, Double>(this.v_x + this.a_x, this.v_y + this.a_y);
 	}
 }

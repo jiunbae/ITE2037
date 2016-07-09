@@ -1,5 +1,5 @@
 res=res/
-ui=$res$ui
+ui=$res$/ui
 data=data/
-map=$data$map/
-default=$data$default/
+map=$data$/map/
+default=$data$/default/

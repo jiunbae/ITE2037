@@ -1,6 +1,7 @@
 package nimf.manager;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import nimf.object.SpriteObject;
 
@@ -14,8 +15,8 @@ public class SpriteManager {
 	public static SpriteObject get(String name) {
 		return s.get(name);
 	}
-	
-	public static String nextName() {
-		return Manager.nextName(s);
+
+	public static void forEach(Consumer<SpriteObject> func) {
+		s.forEach((k,o)->func.accept(o));
 	}
 }

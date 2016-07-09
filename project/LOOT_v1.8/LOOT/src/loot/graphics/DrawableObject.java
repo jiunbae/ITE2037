@@ -17,6 +17,11 @@ public class DrawableObject extends VisualObject
 	 * 참고: Image는 이 요소의 크기(width와 height)에 따라 자동으로 확대 / 축소되어 그려집니다. 
 	 */
 	public Image image;
+
+	// NamedObject
+	public DrawableObject(String name) {
+		super(name);
+	}
 	
 	public DrawableObject()
 	{

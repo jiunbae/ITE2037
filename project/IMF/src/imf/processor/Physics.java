@@ -78,7 +78,7 @@ public class Physics implements IProcess<Integer, String>
 
 		if (next.relativeX(o) == 0 && next.relativeY(o) == 0 && o.name.indexOf("thorn") != -1)
 		{
-			manager.get("interaction").setter(new Pair<String> ("dead", "dead_trigger@dead"));
+			manager.get("interaction").setter(new Pair<String, String> ("dead", "dead_trigger@dead"));
 			timer.schedule(new DeadTask(), 5000);
 			return state_next_jump;
 		}

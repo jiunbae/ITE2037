@@ -2,26 +2,26 @@ package imf;
 
 import java.util.HashMap;
 
-import imf.data.DataManager;
-import imf.data.DataObject;
-import imf.data.DataParser;
-import imf.data.SettingParser;
-import imf.network.CharacterInfoSyncher;
 import imf.network.ConnectionEvent;
 import imf.network.ConnectionManager;
 import imf.network.IConnectionReceiver;
-import imf.object.*;
 import imf.processor.Keyboard;
 import imf.processor.Mouse;
 import imf.processor.ProcessManager;
 import imf.processor.Scene;
-import imf.processor.IProcessProperty;
 import imf.processor.Interaction;
 import imf.processor.Physics;
+
 import loot.GameFrame;
 import loot.GameFrameSettings;
 import loot.graphics.TextBox;
 import loot.graphics.Viewport;
+import nimf.data.DataManager;
+import nimf.data.ResourceManager;
+import nimf.data.SettingParser;
+import nimf.manager.ScriptManager;
+import nimf.manager.SpriteManager;
+import nimf.object.*;
 
 /**
  * LOOT Game Frame window
@@ -45,8 +45,6 @@ public class Window extends GameFrame implements IConnectionReceiver
 	boolean loading;
 	int intervalHandle = 0;
 	
-	DataParser data;
-	
 	Viewport viewport, absolute;
 	TextBox text;
 	
@@ -62,15 +60,12 @@ public class Window extends GameFrame implements IConnectionReceiver
 	Mouse mouse;
 	Scene scene;
 	
-	PlayerObject me = null;
-	PartnerObject you = null;
-	SpriteObject stage;
-	
 	public Window(GameFrameSettings settings) 
 	{
 		super(settings);
 		
 		SettingParser.parse("data/IMF.inf", path);
+		
 		ConnectionManager.registerIReceiver(this);
 	}
 	
@@ -78,7 +73,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 	@Override
 	public void onReceived(ConnectionEvent e) 
 	{
-		switch (e.type) 
+		/*switch (e.type) 
 		{
 			case ConnectionEvent.CONNECTED:
 			    ((TriggerObject)DataManager.get_containers("loading")).trigger("wait");
@@ -109,12 +104,55 @@ public class Window extends GameFrame implements IConnectionReceiver
 				state = GAME_STATE.LOADING;
 				Initialize();
 				break;
-		}
+		}*/
 	}
 
+	public void newInstance() {
+		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		absolute = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
+		
+		absolute.radius_x = viewport.radius_x = 25;
+		absolute.radius_y = viewport.radius_y = 25;
+		absolute.pointOfView_z =  viewport.pointOfView_z = 1000;
+		absolute.view_baseDistance = viewport.view_baseDistance = 1000;
+		absolute.view_minDistance = viewport.view_minDistance = 1000;
+		absolute.view_maxDistance = viewport.view_maxDistance = 100000;
+		absolute.view_width = viewport.view_width = settings.canvas_width;
+		absolute.view_height = viewport.view_height = settings.canvas_height;
+	}
+	
 	@Override
 	public boolean Initialize() 
 	{
+		newInstance();
+		
+		switch (state) {
+			case SPLASH:
+				DataManager.parse(path.get("default") + "default.xml");
+				break;
+			case LOADING:
+				DataManager.parse(path.get("map") + "default.xml");
+				state = GAME_STATE.PLAY;
+				break;
+			default:
+		}
+		
+		ResourceManager.get("texture").forEach((s)-> {
+			images.LoadImage(path.get("res") + s, s);
+		});
+		
+		// Initialize script objects;
+		ScriptManager.forEach((s)->{
+		
+		});
+		
+		// Initialize sprite objects;
+		SpriteManager.forEach((s)-> {
+			s.image = images.GetImage(s.texture);
+			viewport.children.add(s);
+		});
+		
+		/*
 		Destroy();
 		switch (state)
 		{
@@ -196,13 +234,17 @@ public class Window extends GameFrame implements IConnectionReceiver
 		//viewport.children.add(text);
 		
 		loading = false;
+		return true;*/
+		
 		return true;
 	}
 	
 	@Override
 	public boolean Update(long timeStamp) 
 	{
+		/*
 		if (loading)
+		 
 			return true;
 		inputs.AcceptInputs();
 		switch (state)
@@ -227,12 +269,15 @@ public class Window extends GameFrame implements IConnectionReceiver
 		}
 		processor.loop();
 		return true;
+		*/
+		return true;
 	}
 
 	
 	@Override
 	public void Draw(long timeStamp) 
 	{
+		/*
 		if (loading)
 			return;
 		BeginDraw();
@@ -240,9 +285,17 @@ public class Window extends GameFrame implements IConnectionReceiver
 		viewport.Draw(g);
 		absolute.Draw(g);
 		EndDraw();
+		*/
+		BeginDraw();
+		
+		ClearScreen();
+		viewport.Draw(g);
+		//absolute.Draw(g);
+		
+		EndDraw();
 	}
 
-	public void Destroy()
+	/*public void Destroy()
 	{
 		loading = true;
 		DataManager.removeAll();
@@ -265,8 +318,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 		
 		me = null;
 		you = null;
-	}
-	
+	}*/
+	/*
 	public class Stage implements IProcessProperty<String, Integer> {
 		@Override
 		public void setter(String object) {
@@ -295,7 +348,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 					if (state != GAME_STATE.SPLASH)
 						break;
 					state = GAME_STATE.CREDIT;
-					me.pos_x= 850;
+					me.pos_x = 850;
 					me.pos_y = 100;
 					break;
 					
@@ -325,8 +378,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 		public Integer getter() {
 			return state.ordinal();
 		}
-	}
-	
+	}*/
+	/*
 	private void objectInstall(SpriteObject o)
 	{
 		images.LoadImage(path.get("res") + o.texture, o.texture);
@@ -340,8 +393,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 			if (o.type.equals("button"))
 				mouse.install(o);
 		}
-	}
-	
+	}*/
+	/*
 	private void objectInstall(ContainerObject o)
 	{
 		images.LoadImage(path.get("res") + o.texture, o.texture);
@@ -356,8 +409,8 @@ public class Window extends GameFrame implements IConnectionReceiver
 			if (o.type.equals("button"))
 				mouse.install(o);
 		}
-	}
-	
+	}*/
+	/*
 	private SpriteObject newObject(DataObject e)
 	{
 		SpriteObject ret = null;
@@ -389,5 +442,5 @@ public class Window extends GameFrame implements IConnectionReceiver
 		if (e.get("visible").equals("false"))
 			ret.invisibleSup(true);
 		return ret;
-	}
+	}*/
 }

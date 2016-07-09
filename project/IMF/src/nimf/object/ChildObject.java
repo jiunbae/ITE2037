@@ -3,7 +3,9 @@ package nimf.object;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChildObject<T extends Object> {
+import loot.graphics.NamedObject;
+
+public class ChildObject<T extends NamedObject> {
 	public List<T> s = new ArrayList<T>();
 	
 	public T get(String name) {

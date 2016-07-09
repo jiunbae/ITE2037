@@ -8,7 +8,7 @@ import imf.object.SpriteObject;
 import imf.utility.Pair;
 import loot.InputManager;
 
-public class Mouse implements IProcess<Pair<Integer>, SpriteObject> 
+public class Mouse implements IProcess<Pair<Integer, Integer>, SpriteObject> 
 {
 	ProcessManager manager;
 	InputManager inputs;
@@ -45,7 +45,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if(o == null)
 			return;
-		manager.get("interaction").setter(new Pair<String>("click", o.name));
+		manager.get("interaction").setter(new Pair<String, String>("click", o.name));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,7 +53,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if(o == null)
 			return;
-		manager.get("interaction").setter(new Pair<String>("hover", o.name));
+		manager.get("interaction").setter(new Pair<String, String>("hover", o.name));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -61,7 +61,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	{
 		if(o == null)
 			return;
-		manager.get("interaction").setter(new Pair<String>("leave", o.name));
+		manager.get("interaction").setter(new Pair<String, String>("leave", o.name));
 	}
 	
 	public SpriteObject findTarget()
@@ -82,7 +82,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	}
 
 	@Override
-	public void setter(Pair<Integer> object) 
+	public void setter(Pair<Integer ,Integer> object) 
 	{
 		
 	}
@@ -107,7 +107,7 @@ public class Mouse implements IProcess<Pair<Integer>, SpriteObject>
 	@Override
 	public void process() 
 	{
-		Pair<Double> view = (Pair<Double>) manager.get("scene").getter();
+		Pair<Double, Double> view = (Pair<Double, Double>) manager.get("scene").getter();
 		
 		ax = inputs.pos_mouseCursor.getX();
 		ay = -inputs.pos_mouseCursor.getY();

@@ -1,38 +1,19 @@
 <?xml version="1.0"?>
 
-<stage>
-	<container name="help" type="trigger" collision="false" absolute="true">
-		<static></static>
-		<static w="600" h="300" z="100" texture="UI/help/popup.png"></static>
-	</container>
-	<static x="525" y="-250" w="45" h="18" texture="UI/help/tooltip.png" collision="false" absolute="true"></static>
+<stage w="1200" h="600" z="-1" texture="UI/bg.png">
+	<sprite name="me" w="25" h="25" texture="first.png"></sprite>
+	<sprite name="you" w="25" h="25" texture="second.png"></sprite>
 
-	<container name="emotion_" type="trigger" collision="false">
-		<static name="emotion_0"></static>
-		<container name="emotion" type="trigger" absolute="me">
-			<static name="emo_1" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_1.png"></static>
-			<static name="emo_2" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_2.png"></static>
-			<static name="emo_3" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_3.png"></static>
-			<static name="emo_4" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_4.png"></static>
-			<static name="emo_5" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_5.png"></static>
-			<static name="emo_6" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_6.png"></static>
-			<static name="emo_7" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_7.png"></static>
-			<static name="emo_8" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_8.png"></static>
-			<static name="emo_9" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_9.png"></static>
-		</container>
-	</container>
-	<container name="emotion_get_" type="trigger" collision="false" absolute="you">
-		<static name="emotion_get_0"></static>
-		<container name="emotion_get" type="trigger" absolute="you">
-			<static name="emo_1_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_1.png"></static>
-			<static name="emo_2_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_2.png"></static>
-			<static name="emo_3_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_3.png"></static>
-			<static name="emo_4_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_4.png"></static>
-			<static name="emo_5_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_5.png"></static>
-			<static name="emo_6_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_6.png"></static>
-			<static name="emo_7_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_7.png"></static>
-			<static name="emo_8_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_8.png"></static>
-			<static name="emo_9_get" w="62" h="45" z="1" texture="UI/emotion/speech_balloon_9.png"></static>
-		</container>
-	</container>
+	<sprite name="logo" y="100" w="225" h="30" texture="UI/logo.png"></sprite>
+
+	<sprite name="start" y="-25" w="300" h="20" texture="UI/text/start_btn.png" collision="true">
+		<script event="mouse@enter">
+			button.texture="UI/text/start_btn_hover.png"
+		</script>
+		<script event="mouse@leave">
+			button.texture="UI/text/start_btn.png"
+		</script>
+		<script event="mouse@interact">
+		</script>
+	</sprite>
 </stage>

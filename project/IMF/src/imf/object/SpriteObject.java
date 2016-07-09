@@ -63,9 +63,9 @@ public class SpriteObject extends DrawableObject3D
 			if (value == false && !trigger_object.equals("") && !trigger_forbiden)
 			{
 				if(!trigger_object_target.equals(""))
-					DataManager.action().setter(new Pair<String>("act_child" + (execute_trigger == false ? "_only_animation" : ""), trigger_object + "@" + trigger_object_target));	
+					DataManager.action().setter(new Pair<String, String>("act_child" + (execute_trigger == false ? "_only_animation" : ""), trigger_object + "@" + trigger_object_target));	
 				else
-					DataManager.action().setter(new Pair<String>("act_child" + (execute_trigger == false ? "_only_animation" : ""), trigger_object));
+					DataManager.action().setter(new Pair<String, String>("act_child" + (execute_trigger == false ? "_only_animation" : ""), trigger_object));
 			}
 		} catch (Exception e) {
 			
