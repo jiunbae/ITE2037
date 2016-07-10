@@ -33,7 +33,6 @@ public class ScriptManager implements IManager{
 	
 	@SuppressWarnings("unchecked")
 	public static void clear() {
-		s.clear();
 		s = new HashMap<String, ScriptObject>();
 		s_ = new HashMap[Event.values().length];
 		for(int i = 0; i < Event.values().length; ++i)

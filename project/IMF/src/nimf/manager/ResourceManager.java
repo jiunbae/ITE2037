@@ -46,7 +46,6 @@ public class ResourceManager implements IManager {
 	}
 	
 	public static void clear() {
-		s.clear();
 		s = new ArrayList<Pair<String, List<String>>>();
 	}
 }

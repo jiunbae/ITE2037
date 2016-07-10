@@ -107,7 +107,7 @@ public class Window extends GameFrame implements IConnectionReceiver
 		}*/
 	}
 
-	public void newInstance() {
+	public void refresh() {
 		viewport = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		absolute = new Viewport(0, 0, settings.canvas_width, settings.canvas_height);
 		
@@ -119,12 +119,17 @@ public class Window extends GameFrame implements IConnectionReceiver
 		absolute.view_maxDistance = viewport.view_maxDistance = 100000;
 		absolute.view_width = viewport.view_width = settings.canvas_width;
 		absolute.view_height = viewport.view_height = settings.canvas_height;
+		
+		DataParser.clear();
+		ResourceManager.clear();
+		ScriptManager.clear();
+		SpriteManager.clear();
 	}
 	
 	@Override
 	public boolean Initialize() 
 	{
-		newInstance();
+		refresh();
 		
 		switch (state) {
 			case SPLASH:

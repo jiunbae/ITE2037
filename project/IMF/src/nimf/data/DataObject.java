@@ -38,7 +38,7 @@ public class DataObject {
 	}
 	
 	public static List<Pair<String, HashSet<Pair<String, String>>>> attrs = new ArrayList<Pair<String, HashSet<Pair<String, String>>>>();
-	public static HashMapDefault<Node, String> nodes = new HashMapDefault<Node, String>("");
+	public static HashMapDefault<Node, String> nodes;
 	public HashMapDefault<String, String> s = new HashMapDefault<String, String>("");
 	public Type type;
 	

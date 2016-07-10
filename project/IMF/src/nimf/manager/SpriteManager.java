@@ -29,7 +29,6 @@ public class SpriteManager implements IManager{
 	}
 	
 	public static void clear() {
-		s.clear();
 		s = new HashMap<String, SpriteObject>();
 		player = null;
 		partner = null;

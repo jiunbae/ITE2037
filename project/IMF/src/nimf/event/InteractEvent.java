@@ -25,6 +25,4 @@ public class InteractEvent {
 				return o.getValue();
 		return null;
 	}
-	
-	
 }

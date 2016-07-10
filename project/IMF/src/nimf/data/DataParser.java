@@ -7,7 +7,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import imf.Const;
+import imf.utility.HashMapDefault;
 import nimf.data.DataObject.Type;
+import nimf.manager.IManager;
 import nimf.manager.ScriptManager;
 import nimf.manager.SpriteManager;
 import nimf.object.ScriptObject;
@@ -31,10 +33,10 @@ import java.util.function.Consumer;
  * @author MaybeS
  * @version 1.0.0
  */
-public class DataParser
+public class DataParser implements IManager
 {	
 	public static DataObject stage;
-	public static List<DataObject> datas = new ArrayList<DataObject>();
+	public static List<DataObject> datas;
 	
 	public static void parse(String filename)
 	{
@@ -91,7 +93,7 @@ public class DataParser
 	}
 	
 	private static void parseAttrs(DataObject data, NamedNodeMap attrs) {
-		for (int i = 0; attrs !=null && i < attrs.getLength(); ++i)
+		for (int i = 0; attrs != null && i < attrs.getLength(); ++i)
 			parseAttr(data, attrs.item(i));
 	}
 	
@@ -105,7 +107,7 @@ public class DataParser
 	
 	public static void clear() {
 		stage = null;
-		datas.clear();
-		DataObject.nodes.clear();
+		datas = new ArrayList<DataObject>();
+		DataObject.nodes = new HashMapDefault<Node, String>("");
 	}
 }
