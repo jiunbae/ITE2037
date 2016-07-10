@@ -10,6 +10,7 @@ import imf.Const;
 import imf.utility.HashMapDefault;
 import imf.utility.Pair;
 import imf.utility.is;
+import nimf.manager.ResourceManager;
 
 public class DataObject {
 	public static enum Type {
@@ -74,7 +75,7 @@ public class DataObject {
 	
 	public DataObject(Type type) {
 		this.type = type;
-		DataManager.datas.add(this);
+		DataParser.datas.add(this);
 		defaultData();
 	}
 	

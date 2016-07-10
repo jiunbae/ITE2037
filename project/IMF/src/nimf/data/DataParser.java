@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  * @author MaybeS
  * @version 1.0.0
  */
-public class DataManager
+public class DataParser
 {	
 	public static DataObject stage;
 	public static List<DataObject> datas = new ArrayList<DataObject>();

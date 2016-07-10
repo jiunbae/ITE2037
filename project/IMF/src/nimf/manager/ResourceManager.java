@@ -1,4 +1,4 @@
-package nimf.data;
+package nimf.manager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,10 +8,12 @@ import imf.utility.Pair;
 import imf.utility.is;
 import imf.validate.ValidateException;
 
-public class ResourceManager {
-	private static List<Pair<String, List<String>>> s = new ArrayList<Pair<String, List<String>>>();
+public class ResourceManager implements IManager {
+	private static List<Pair<String, List<String>>> s;
 	
-	
+	static {
+		clear();
+	}
 	
 	public static void put(String name, String path) {
 		if (path.length() < 1)
@@ -41,5 +43,10 @@ public class ResourceManager {
 	
 	public static List<String> get(String name) {
 		return is.<Pair<String,List<String>>>Get(s, (t)-> { return t.first.equals(name); }).second;
+	}
+	
+	public static void clear() {
+		s.clear();
+		s = new ArrayList<Pair<String, List<String>>>();
 	}
 }

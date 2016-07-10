@@ -12,8 +12,8 @@ import imf.validate.ValidateException;
 import loot.graphics.NamedObject;
 import nimf.data.DataObject;
 import nimf.data.DataObject.Type;
-import nimf.data.ResourceManager;
 import nimf.event.TimerEvent;
+import nimf.manager.ResourceManager;
 import nimf.manager.ScriptManager;
 import nimf.manager.SpriteManager;
 

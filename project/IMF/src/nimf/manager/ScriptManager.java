@@ -6,15 +6,13 @@ import java.util.function.Consumer;
 import nimf.object.ScriptObject;
 import nimf.object.ScriptObject.Event;
 
-public class ScriptManager {
+public class ScriptManager implements IManager{
 
-	@SuppressWarnings("unchecked")
-	public static HashMap<String, ScriptObject>[] s_ = new HashMap[Event.values().length];
-	public static HashMap<String, ScriptObject> s = new HashMap<String, ScriptObject>();
+	public static HashMap<String, ScriptObject>[] s_;
+	public static HashMap<String, ScriptObject> s;
 	
 	static {
-		for(int i = 0; i < Event.values().length; ++i)
-			s_[i] = new HashMap<String, ScriptObject>();
+		clear();
 	}
 	
 	public static void put(ScriptObject o) {
@@ -31,6 +29,14 @@ public class ScriptManager {
 
 	public static void forEach(Consumer<ScriptObject> func) {
 		s.forEach((k,o)->func.accept(o));
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void clear() {
+		s.clear();
+		s = new HashMap<String, ScriptObject>();
+		s_ = new HashMap[Event.values().length];
+		for(int i = 0; i < Event.values().length; ++i)
+			s_[i] = new HashMap<String, ScriptObject>();
 	}
 }

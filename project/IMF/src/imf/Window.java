@@ -16,9 +16,9 @@ import loot.GameFrame;
 import loot.GameFrameSettings;
 import loot.graphics.TextBox;
 import loot.graphics.Viewport;
-import nimf.data.DataManager;
-import nimf.data.ResourceManager;
+import nimf.data.DataParser;
 import nimf.data.SettingParser;
+import nimf.manager.ResourceManager;
 import nimf.manager.ScriptManager;
 import nimf.manager.SpriteManager;
 import nimf.object.*;
@@ -128,10 +128,10 @@ public class Window extends GameFrame implements IConnectionReceiver
 		
 		switch (state) {
 			case SPLASH:
-				DataManager.parse(path.get("default") + "default.xml");
+				DataParser.parse(path.get("default") + "default.xml");
 				break;
 			case LOADING:
-				DataManager.parse(path.get("map") + "default.xml");
+				DataParser.parse(path.get("map") + "default.xml");
 				state = GAME_STATE.PLAY;
 				break;
 			default:
