@@ -1,0 +1,758 @@
+<title>ITE2037 객체지향프로그래밍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F3F4F1; --surface:#FCFCFA; --surface-2:#EDEFEA;
+  --ink:#1A211C; --ink-soft:#5F6862; --ink-faint:#8A938C;
+  --rule:#DCE0DA; --rule-soft:#E7EAE4;
+  --accent:#2E5B4E; --accent-soft:#DDE9E3;
+  --mark:#A33027; --mark-soft:#F2DFDC;
+  --warn:#8E6416; --warn-soft:#F1E6CE;
+  --good:#41693C; --good-soft:#DFEBDC;
+  --shadow:0 1px 2px rgba(26,33,28,.05), 0 8px 24px -16px rgba(26,33,28,.22);
+  --f-display:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121512; --surface:#191D19; --surface-2:#20251F;
+    --ink:#E4E8E1; --ink-soft:#98A199; --ink-faint:#6E776F;
+    --rule:#2A2F29; --rule-soft:#232823;
+    --accent:#78BCA5; --accent-soft:#1D2C27;
+    --mark:#E08A7F; --mark-soft:#2E1F1D;
+    --warn:#CFA155; --warn-soft:#2B2418;
+    --good:#86B87E; --good-soft:#1E2A1D;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121512; --surface:#191D19; --surface-2:#20251F;
+  --ink:#E4E8E1; --ink-soft:#98A199; --ink-faint:#6E776F;
+  --rule:#2A2F29; --rule-soft:#232823;
+  --accent:#78BCA5; --accent-soft:#1D2C27;
+  --mark:#E08A7F; --mark-soft:#2E1F1D;
+  --warn:#CFA155; --warn-soft:#2B2418;
+  --good:#86B87E; --good-soft:#1E2A1D;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:var(--f-body); font-size:16px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px; margin:0 auto; padding-inline:20px; padding-block:0 96px}
+.prose{max-width:70ch}
+h1,h2,h3,h4{font-family:var(--f-display); font-weight:600; text-wrap:balance; margin:0; line-height:1.2}
+p{margin:0}
+a{color:var(--accent); text-underline-offset:3px}
+strong{font-weight:600}
+code{font-family:var(--f-mono); font-size:.86em; background:var(--surface-2); padding:.1em .34em; border-radius:3px; word-break:break-word}
+.lbl{font-family:var(--f-mono); font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+
+/* ---------- masthead ---------- */
+.masthead{border-bottom:2px solid var(--ink); padding-block:40px 22px; margin-bottom:34px}
+.masthead .code{font-family:var(--f-mono); font-size:13px; font-weight:600; letter-spacing:.2em; color:var(--accent)}
+.masthead h1{font-size:clamp(32px,6vw,50px); margin-top:10px; letter-spacing:-.015em}
+.masthead .sub{font-family:var(--f-display); font-size:clamp(17px,2.6vw,21px); font-style:italic; color:var(--ink-soft); margin-top:12px; max-width:60ch}
+.headrow{display:flex; flex-wrap:wrap; gap:24px; align-items:flex-end; justify-content:space-between; margin-top:26px}
+.stats{display:flex; flex-wrap:wrap; gap:8px 30px}
+.stat .lbl{display:block}
+.stat b{font-family:var(--f-mono); font-size:15px; font-weight:500; font-variant-numeric:tabular-nums; display:block; margin-top:2px}
+.grade{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-width:104px; padding:10px 18px 12px; border:1.5px solid var(--mark); border-radius:2px;
+  color:var(--mark); background:var(--mark-soft); transform:rotate(-1.2deg);
+}
+.grade b{font-family:var(--f-display); font-size:38px; line-height:1; font-weight:600; letter-spacing:-.02em}
+.grade .lbl{color:var(--mark); opacity:.85; margin-top:5px}
+
+/* ---------- sections ---------- */
+section{margin-top:52px}
+section > h2{font-size:clamp(23px,3.6vw,29px); letter-spacing:-.01em; padding-bottom:10px; border-bottom:1px solid var(--rule)}
+section > h2 + p, section > h2 + .prose{margin-top:18px}
+.stack{display:flex; flex-direction:column; gap:16px; margin-top:22px}
+.stack-lg{display:flex; flex-direction:column; gap:26px; margin-top:24px}
+
+/* ---------- findings ---------- */
+.finding{
+  background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--ink-faint);
+  border-radius:3px; padding:20px 22px; box-shadow:var(--shadow);
+}
+.finding[data-sev="critical"]{border-left-color:var(--mark)}
+.finding[data-sev="major"]{border-left-color:var(--warn)}
+.finding[data-sev="minor"]{border-left-color:var(--ink-faint)}
+.finding > header{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:baseline; margin-bottom:10px}
+.tier{font-family:var(--f-mono); font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:2px 7px; border-radius:2px}
+[data-sev="critical"] .tier{color:var(--mark); background:var(--mark-soft)}
+[data-sev="major"] .tier{color:var(--warn); background:var(--warn-soft)}
+[data-sev="minor"] .tier{color:var(--ink-soft); background:var(--surface-2)}
+.finding h3{font-size:19px; flex:1 1 16ch}
+.finding p + p{margin-top:12px}
+.finding .prose{max-width:none}
+
+/* evidence strip: file:line + verbatim source */
+.ev{margin-top:14px; border:1px solid var(--rule-soft); border-radius:3px; overflow:hidden; background:var(--surface-2)}
+.ev-head{
+  font-family:var(--f-mono); font-size:11.5px; color:var(--ink-soft);
+  padding:6px 12px; border-bottom:1px solid var(--rule-soft); display:flex; gap:10px; flex-wrap:wrap;
+}
+.ev-head b{color:var(--ink); font-weight:600}
+.ev pre{margin:0; padding:12px 14px; overflow-x:auto; font-family:var(--f-mono); font-size:12.5px; line-height:1.6; color:var(--ink)}
+.ev pre .hl{color:var(--mark); font-weight:600}
+.ev pre .cm{color:var(--ink-faint)}
+
+/* standalone code block */
+pre.code{
+  margin:16px 0 0; padding:14px 16px; overflow-x:auto; background:var(--surface-2);
+  border:1px solid var(--rule-soft); border-radius:3px;
+  font-family:var(--f-mono); font-size:12.5px; line-height:1.6;
+}
+
+/* ---------- verdict table ---------- */
+.tbl-wrap{overflow-x:auto; margin-top:22px; border:1px solid var(--rule); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px}
+th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--rule-soft); vertical-align:top}
+thead th{font-family:var(--f-mono); font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono); font-variant-numeric:tabular-nums; white-space:nowrap}
+td.g{font-family:var(--f-display); font-size:19px; font-weight:600; white-space:nowrap}
+.g-hi{color:var(--good)} .g-mid{color:var(--warn)} .g-lo{color:var(--mark)}
+
+/* ---------- callouts ---------- */
+.note{border-left:3px solid var(--accent); background:var(--accent-soft); padding:14px 18px; border-radius:0 3px 3px 0}
+.note.good{border-left-color:var(--good); background:var(--good-soft)}
+.note .lbl{color:inherit; opacity:.7; display:block; margin-bottom:6px}
+
+/* ---------- misc ---------- */
+ul,ol{margin:12px 0 0; padding-left:22px}
+li{margin-top:7px}
+li::marker{color:var(--ink-faint)}
+.rank{counter-reset:rk; list-style:none; padding-left:0}
+.rank li{counter-increment:rk; display:flex; gap:14px; margin-top:14px}
+.rank li::before{
+  content:counter(rk); font-family:var(--f-mono); font-size:12px; font-weight:600; color:var(--accent);
+  border:1px solid var(--accent); border-radius:50%; width:24px; height:24px; flex:0 0 24px;
+  display:flex; align-items:center; justify-content:center; margin-top:2px;
+}
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); color:var(--ink-faint); font-size:13px}
+footer p + p{margin-top:6px}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+@media (max-width:520px){
+  .grade{transform:none}
+  .masthead{padding-block:30px 18px}
+}
+</style>
+
+<div class="wrap">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div class="code">ITE2037 · HANYANG UNIV · 2016 SPRING</div>
+    <h1>객체지향프로그래밍</h1>
+    <p class="sub">추적 파일 1,727개 중 저자가 쓴 것은 76개다. 그 76개 안에서 야심은 진짜지만, 야심을 실행하는 코드 경로마다 죽어 있거나 한 방향으로 고정되어 있다.</p>
+    <div class="headrow">
+      <div class="stats">
+        <div class="stat"><span class="lbl">추적 파일</span><b>1,727</b></div>
+        <div class="stat"><span class="lbl">저자 .java</span><b>76 / 428</b></div>
+        <div class="stat"><span class="lbl">커밋</span><b>90 / 117</b></div>
+        <div class="stat"><span class="lbl">기간</span><b>2016.03–07</b></div>
+        <div class="stat"><span class="lbl">스택</span><b>Java 8 · LOOT</b></div>
+      </div>
+      <div class="grade"><b>C+</b><span class="lbl">종합</span></div>
+    </div>
+  </header>
+
+  <!-- ============ 총평 ============ -->
+  <section>
+    <h2>총평</h2>
+    <div class="prose stack">
+      <p>이 레포에는 네 덩어리가 들어 있다. 주차별 기초 과제(<code>assignment/OODP</code>), 작은 축제용 게임 AI 봇 <strong>DEJAVA</strong>(클래스명은 <code>TEJAVA</code>), 4인 팀 프로젝트 <strong>IMF</strong>(<code>project/IMF</code>), 그리고 학기가 끝난 뒤 7월에 혼자 시작한 엔진 재작성 <code>nimf</code>. 나머지 1,600여 개 파일은 LOOT 게임 프레임워크, 수업이 배포한 L4G 시뮬레이터, 같은 반 학생 147명분의 봇 소스, TA 제공 코드, 그리고 Eclipse 워크스페이스 메타데이터다. 평가는 저자가 쓴 76개 파일 약 5,500줄에만 적용했다.</p>
+      <p>가장 잘한 것은 분명하다. DEJAVA는 "잉크 방울" 확산 모델 — 관측된 플레이어 위치에서 다음 턴 존재 확률을 사방으로 퍼뜨리고, 시야 밖 셀은 감쇠 계수를 곱해 신뢰도를 낮추는 — 을 <code>TEJAVA.java:162–221</code>에 실제로 구현했다. 상수는 짐작이 아니라 실험으로 골랐고, 그 실험을 위한 집계 하네스(<code>TEST/TEST.java</code>)와 Mathematica 노트북(<code>doc/report/res/*.nb</code>)까지 남아 있다. 학부 2학년이 게임 AI 과제에서 여기까지 가는 경우는 흔하지 않다.</p>
+      <p>가장 치명적인 것도 분명하다. <strong>저자가 직접 설계한 코드 경로 중 여러 개가 실행되지 않거나, 입력과 무관하게 같은 값을 돌려준다.</strong> 감염자 상태의 이동 결정(<code>TEJAVA.java:375–385</code>)은 인자 조합 때문에 네 방향 점수가 전부 0이 되어 항상 <code>Left</code>를 반환한다. <code>nimf</code>의 타이머 이벤트 클래스는 static 초기화 블록에서 <code>NullPointerException</code>을 확정적으로 던진다(<code>TimerEvent.java:45</code>). <code>ResourceManager.validate()</code>는 예외를 던지고 같은 함수에서 잡아 버린 뒤 무조건 <code>true</code>를 반환한다. 그리고 master HEAD의 <code>imf/Window.java</code>는 게임 루프 전체가 주석 처리되어 있다. 즉 이 레포를 지금 클론해서 큰 축제를 실행하면 스플래시 화면만 그려진다.</p>
+      <p>중요한 완화 사실 하나. 큰 축제의 <strong>제출본은 멀쩡했다.</strong> <code>5d8f226</code>(2016-06-26, "Update End of Project") 시점의 <code>project/IMF/src/Window.java</code>에는 <code>processor.loop()</code>를 호출하는 살아 있는 <code>Update()</code>가 있다. HEAD가 깨진 것은 7월 1일 <code>7da901f</code> "new Start"로 시작한 개인 재작성 때문이다. 학점을 다시 매긴다면 제출 시점을 봐야 하지만, 이 레포가 지금 이 사람의 엔지니어링을 어떻게 대변하는가를 묻는다면 HEAD가 답이다.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>모듈</th><th>주제</th><th>핵심 판정</th><th>등급</th></tr></thead>
+        <tbody>
+          <tr><td class="num">A1–A3</td><td>기초 문법 · 배열 · 클래스/패키지</td><td>계산해 놓고 안 쓰는 배열, 세 자리 수에서 터지는 인덱스. 크기는 작지만 틀렸다.</td><td class="g g-mid">C+</td></tr>
+          <tr><td class="num">A6</td><td>몬테카를로 π (Swing + 스레드)</td><td>원 반지름과 샘플링 영역이 어긋나 π가 3.23으로 나온다. 과제의 목적 자체가 실패.</td><td class="g g-lo">C</td></tr>
+          <tr><td class="num">작은 축제</td><td>DEJAVA — L4G2EP2 게임 AI</td><td>모델·실험·보고서는 진짜. 감염자 이동 분기가 항상 같은 방향을 반환.</td><td class="g g-mid">B-</td></tr>
+          <tr><td class="num">큰 축제</td><td>IMF — 2인 협동 퍼즐 (4인 팀)</td><td>상속·제네릭·컴포지트가 실제로 쓰였다. 그러나 모든 예외를 빈 catch로 삼킨다.</td><td class="g g-mid">C+</td></tr>
+          <tr><td class="num">nimf</td><td>7월 개인 엔진 재작성 (코스 외)</td><td>명세서가 코드보다 세 걸음 앞서 있다. 확정 NPE, out-param 오해, 문자열 결합 버그.</td><td class="g g-lo">D</td></tr>
+          <tr><td class="num">위생</td><td>레포 구성</td><td>25 MB짜리 Eclipse 오류 리포트 인덱스, .class 385개, 남의 이름·학번 147개.</td><td class="g g-lo">D</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 귀속 ============ -->
+  <section>
+    <h2>무엇이 저자의 코드인가</h2>
+    <p class="prose">이 레포는 단독 작업이 아니고, 추적 파일 대부분이 저자의 코드가 아니다. 아래 분리를 전제하지 않은 수치(예: 총 .java 428개, 총 127k줄)는 저자의 작업량으로 읽으면 틀린 값이 된다.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>구분</th><th>경로</th><th>규모</th><th>귀속</th></tr></thead>
+        <tbody>
+          <tr><td>기초 과제</td><td class="num">assignment/OODP/</td><td class="num">15 파일 · 563줄</td><td>배지운</td></tr>
+          <tr><td>봇 + 실험 하네스</td><td class="num">L4G2EP2/…/TEJAVA · Player_v8 · TEST</td><td class="num">3 파일 · 993줄</td><td>배지운</td></tr>
+          <tr><td>IMF 본체</td><td class="num">project/IMF/src (network 제외)</td><td class="num">43 파일 · 3,060줄</td><td>배지운 (팀 기여 포함 가능)</td></tr>
+          <tr><td>IMF 맵 에디터</td><td class="num">project/IMF_GENERATOR/src</td><td class="num">15 파일 · 859줄</td><td>배지운</td></tr>
+          <tr><td>네트워크 계층</td><td class="num">project/IMF/src/imf/network</td><td class="num">8 파일 · 747줄</td><td><strong>이영수</strong> (prevdev@gmail.com, 23커밋)</td></tr>
+          <tr><td>게임 프레임워크</td><td class="num">*/loot/*.java</td><td class="num">97 파일</td><td>수업 배포 (LOOT v1.8)</td></tr>
+          <tr><td>시뮬레이터</td><td class="num">L4G2EP2/**/l4g, l4g2ep1</td><td class="num">140 파일</td><td>수업 배포 (@author Racin)</td></tr>
+          <tr><td>동급생 제출 봇</td><td class="num">**/customplayers/*.java</td><td class="num">147 파일</td><td><strong>타 학생</strong> — 저자 실력과 무관</td></tr>
+          <tr><td>TA 예제</td><td class="num">assignment/OODP_HW_*_by_TA</td><td class="num">5 파일</td><td>조교</td></tr>
+          <tr><td>IDE 메타데이터</td><td class="num">assignment/.metadata, .recommenders</td><td class="num">174 파일</td><td>Eclipse 자동 생성</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="stack-lg">
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>큰 축제는 4인 팀 프로젝트이고, 제안서에 팀원 실명이 있다</h3></header>
+        <div class="prose">
+          <p><code>project/presentation/OODP_제안서.pptx</code>에 팀 구성이 명시되어 있다. 이영수(팀장, 디자이너 겸 개발자), 박현규(매니저), <strong>배지운(개발자)</strong>, 이상헌(디자이너). 커밋 로그와도 일치한다 — 코드 기여자는 두 명뿐이고(MaybeS 90커밋, prevdev 23커밋), <code>imf/network/*</code> 8개 파일은 전부 이영수가 쓴 것이다. 아래 IMF 절의 지적은 <code>imf/network</code>를 제외한 나머지에만 적용했다.</p>
+          <p>제안서는 "6가지 Stage 게임"을 약속했다. 최종 트리의 맵 데이터는 <code>data/map/stage1.xml</code>과 <code>data/map/new.xml</code> 두 개뿐이다. 6스테이지는 구현되지 않았다.</p>
+        </div>
+      </article>
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>동급생 147명의 이름과 학번이 공개 레포에 그대로 올라가 있다</h3></header>
+        <div class="prose">
+          <p>토너먼트 배포본을 통째로 커밋하면서 다른 학생들의 제출 파일이 함께 올라갔다. 파일명 자체가 개인 식별 정보다 — <code>Player_2012004270.java</code>, <code>Player_2010003969.java</code>, <code>Player_최태혁.java</code>, <code>Player_정현교.java</code>, <code>Player_여운학_난벽이좋아.java</code>. 학번은 그 자체로 재학 연도와 학과를 드러낸다. 본인 보고서에도 본인 학번(2015004584)이 그대로 들어 있다.</p>
+          <p>평가 관점에서는 두 가지 문제다. 하나는 개인정보를 동의 없이 공개한 것이고, 다른 하나는 레포를 포트폴리오로 볼 사람이 이 147개를 저자 코드로 오해할 수 있다는 것이다. 실제로 <code>L4G2EP2/final</code>의 <code>.java</code> 130개 중 101개가 남의 것이다.</p>
+        </div>
+      </article>
+      <article class="finding" data-sev="minor">
+        <header><span class="tier">경미</span><h3>git을 쓰면서 디렉터리 복사로 스냅샷을 떴다</h3></header>
+        <div class="prose">
+          <p><code>L4G2EP2/</code> 아래에 <code>old/</code>, <code>now/</code>, <code>final/</code> 세 벌이 거의 같은 프로젝트다. 같은 <code>Classroom.java</code>가 1,497줄 / 2,245줄 / 2,225줄로 세 번 존재한다. 브랜치나 태그를 쓰면 될 일을 폴더 복사로 해결했고, 그 결과 저장소의 .java 개수가 세 배로 부풀었다. <code>project/IMF/data/default/default - 복사본.xml</code>도 같은 습관이다.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 기초 과제 ============ -->
+  <section>
+    <h2>기초 과제 — assignment/OODP</h2>
+    <p class="prose">주차별 실습 문서(<code>doc/*.pdf</code>)를 따라간 연습 코드 15개 파일 563줄이다. 과제라기보다 실습 기록에 가깝고, 그 점 자체는 감점 사유가 아니다. 다만 이 규모에서도 계산해 놓고 버리는 코드와 경계 조건 붕괴가 나온다.</p>
+    <div class="stack-lg">
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3><code>AddNum</code>은 결과를 계산해서 버리고 입력을 그대로 돌려준다</h3></header>
+        <div class="prose">
+          <p>루프를 돌며 <code>ret[i]</code>를 채운 뒤 <code>ret</code>이 아니라 <code>ary</code>를 반환한다. 호출자는 value가 더해진 배열을 받았다고 믿지만 원본을 받는다. 바로 아래 <code>AddOne</code>(57–63행)은 같은 구조인데 <code>ret</code>을 제대로 반환하므로, 복사-붙여넣기 후 반환문만 고치지 않은 것이다. 다행히 <code>main</code>은 <code>AddOne</code>만 호출해서 증상이 드러나지 않는다 — 즉 이 메서드는 한 번도 실행되지 않았다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>assignment/OODP/Assignment/Assignment2_2.java</b><span>:49–55</span></div>
+          <pre>static int[] AddNum(int[] ary, int value) {
+	int[] ret = new int[ary.length];
+	for ( int i = 0; i &lt; ary.length; i++ ) {
+		ret[i] = ary[i] + value;
+	}
+	<span class="hl">return ary;</span>   <span class="cm">// ← ret을 버린다</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>369 게임이 110에서 <code>ArrayIndexOutOfBoundsException</code>으로 죽는다</h3></header>
+        <div class="prose">
+          <p>한글 수사 배열 <code>kor</code>은 원소가 11개(인덱스 0–10)인데, <code>first = currentNumber / 10</code>은 세 자리 수에서 10을 넘는다. 100이면 <code>first == 10</code>이라 <code>kor[10]</code>("십")을 두 번 찍어 "십십"이 되고, 110이면 <code>first == 11</code>로 배열 밖을 읽는다. 입력에 상한이 없으므로(<code>GetLastNumber</code>는 사용자 입력을 그대로 받는다) 두 자리 이상을 입력하면 게임이 종료된다.</p>
+          <p>동일 로직을 Python으로 옮겨 확인했다: <code>Say(99) → "구십구"</code>, <code>Say(100) → "십십"</code>, <code>Say(110) → IndexError(11)</code>.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>assignment/OODP/Assignment/Assignment1_2.java</b><span>:22, 33–39</span></div>
+          <pre>String[] kor = {"", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구", "십"};  <span class="cm">// 11개</span>
+...
+int first = currentNumber / 10;
+int second = currentNumber % 10;
+if (first &gt; 1)
+	System.out.print(<span class="hl">kor[first]</span>);   <span class="cm">// ← currentNumber &gt;= 110이면 밖</span></pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="minor">
+        <header><span class="tier">경미</span><h3><code>Scanner</code>를 반복 생성하고 닫지 않는다</h3></header>
+        <div class="prose">
+          <p><code>Assignment1_1.java:13–17</code>의 <code>GetAge()</code>는 호출될 때마다 <code>System.in</code>에 새 <code>Scanner</code>를 열고 닫지 않는다. <code>main</code>에서 세 번 호출되므로 세 개가 열린 채 남는다. 같은 주차의 <code>Assignment1_2.java:17</code>은 <code>in.close()</code>를 호출하므로 몰라서가 아니라 빠뜨린 것이다.</p>
+        </div>
+      </article>
+
+      <div class="note good">
+        <span class="lbl">잘한 것</span>
+        <p><code>Assignment/Toy.java</code>(필드 패키지-프라이빗, 생성자 하나)에서 <code>toys/Toy.java</code>(필드 <code>private</code>, 기본값을 <code>static final</code> 상수로 추출, 생성자 체이닝 <code>this(defaultOfHead, …)</code>, <code>ToyFactory</code> 분리)로 가는 개선이 한 주 안에 실제로 일어났다. 3주차 과제가 요구한 캡슐화와 패키지 분리를 형식적으로가 아니라 이전 코드를 고쳐 쓰는 방식으로 체득했다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ A6 ============ -->
+  <section>
+    <h2>Assignment 6 — 몬테카를로 π</h2>
+    <p class="prose">LOOT 프레임워크 위에 점을 찍어 원 안팎 비율로 π를 추정하는 시각화(<code>src/Window.java</code>)와, 같은 계산을 백그라운드 스레드로 돌리는 <code>utility/PiCalculator.java</code> 두 벌이다. 과제의 전부가 "π가 나오는가"인데, 시각화 쪽은 나오지 않는다.</p>
+    <div class="stack-lg">
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>원의 반지름과 샘플링 영역이 어긋나 π가 3.23으로 나온다</h3></header>
+        <div class="prose">
+          <p>중심은 <code>(canvas_width-10)/2 = 295</code>로 잡아 놓고 반지름은 <code>canvas_height / 2 = 300</code>을 쓴다. 그런데 표본은 <code>Update()</code>에서 <code>rand.nextInt(canvas_width - 10)</code>, 즉 <code>[0, 590)</code>에서 뽑는다. 한 변 590인 정사각형 안에 반지름 300짜리 원을 넣으면 원이 사각형 밖으로 삐져나가므로, "원 안" 판정이 과대 계수된다. 반지름을 중심과 맞춘 295로 두어야 내접원이 된다.</p>
+          <p>동일한 표본 규칙을 Python으로 200만 회 재현해 확인했다: 현재 코드(반지름 300) → <strong>3.2304</strong>, 반지름 295 → 3.1393. 2.8% 과대 추정이고, 이는 표본을 늘려도 수렴하지 않는 계통 오차다.</p>
+          <p>덧붙여 40행 <code>double dist = isDistance(x,y);</code>는 한 번도 읽히지 않고, 바로 다음 줄이 같은 함수를 다시 호출한다. 71행에서는 <code>isIn(nX, nY)</code>가 세 번째로 호출된다(65행에서 이미 <code>in</code>에 담아 두었다).</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>assignment/OODP/src/Window.java</b><span>:34–42</span></div>
+          <pre>private double isDistance(int x, int y) {
+	int centerX = (settings.canvas_width-10)/2;   <span class="cm">// 295</span>
+	int centerY = (settings.canvas_height-10)/2;  <span class="cm">// 295</span>
+	return Math.sqrt((x-centerX)*(x-centerX) + (y-centerY)*(y-centerY));
+}
+private boolean isIn(int x, int y) {
+	<span class="cm">double dist = isDistance(x,y);   // ← 쓰이지 않음</span>
+	return isDistance(x,y) &lt;= <span class="hl">(settings.canvas_height / 2)</span>;  <span class="cm">// 300 ≠ 295</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>매 프레임 <code>Dot</code>을 만들어 레이어에 영구 누적한다 — 1µs 간격으로</h3></header>
+        <div class="prose">
+          <p><code>Update()</code>는 호출될 때마다 <code>Dot</code>을 하나 생성해 <code>layer.children</code>에 넣고, 제거하는 코드는 없다. 그리고 <code>Assignment6.java:17</code>이 <code>settings.gameLoop_interval_ns = 1000</code>, 즉 1마이크로초 주기를 요구한다. 프레임 루프가 실제로 이 속도를 못 내더라도 <code>children</code>은 단조 증가하므로 장시간 실행 시 힙이 고갈되고, <code>layer.Draw(g)</code>가 매 프레임 전체 리스트를 순회하므로 프레임마다 느려진다. 표본 수를 늘릴수록 정확해져야 하는 몬테카를로 과제인데 표본을 늘릴수록 멈춘다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>assignment/OODP/src/Window.java</b><span>:71–72</span></div>
+          <pre>Dot dot = new Dot(nX, nY, isIn(nX, nY));
+<span class="hl">layer.children.add(dot);</span>   <span class="cm">// 제거 없음</span></pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>스레드 간 공유 변수에 <code>volatile</code>이 없다 — 정지 요청이 전달된다는 보장이 없다</h3></header>
+        <div class="prose">
+          <p><code>isStopRequested</code>는 메인 스레드가 <code>Stop()</code>에서 쓰고 워커 스레드가 루프 조건에서 읽는다. <code>pi</code>는 반대 방향이다. 둘 다 <code>volatile</code>도 아니고 동기화 블록도 없다. JIT는 루프 안에서 값이 바뀌지 않는다고 판단해 <code>isStopRequested</code> 읽기를 루프 밖으로 끌어낼 수 있고, 그러면 <code>Stop()</code>을 불러도 워커가 영원히 돈다. <code>Print()</code>가 읽는 <code>pi</code>도 최신 값이라는 보장이 없다. 실습 문서가 "내 주인에 의해 Stop()이 호출되었는지"라고 주석까지 달아 준 변수인데 가시성 문제는 다루지 않았다.</p>
+          <p>표본 추출 자체는 문제가 없다. 같은 규칙을 재현하면 3.1373이 나와 π에 근접한다 — Window 쪽과 달리 여기서는 중심과 반지름이 맞아 있다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>assignment/OODP/src/utility/PiCalculator.java</b><span>:10–11, 24, 61</span></div>
+          <pre>private boolean isStarted;        <span class="cm">// 내 주인에 의해 Start()가 호출되었는지</span>
+private boolean <span class="hl">isStopRequested</span>;  <span class="cm">// volatile 아님</span>
+...
+	for ( int i = 0; <span class="hl">isStopRequested == false</span>; i++ )   <span class="cm">// 워커 스레드가 읽음</span>
+...
+public void Stop() { <span class="hl">isStopRequested = true;</span> }         <span class="cm">// 메인 스레드가 씀</span></pre>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ 작은 축제 ============ -->
+  <section>
+    <h2>작은 축제 — DEJAVA (<code>TEJAVA.java</code>, 462줄)</h2>
+    <p class="prose">13×13 교실에서 96명이 생존자/감염자/시체/영혼 상태를 오가며 점수를 겨루는 턴제 시뮬레이터의 플레이어 서브클래스다. 매 턴 <code>cells[][]</code>에서 보이는 것만 관측할 수 있고, 다섯 개의 추상 메서드(<code>Survivor_Move</code>, <code>Infected_Move</code>, <code>Soul_Spawn</code>, <code>Corpse_Stay</code>, <code>Soul_Stay</code>)를 구현한다. 저자의 보고서(<code>doc/report.docx</code>)는 이 봇을 DEJAVA라 부르는데 클래스명은 <code>TEJAVA</code>다.</p>
+    <div class="stack-lg">
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>감염자 이동은 지도를 보지 않는다 — 항상 <code>Left</code>를 반환한다</h3></header>
+        <div class="prose">
+          <p>보고서는 "감염상태에서는 … 만약 해당 위치에 시체가 나타날 확률이 높다면 적은 쪽으로 이동합니다"라고 쓰여 있다. 코드는 그 판단을 하지 않는다.</p>
+          <p><code>Infected_Move()</code>는 <code>getDirectionNotExp(expect[CORP], 0, false)</code>를 호출한다. 인자 두 개가 문제다. <code>mapPrefer == false</code>이므로 <code>getNearExpects</code> 256행의 <em>"그 칸 자신의 값"</em> 대입이 건너뛰어져 <code>exp[k]</code>가 0으로 남고, <code>expRev == 0</code>이므로 이어지는 이웃 합산이 전부 <code>× 0</code>이 된다. 결과적으로 유효한 네 방향의 점수가 모두 정확히 <code>0.0</code>이다. <code>getDirection(false, …)</code>은 최솟값을 찾는데, 동점일 때 갱신 조건이 엄격한 <code>&lt;</code>라서 첫 번째 유효 인덱스에서 멈춘다. <code>DirectionCode</code>의 선언 순서가 <code>{Left, Right, Up, Down, Stay}</code>이므로 반환값은 언제나 <code>Left</code>다(왼쪽 벽에 붙어 있을 때만 <code>Right</code>).</p>
+          <p>즉 감염자 상태의 전체 전략 — 시체 기댓값 맵을 계산하고, 확산시키고, 낮은 쪽을 고르는 — 이 한 개의 리터럴 <code>0</code> 때문에 상수 함수로 무너져 있다. 같은 줄의 조건문도 틀렸다: <code>expect</code>는 <code>[HEIGHT][WIDTH]</code> 배열인데 <code>[nowX][nowY]</code>로 행·열을 뒤집어 읽는다. 맵이 13×13 정사각이라 예외는 나지 않지만 항상 다른 칸의 값을 본다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>L4G2EP2/final/OODP_L4G2EP2_100ME/src/l4g/customplayers/TEJAVA.java</b><span>:242–263, 380–381</span></div>
+          <pre>double exp[] = new double[4];              <span class="cm">// 전부 0.0</span>
+for (int k = 0; k &lt; dirSize; ++k) {
+	...
+	if (mapPrefer)                         <span class="cm">// false → 건너뜀</span>
+		exp[k] = exps[ey][ex] * expect[CLAS][ey][ex];
+	for (int kk = 0; kk &lt; dirSize; ++kk) {
+		...
+		exp[k] += exps[...] <span class="hl">* expRev</span>;    <span class="cm">// expRev == 0 → 0 더하기</span>
+	}
+}
+...
+if (expect[CORP]<span class="hl">[nowX][nowY]</span> &gt;= EXPCONST[CORP])   <span class="cm">// 행·열 전치</span>
+	return getDirectionNotExp(expect[CORP], <span class="hl">0</span>, <span class="hl">false</span>);</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>시체 기댓값을 이웃 칸에 쓸 때만 범위 검사가 빠져 있다</h3></header>
+        <div class="prose">
+          <p>같은 메서드 안의 다른 모든 이웃 접근(185행, 260행, 345행)은 <code>isValidPoint</code>로 감싸는데, <code>ForEach_Players</code> 람다 안의 이 한 줄만 검사가 없다. <code>kk == 0</code>일 때 <code>dx[0] == -1</code>이므로 <code>py == 0</code>인 플레이어(맨 윗줄)에 대해 <code>expect[CORP][-1][…]</code>을 쓰려 한다. <code>kk == 2</code>일 때는 <code>dy[2] == -1</code>이라 <code>px == 0</code>인 경우 열 인덱스가 −1이 된다.</p>
+          <p>조건은 "냉각 시간이 0인 감염자"이고 맵은 13×13에 96명이 들어차 있다. 가장자리 48칸 중 하나에 그런 감염자가 서 있으면 <code>ArrayIndexOutOfBoundsException</code>이 <code>initialize()</code> → 네 개의 오버라이드 전부로 전파된다. 게임 중 거의 확실히 발생하는 조건이다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>…/customplayers/TEJAVA.java</b><span>:203–211</span></div>
+          <pre>c.ForEach_Players( (info -&gt; {
+	int py = info.position.row, px = info.position.column;
+	if (info.state == StateCode.Corpse &amp;&amp; info.transition_cooldown &gt; 0)
+		expect[CORP][py][px] += DIRECTPR[CORP];
+	else if (info.state == StateCode.Infected &amp;&amp; info.transition_cooldown == 0)
+		for (int kk= 0; kk &lt; dirSize + 1; ++kk)
+			<span class="hl">expect[CORP][py + dx[kk]][px + dy[kk]] += DIRECTPR[INFE];</span>
+			<span class="cm">// ← isValidPoint 없음. py==0, kk==0이면 인덱스 −1</span>
+}) );</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>부활 위치 계산에서 행 루프가 <code>WIDTH</code>까지 돈다</h3></header>
+        <div class="prose">
+          <p><code>Soul_Spawn()</code> 안의 확산 루프에서 행 인덱스 <code>y</code>의 상한이 <code>HEIGHT</code>가 아니라 <code>WIDTH</code>다. 바로 위 411행과 아래 426행은 <code>HEIGHT</code>를 쓰므로 복사-붙여넣기 오류다. 13×13이라 지금은 같은 값이라 드러나지 않지만, <code>Constants.Classroom_Height</code>와 <code>Classroom_Width</code>는 별개의 설정값이고 비정사각 맵에서는 행이 잘리거나 인덱스가 넘친다. 420행의 <code>isValidPoint(y + dy[k], x + dx[k])</code>도 인자 순서가 뒤집혀 있다 — 이 함수의 시그니처는 <code>(Column, Raw)</code>이고, 345행에서는 <code>isValidPoint(x+dx[k], y+dy[k])</code>로 올바르게 호출한다. 같은 파일 안에서 같은 함수를 두 가지 순서로 부른다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>…/customplayers/TEJAVA.java</b><span>:411–422</span></div>
+          <pre>for (int y = 0; y &lt; HEIGHT; ++y)
+	Arrays.fill(expTmp[INFE][y], 0);
+
+for (int y = 0; y &lt; <span class="hl">WIDTH</span>; ++y)        <span class="cm">// ← 행인데 WIDTH</span>
+	for (int x = 0; x &lt; WIDTH; ++x) {
+		...
+		if (!isValidPoint(<span class="hl">y + dy[k], x + dx[k]</span>))  <span class="cm">// ← (Column, Raw) 순서 반대</span>
+			continue;</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="minor">
+        <header><span class="tier">경미</span><h3>쓰이지 않는 상수, 그리고 오타로 같은 값을 가리키는 두 상수</h3></header>
+        <div class="prose">
+          <p><code>EXPSCORE</code>는 원소 6개짜리 점수 임계값 배열인데 실제로 읽히는 인덱스는 <code>SMAX</code>(0)와 <code>STOT</code>(1)뿐이다. <code>CMAX</code>, <code>CTOT</code>, <code>IMAX</code>, <code>ITOT</code>는 정의만 되고 한 번도 쓰이지 않는다. 게다가 <code>ITOT</code>가 5가 아니라 4라서 <code>IMAX</code>와 같은 칸을 가리킨다 — 쓰였다면 650 대신 25를 읽었을 것이다. 같은 맥락으로 <code>expect</code>는 <code>new double[5]</code>인데 상수 <code>REVS = 5</code>가 있고(배열 첨자로 쓰였다면 예외), 할당된 <code>expect[COST]</code>는 한 번도 쓰이지 않는다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>…/customplayers/TEJAVA.java</b><span>:78–89</span></div>
+          <pre>final int SMAX = 0; final int STOT = 1;
+final int CMAX = 2; final int CTOT = 3;
+final int IMAX = 4; final int <span class="hl">ITOT = 4</span>;   <span class="cm">// ← 5여야 함</span>
+private final int[] EXPSCORE = { 35, 700, 70, 950, 25, <span class="cm">650</span> };</pre>
+        </div>
+      </article>
+
+      <div class="note good" style="margin-top:22px">
+        <span class="lbl">잘한 것</span>
+        <p>세 가지가 구체적으로 좋다. <strong>(1)</strong> 확산 모델이 시야 안/밖을 다르게 다룬다 — 189–200행에서 관측된 셀은 실제 인원수로, 미관측 셀은 이전 턴 추정치에 감쇠 계수 <code>EXPCONST[REVS] = 0.4</code>를 곱해 갱신한다. "내가 모르는 정보는 덜 믿는다"를 코드로 표현한 것이다. <strong>(2)</strong> 맵 가중치가 부호까지 맞다 — 114행의 <code>e^(중심으로부터의 거리 × 0.8)</code>은 가장자리에서 크고, 이 값을 최소화 탐색에 곱셈으로 넣으므로 구석을 피하고 최대화 탐색(자살 경로)에서는 구석을 택한다. <strong>(3)</strong> 상수를 실험으로 골랐다는 주장에 증거가 있다 — <code>src/TEST/TEST.java</code>(134줄)는 봇 종류별 6개 점수 축을 누적·평균 내 TSV로 떨구는 집계기이고, <code>doc/report/res/</code>에 Mathematica 노트북과 시각화 PNG가 남아 있다. 학부 과제에서 하이퍼파라미터를 "느낌"이 아니라 반복 실행 결과로 정했다는 흔적은 드물다.</p>
+      </div>
+      <div class="note" style="margin-top:16px">
+        <span class="lbl">다만</span>
+        <p>그 <code>TEST.java</code>는 트리 어디에서도 참조되지 않는다(<code>Program.java</code>, <code>Classroom.java</code> 어디에도 호출 없음). 실험할 때 시뮬레이터를 직접 고쳐 끼웠다가 배선을 남기지 않은 것이다. 재현 가능한 실험 설정이 아니라 일회용 흔적으로 끝났다. <code>show()</code>의 <code>FileOutputStream</code>도 성공 경로에서만 닫힌다(<code>TEST.java:105, 132</code>).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ IMF ============ -->
+  <section>
+    <h2>큰 축제 — IMF (본인 기여분)</h2>
+    <p class="prose">2인 협동 퍼즐 게임. 저자가 맡은 부분은 오브젝트 모델(<code>imf/object</code>), 프레임 처리기(<code>imf/processor</code>), XML 데이터 파서(<code>imf/data</code>), 그리고 별도 맵 에디터(<code>IMF_GENERATOR</code>)다. 네트워크는 팀원 이영수가 맡았으므로 제외했다. 클래스 설계는 이 레포에서 가장 나은 부분이다 — 문제는 예외 처리와 정리(teardown)다.</p>
+    <div class="stack-lg">
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>master HEAD의 게임 루프가 통째로 주석 처리되어 있다</h3></header>
+        <div class="prose">
+          <p><code>imf/Window.java</code>의 <code>Update()</code>는 250–277행 전체가 주석이고 본문은 <code>return true;</code> 한 줄이다. <code>Initialize()</code>도 160–242행이 주석이라 <code>processor.install("interaction", …)</code> 이하 다섯 개의 처리기가 하나도 설치되지 않는다. 필드로 선언된 <code>interaction / keyboard / physics / mouse / scene</code>(56–61행)은 전부 <code>null</code>인 채 남고, <code>onReceived()</code>는 본문 전체가 주석인 빈 메서드다. 결과적으로 <code>imf.processor</code> 816줄, <code>imf.object</code> 537줄, 팀원의 <code>imf.network</code> 747줄이 HEAD에서 모두 도달 불가 코드다. 실행하면 <code>default.xml</code>을 파싱해 스프라이트를 뷰포트에 붙이고 그리는 것으로 끝난다 — 입력도, 물리도, 네트워크도 없다.</p>
+          <p>공정하게 덧붙이면, 학기 제출본은 정상이었다. <code>git show 5d8f226:project/IMF/src/Window.java</code>(2016-06-26, "Update End of Project")에는 <code>inputs.AcceptInputs()</code>와 <code>processor.loop()</code>를 호출하는 391줄짜리 살아 있는 <code>Window</code>가 있다. 깨진 것은 7월 1일 <code>7da901f</code> "new Start"로 시작해 <code>da4cfe1</code>(7월 9일)에서 주석 처리가 확정된 개인 재작성 때문이다. 문제는 그 재작성이 완료되지 않은 채 기본 브랜치에 그대로 남았다는 것이다 — 이 레포를 여는 사람이 보는 것은 제출본이 아니라 이 상태다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/imf/Window.java</b><span>:247–279</span></div>
+          <pre>@Override
+public boolean Update(long timeStamp)
+{
+	<span class="cm">/*
+	if (loading) return true;
+	inputs.AcceptInputs();
+	...
+	processor.loop();
+	return true;
+	*/</span>
+	<span class="hl">return true;</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>프레임 루프 전체가 하나의 빈 <code>catch (Exception e) {}</code>로 감싸여 있다</h3></header>
+        <div class="prose">
+          <p><code>ProcessManager.loop()</code>는 모든 처리기의 매 프레임 호출을 통째로 <code>try</code>로 묶고 빈 <code>catch</code>로 받는다. <code>HashMap.forEach</code>는 예외가 나면 순회를 중단하므로, 어느 한 처리기에서 <code>NullPointerException</code> 하나가 나면 그 뒤 처리기들은 그 프레임에서 조용히 건너뛰어진다. 로그도, 카운터도, 플래그도 없다. 물리가 멈췄는지 입력이 안 먹는지 구분할 방법이 프로세스 안에 존재하지 않는다.</p>
+          <p>같은 패턴이 <code>Physics.doCollision()</code>(148–150행, <code>catch { return; }</code>)과 <code>SpriteObject.invisible()</code>(70–72행)에도 있다. 후자는 <code>trigger_object</code>가 <code>null</code>일 때의 NPE를 삼키려고 존재하는 catch다 — 즉 <code>null</code> 검사를 예외 처리로 대신하고 있다. 저자 코드 전체에서 빈 catch가 9곳, 로그만 찍고 넘기는 catch가 5곳이다.</p>
+          <p>덧붙여 <code>forEach</code>는 <code>HashMap</code>의 순회 순서를 따르므로 처리기 실행 순서가 명세되지 않는다. 키보드 → 물리 → 상호작용 → 씬 순서가 프레임마다 보장되어야 하는 게임 루프에서 이는 실질적 위험이다. <code>LinkedHashMap</code> 한 글자 차이로 해결되는 문제다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/imf/processor/ProcessManager.java</b><span>:38–49</span></div>
+          <pre>@Override
+public void loop()
+{
+	try {
+		processors.forEach((name, processor)-&gt; {
+			if(processor != null)
+				processor.loop();
+		});
+	} <span class="hl">catch (Exception e) {
+
+	}</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3><code>finalize()</code>를 수명주기 메서드 이름으로 썼다 — GC 훅을 덮어쓴 것이다</h3></header>
+        <div class="prose">
+          <p><code>IProcess</code> 인터페이스가 <code>void finalize()</code>를 선언하고 다섯 개 처리기가 이를 구현한다. 그런데 <code>finalize()</code>는 <code>java.lang.Object</code>의 메서드이고, JVM이 객체를 회수하기 직전에 임의의 시점에 부르는 종료자다. 이름을 이렇게 잡으면 두 가지가 생긴다. (1) 이 클래스들이 전부 finalizable로 등록되어 GC가 별도 큐를 거치게 된다. (2) <code>ProcessManager</code>가 GC 대상이 되면 JVM이 <code>ProcessManager.finalize()</code>를 호출하고, 그 안에서 <code>processors.forEach(… processor.finalize())</code>가 돌아 아직 살아 있을 수 있는 하위 처리기들의 참조를 <code>null</code>로 만든다. 의도한 명시적 정리와 GC의 암묵적 호출이 구분되지 않는다. <code>destroy()</code>, <code>dispose()</code>, <code>shutdown()</code> 중 아무 이름이나 골랐으면 없었을 문제다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/imf/processor/IProcess.java</b><span>:3–12</span></div>
+          <pre>public interface IProcess&lt;T, R&gt; extends IProcessProperty&lt;T, R&gt;
+{
+	void initilize(IProcess manager);
+	void loop();
+	void process();
+	<span class="hl">void finalize();</span>   <span class="cm">// ← Object.finalize() 재정의</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3><code>Timer</code> 스레드를 만들고 끝내 <code>cancel()</code>하지 않는다 — JVM이 종료되지 않는다</h3></header>
+        <div class="prose">
+          <p><code>Physics.java:24</code>와 <code>Interaction.java:20</code>이 각각 필드 초기화로 <code>new Timer()</code>를 만든다. <code>java.util.Timer</code>는 기본적으로 <strong>비데몬</strong> 스레드를 띄우므로, 취소하지 않으면 메인 창을 닫아도 JVM이 살아 있는다. 두 클래스의 <code>finalize()</code>는 참조만 <code>null</code>로 밀 뿐 <code>timer.cancel()</code>을 부르지 않는다. 주석 처리된 <code>Window.Destroy()</code>가 스테이지 전환마다 <code>new ProcessManager</code>를 만들도록 되어 있었으므로, 스테이지를 넘길 때마다 좀비 타이머 스레드가 두 개씩 누적되는 구조였다.</p>
+          <p>거기에 <code>Physics.java:82</code>는 가시 장애물과 겹쳐 있는 동안 <em>매 프레임</em> <code>timer.schedule(new DeadTask(), 5000)</code>을 호출한다. 75 fps 설정이므로 가시에 1초 닿아 있으면 사망 콜백이 약 75개 예약된다. 중복 예약을 막는 플래그가 없다.</p>
+          <p>그리고 그 <code>DeadTask.run()</code>은 Timer 스레드에서 <code>manager.property.setter("dead")</code>를 호출해 게임 상태를 바꾼다. 같은 상태를 게임 루프 스레드가 매 프레임 읽고 AWT가 그린다. 동기화는 없다.</p>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3><code>null</code> 검사가 세 번의 역참조 뒤에 온다</h3></header>
+        <div class="prose">
+          <p>조건식은 왼쪽부터 평가되므로 <code>o</code>가 <code>null</code>이면 <code>target.zPosition(o)</code>나 <code>o.collision</code>에서 이미 NPE가 난다. <code>o == null</code>은 절대 <code>true</code>로 평가되지 않는 죽은 조건이다. 그리고 그 NPE는 위 <code>doCollision</code>의 빈 catch(148행)가 삼킨다 — 방어 코드를 넣었다고 믿게 만드는 코드가 실은 아무것도 막지 않는 구조다.</p>
+          <p>같은 메서드 위쪽 57–61행에는 <code>public static boolean collision(SpriteObject, SpriteObject) { return true; }</code>가 있다. 이름이 <code>collision</code>인데 인자를 보지 않고 <code>true</code>만 돌려준다. 호출하는 곳은 없다. 140행 <code>boolean exc = false;</code>도 마찬가지로 이후 한 번도 대입되지 않아 153행 <code>if (!exc)</code>가 항상 참이다 — catch에서 <code>exc = true</code>로 표시하려던 흔적만 남고 실제로는 <code>return</code>으로 빠져나간다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/imf/processor/Physics.java</b><span>:86</span></div>
+          <pre>if (!target.zPosition(<span class="hl">o</span>) || <span class="hl">o</span>.collision == false || <span class="hl">o</span>.trigger_hide == true || <span class="hl">o == null</span> || ...)
+	return state_next_jump;
+<span class="cm">//   ↑ 여기 도달했다면 o는 이미 null이 아니다</span></pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>점프가 중력 0인 상태에서 속도를 <code>NaN</code>으로 만든다</h3></header>
+        <div class="prose">
+          <p><code>a_y</code>가 0이면 <code>0 / Math.abs(0)</code>은 부동소수점에서 예외가 아니라 <code>NaN</code>이다. <code>v_y = NaN</code>이 되고, 이후 <code>doMove()</code>가 <code>pos_y + v_y</code>를 계산하면 위치도 <code>NaN</code>이 되어 영구히 복구되지 않는다(<code>NaN</code>은 어떤 비교에도 <code>false</code>를 돌려주므로 충돌 보정 분기가 전부 통과된다). <code>PhysicalObject</code>의 <code>a_y</code> 기본값은 <code>0</code>이고(<code>PhysicalObject.java:17</code>), 중력은 <code>Window</code>가 <code>me.a_y = -0.98</code>로 따로 넣어 준다 — 즉 그 대입이 빠진 오브젝트에서 점프하면 즉시 발생한다. 부호를 뽑으려면 <code>Math.signum</code>을 쓰거나 <code>a_y == 0</code>을 먼저 걸러야 한다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/imf/processor/Physics.java</b><span>:210–215</span></div>
+          <pre>case 4:
+	if(state_jump)
+		return;
+	state_jump = true;
+	target.v_y = 15 * -(<span class="hl">(target.a_y) / Math.abs(target.a_y)</span>);   <span class="cm">// a_y==0 → NaN</span>
+	break;</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="minor">
+        <header><span class="tier">경미</span><h3>의도적 fall-through로 순서를 만드는 <code>switch</code></h3></header>
+        <div class="prose">
+          <p><code>Interaction.setter()</code>의 <code>switch (object.first)</code>는 <code>"hover"/"leave" → "act" → "act_emotion" → "act_emotion_partner" → "dead"/"act_partner"/"act_child"</code>까지 <code>break</code> 없이 흘러내리고, 각 <code>case</code> 안에서 <em>다시</em> <code>object.first.equals("act")</code> 같은 검사로 실행 여부를 판단한다. 즉 <code>switch</code>가 분기 역할을 하지 않고 진입점 선택 역할만 하며, 실제 분기는 중복된 문자열 비교가 한다. 가운데에 <code>case</code>를 하나 추가하면 위쪽 모든 케이스의 동작이 조용히 바뀐다.</p>
+          <p><code>Pair.java:17–19</code>에도 같은 계열의 부주의가 있다: <code>equalsSecond</code>가 <code>compare.second.equals(first)</code>로 두 번째 값을 <em>첫 번째</em> 값과 비교한다. 호출하는 곳이 없어 증상은 없지만, <code>Object.equals(Object)</code>를 오버라이드하지 않고 <code>equals(Pair)</code>로 오버로드했기 때문에 <code>Pair</code>를 <code>HashMap</code>이나 <code>List.contains</code>에 넣으면 동일성 비교로 떨어진다. <code>hashCode()</code>도 없다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/imf/utility/Pair.java</b><span>:14–22</span></div>
+          <pre>public boolean equalsFirst(Pair compare) {
+	return compare.first.equals(first);
+}
+public boolean equalsSecond(Pair compare) {
+	return compare.second.equals(<span class="hl">first</span>);   <span class="cm">// ← second여야 함</span>
+}</pre>
+        </div>
+      </article>
+
+      <div class="note good" style="margin-top:22px">
+        <span class="lbl">잘한 것</span>
+        <p>OOP 과목의 요구 자체는 충족했고, 흉내가 아니다. 상속 사슬이 실제 역할 분담을 반영한다 — <code>DrawableObject3D</code>(프레임워크) → <code>SpriteObject</code>(이름·텍스처·바운딩 박스) → <code>PhysicalObject</code>(속도·가속도) → <code>PlayerObject</code>/<code>PartnerObject</code>, 그리고 별도로 <code>SpriteObject</code> → <code>ContainerObject</code> → <code>TriggerObject</code>. <code>IProcessProperty&lt;T,R&gt;</code>를 <code>IProcess&lt;T,R&gt;</code>가 확장하고 다섯 처리기가 각기 다른 타입 인자로 구현하는 것도 제네릭의 실용적 사용이다. 특히 <code>ProcessManager</code>가 <code>IProcess</code>를 <em>구현하면서 동시에 IProcess들을 관리</em>하는 컴포지트 구조는 2학년이 패턴 이름을 모르고 도달했다면 좋은 신호다. 가장 큰 클래스가 235줄(<code>Physics</code>)이라 God class도 없다.</p>
+        <p style="margin-top:12px">2016년 5~6월 커밋 로그에 <code>fix collision</code>, <code>fix trigger floor</code>, <code>fix timer</code>, <code>button leave fix</code>, <code>fix transfor position</code> 등 19개의 수정 커밋이 있다. 남이 지적해 준 흔적이 아니라 돌려 보며 스스로 잡은 기록이다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ nimf ============ -->
+  <section>
+    <h2><code>nimf</code> — 7월의 재작성 (코스 외)</h2>
+    <p class="prose">학기 종료 직후 시작한 개인 작업이다. 목표는 분명하다 — 게임 로직을 Java에서 빼내 XML로 기술하는 데이터 주도 엔진. <code>project/IMF/data/IMF명세서.md</code>가 그 문법을 상세히 정의한다: 스프라이트 16개 속성, 스크립트 11개 이벤트, <code>attribute="visible=true"</code> 조건, <code>delay</code>, <code>fin</code>/<code>over</code> 명령. 문제는 명세서가 코드보다 세 걸음 앞서 있고, 그 격차가 "덜 만들었다"가 아니라 "만든 것도 실행되지 않는다"라는 점이다.</p>
+    <div class="stack-lg">
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>타이머 이벤트 클래스는 로드되는 순간 확정적으로 <code>NullPointerException</code>을 던진다</h3></header>
+        <div class="prose">
+          <p><code>clear()</code>가 <code>queue.clear()</code>를 호출한 <em>다음 줄</em>에서 <code>queue</code>를 생성한다. 그리고 이 <code>clear()</code>는 19–21행의 static 초기화 블록에서 불린다 — 그 시점에 <code>queue</code>는 <code>null</code>이다. 따라서 <code>TimerEvent</code> 클래스가 처음 참조되는 순간 <code>&lt;clinit&gt;</code>에서 NPE가 나고 <code>ExceptionInInitializerError</code>로 번진다. 조건부 버그가 아니라 100% 재현되는 결정적 실패다.</p>
+          <p><code>ScriptObject.run()</code> 126행이 <code>event == ALWAYS</code>인 스크립트마다 <code>TimerEvent.put(this)</code>를 부르므로, 명세서가 정의한 <code>always</code> 이벤트는 <strong>한 번도 동작한 적이 없다.</strong> 이 코드가 단 한 번이라도 실행됐다면 즉시 드러났을 버그라는 점이 중요하다 — <code>nimf</code> 전체가 컴파일만 되고 실행 검증 없이 커밋되었다는 뜻이다.</p>
+          <p>같은 클래스 32행의 <code>while ((now = queue.peek()).first &lt;= counter)</code>도 큐가 비면 <code>peek()</code>가 <code>null</code>을 돌려주므로 NPE다. 그리고 54행 <code>timer.schedule(task, 1)</code>은 <code>scheduleAtFixedRate</code>가 아니라 1회성 예약이라 이 태스크는 평생 한 번만 실행된다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/event/TimerEvent.java</b><span>:19–21, 40–46</span></div>
+          <pre>static {
+	clear();              <span class="cm">// ← queue는 아직 null</span>
+}
+...
+public static void clear() {
+	task = null;  task = new TimerEventTask();
+	timer = null; timer = new Timer();
+	<span class="hl">queue.clear();</span>            <span class="cm">// ← NPE</span>
+	queue = new PriorityQueue&lt;...&gt;(...);   <span class="cm">// ← 생성은 그 다음</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>명세서의 첫 번째 예제가 스크립트 엔진을 크래시시킨다</h3></header>
+        <div class="prose">
+          <p><code>rvalue.indexOf("." + 1)</code>에서 <code>"."</code>과 <code>int 1</code>을 <code>+</code>로 묶으면 Java는 문자열 결합을 한다 — 즉 <code>indexOf(".1")</code>이다. 의도는 <code>rvalue.indexOf(".") + 1</code>이었고, 같은 파일 150행은 <code>l.substring(l.indexOf(".")+1)</code>로 올바르게 쓰여 있다. 괄호 하나가 어긋난 결과, 값에 <code>".1"</code>이라는 부분 문자열이 없으면 <code>indexOf</code>가 <code>-1</code>을 돌려주고 <code>substring(-1)</code>이 <code>StringIndexOutOfBoundsException</code>을 던진다.</p>
+          <p>119행 가드가 <code>rvalue</code>에 마침표가 있으면 이 분기에 들어가게 되어 있는데, 명세서 78–81행이 예로 든 <code>button.texture="btn_hover.png";</code>의 우변 <code>"btn_hover.png"</code>가 정확히 그 조건이다. 문서가 안내하는 대로 XML을 쓰면 엔진이 죽는다. 설령 예외를 피해도 <code>SpriteManager.get("\"btn_hover")</code>가 <code>null</code>을 돌려줘 NPE가 된다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/object/ScriptObject.java</b><span>:119–120</span></div>
+          <pre>if (rvalue.indexOf(".") != -1)
+	rvalue = SpriteManager.get(rvalue.substring(0, rvalue.indexOf(".")))
+	                      .get(rvalue.substring(rvalue.indexOf(<span class="hl">"." + 1</span>)));
+	                      <span class="cm">//                        ↑ ".1"을 찾는다. indexOf(".") + 1 이어야 함</span></pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="critical">
+        <header><span class="tier">치명적</span><h3>Java의 인자 전달을 C의 out-parameter로 오해했다 — <code>attribute</code> 기능 전체가 무효</h3></header>
+        <div class="prose">
+          <p>명세서 62행은 <code>attribute</code>를 "타겟의 속성 상태를 지정합니다. 비워두면 언제나 참입니다. 예) attribute="visible=true""라고 정의한다. 구현은 이렇다: <code>parse(attribute, attr_name, attr_value)</code>를 호출하고, 그 안에서 파라미터 <code>attr_name</code>과 <code>attr_value</code>에 대입한다. Java는 참조 <em>값</em>을 복사해 넘기므로 이 대입은 지역 변수만 바꾸고 사라진다. 게다가 이 메서드는 <code>static</code>이라 인스턴스 필드 <code>this.attr_name</code>에 쓸 방법 자체가 없다. 즉 <code>ScriptObject.attr_name</code>과 <code>attr_value</code>는 영원히 빈 문자열이고, 스크립트 조건 실행은 구현되지 않은 것과 같다.</p>
+          <p>이것은 실수가 아니라 언어 모델의 오해다. C에서 <code>char **out</code>을 넘기던 습관이 그대로 옮겨 왔다. 학부 2학년 OOP 과목에서 잡혀야 할 가장 기본적인 개념 중 하나다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/object/ScriptObject.java</b><span>:94, 135–141</span></div>
+          <pre>parse(attribute, attr_name, attr_value);   <span class="cm">// 호출부 (94행)</span>
+...
+private <span class="hl">static</span> void parse(String attribute, String attr_name, String attr_value) {
+	int pos = attribute.indexOf('=');
+	if (pos == -1) return;
+	<span class="hl">attr_name  = attribute.substring(0, pos);</span>      <span class="cm">// 지역 변수에 대입, 버려짐</span>
+	<span class="hl">attr_value = attribute.substring(pos + 1);</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>이벤트 열거자의 값이 중복돼 마우스 이벤트와 오브젝트 이벤트를 구분할 수 없다</h3></header>
+        <div class="prose">
+          <p>명세서 51–61행은 <code>object@enter/leave/join/interact</code>와 <code>mouse@enter/leave/join/interact</code>를 서로 다른 8개 이벤트로 정의한다. 열거자는 이 8개에 <code>TIMER</code>까지 합쳐 <code>2,3,4,5</code> 네 개의 값만 나눠 쓴다 — <code>TIMER</code>, <code>oENTER</code>, <code>mENTER</code>가 모두 2다. 그리고 103행이 <code>ScriptManager.s_[event.get()]</code>로 그 값을 <em>배열 첨자</em>로 쓴다. 결과적으로 마우스가 객체에 올라간 사건과 캐릭터가 객체에 닿은 사건이 같은 버킷에 들어가 구별되지 않는다. 버킷은 11개 할당되는데 6개만 쓰인다.</p>
+          <p>같은 파일 21–23행의 <code>public enum Attribute { }</code>는 본문이 비어 있다. 선언만 있고 상수가 하나도 없으며 참조하는 곳도 없다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/object/ScriptObject.java</b><span>:24–27, 103</span></div>
+          <pre>public static enum Event {
+	NEVER(0), ALWAYS(1), <span class="hl">TIMER(2)</span>,
+	<span class="hl">oENTER(2)</span>, oLEAVE(3), oJOIN(4), oINTERACT(5),
+	<span class="hl">mENTER(2)</span>, mLEAVE(3), mJOIN(4), mINTERACT(5);
+...
+ScriptManager.s_[<span class="hl">event.get()</span>].put(name, this);   <span class="cm">// 값 충돌 = 버킷 충돌</span></pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3><code>validate()</code>가 자기가 던진 예외를 자기가 삼키고 무조건 참을 반환한다</h3></header>
+        <div class="prose">
+          <p>리소스 경로가 실제 파일인지 확인하려고 <code>ValidateException</code>을 던지는데, 같은 메서드의 <code>catch</code>가 빈 블록으로 잡고, <code>finally</code>도 비어 있고, 마지막 줄은 조건 없는 <code>return true;</code>다. 존재하지 않는 텍스처 경로도 전부 통과한다. 호출부인 <code>put()</code> 28행의 <code>if(validate(path))</code>는 항상 참이므로 <code>if</code> 자체가 의미가 없다.</p>
+          <p>이어지는 44–46행 <code>get(name)</code>은 찾지 못하면 <code>null.second</code>로 NPE를 낸다. <code>imf/Window.java:145</code>가 <code>ResourceManager.get("texture").forEach(...)</code>로 무방비 호출하므로, 텍스처가 하나도 없는 맵을 열면 시작하자마자 죽는다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/manager/ResourceManager.java</b><span>:33–42</span></div>
+          <pre>private static boolean validate(String path) {
+	try {
+		 if (!(new File(path)).isFile()) {
+				<span class="hl">throw new ValidateException();</span>
+		 }
+	} <span class="hl">catch (ValidateException v) {
+	} finally {
+	}</span>
+	<span class="hl">return true;</span>   <span class="cm">// ← 무엇을 넣든 true</span>
+}</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="major">
+        <header><span class="tier">중대</span><h3>설정 파서가 입력을 검증하지 않고, 예외가 나면 파일 핸들을 흘린다</h3></header>
+        <div class="prose">
+          <p><code>line.split("=")</code>의 결과에서 <code>s[1]</code>을 검사 없이 읽는다. 빈 줄, 주석 줄, <code>=</code> 없는 줄이 하나라도 있으면 <code>ArrayIndexOutOfBoundsException</code>이 나는데, <code>catch</code>는 <code>FileNotFoundException</code>과 <code>IOException</code>만 잡으므로 이 예외는 밖으로 나가 <code>Window</code> 생성자를 터뜨린다. 39행의 <code>(String)path.get(...)</code>도 참조된 키가 없으면 <code>null</code> 캐스팅 후 <code>replace(…, null)</code>로 NPE다.</p>
+          <p>그리고 <code>br.close()</code>가 <code>try</code> 블록 안 마지막 줄에 있어서, 위 어느 예외든 발생하면 <code>BufferedReader</code>가 닫히지 않는다. Java 7의 try-with-resources를 쓰면 한 줄로 끝나는 문제고, 이 프로젝트는 이미 람다(Java 8)를 쓰고 있으므로 언어 버전 제약도 아니다.</p>
+          <p>부수적으로 <code>Window.java:67</code>은 <code>"data/IMF.inf"</code>를 읽는데 실제 파일은 <code>data/imf.inf</code>다. macOS 기본 파일시스템(대소문자 구분 없음)에서는 열리지만 Linux에서는 <code>FileNotFoundException</code> → <code>printStackTrace</code> → 기본 경로만 남은 채 조용히 진행된다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/data/SettingParser.java</b><span>:33, 45–50</span></div>
+          <pre>String s[] = line.split("=");
+... <span class="hl">s[1]</span> ...            <span class="cm">// ← 길이 검사 없음</span>
+...
+		<span class="hl">br.close();</span>          <span class="cm">// ← try 안. 위에서 던지면 도달 못 함</span>
+	} catch (FileNotFoundException e) { e.printStackTrace();
+	} catch (IOException ee)          { ee.printStackTrace(); }</pre>
+        </div>
+      </article>
+
+      <article class="finding" data-sev="minor">
+        <header><span class="tier">경미</span><h3>같은 속성의 setter와 getter가 서로 다른 값을 쓴다</h3></header>
+        <div class="prose">
+          <p><code>set("w", "32")</code>는 <code>radius_x = 32</code>로 저장하는데 <code>get("w")</code>는 <code>radius_x * 2 = 64</code>를 돌려준다. 왕복이 항등이 아니다. 이름이 <code>w</code>(width)인 이상 어느 한쪽이 틀렸고, 부모 <code>DrawableObject3D</code>가 반지름 기준인 것을 보면 <code>set</code>이 <code>/2</code>를 빼먹은 쪽이다 — 명세서대로 <code>w="32"</code>라 쓴 스프라이트가 화면에서 64픽셀 폭으로 그려진다. <code>h</code>도 같다.</p>
+          <p>같은 클래스 51–55행에는 더 근본적인 문제가 있다. <code>Attribute.forEach((s)-&gt;set(s, data.get(s)))</code>가 16개 속성을 전부 시도하는데, XML에 없는 속성은 <code>data.get(s)</code>가 <code>null</code>이고 <code>set</code>은 그것을 <code>Integer.valueOf(null)</code>에 넘긴다. 속성 하나만 생략해도 <code>NumberFormatException</code>이다. 명세서 어디에도 16개 전부가 필수라는 말은 없다.</p>
+        </div>
+        <div class="ev">
+          <div class="ev-head"><b>project/IMF/src/nimf/object/SpriteObject.java</b><span>:59, 80</span></div>
+          <pre>case w:  <span class="hl">radius_x = Integer.valueOf(value);</span> return;        <span class="cm">// set: w → radius</span>
+...
+case w:  return Double.toString(<span class="hl">radius_x * 2</span>);            <span class="cm">// get: radius → w</span></pre>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ 위생 ============ -->
+  <section>
+    <h2>레포 위생</h2>
+    <div class="prose stack">
+      <p>추적 파일 1,727개 중 <strong>174개가 Eclipse 워크스페이스 메타데이터</strong>다(<code>assignment/.metadata/</code>, <code>.recommenders/</code>). 프로젝트가 아니라 IDE 자체를 커밋한 것이다. 그 안에서 가장 큰 파일은 <code>assignment/.metadata/.plugins/org.eclipse.epp.logging.aeri.ide/…/remote-history/_1.fdt</code>로 <strong>25 MB</strong>다 — Eclipse 오류 리포트 서버의 Lucene 인덱스이며, 레포 전체에서 단일 최대 파일이다. 두 번째는 10 MB짜리 JDT 인덱스(<code>3104682415.index</code>)다. 코드는 한 줄도 들어 있지 않다.</p>
+      <p><code>.gitignore</code>에 <code>*.class</code>, <code>.metadata</code>, <code>.recommenders</code>가 들어 있지만 이미 추적 중인 파일에는 소급 적용되지 않는다. 결과적으로 <strong><code>.class</code> 파일 385개</strong>가 그대로 남아 있고 빌드 산출물 <code>project/IMF/imf.jar</code>, 토너먼트 배포본 <code>L4G2EP2/final/run/OODP_L4G2EP2_100ME_v1_0.jar</code>도 커밋되어 있다. <code>L4G2EP2/</code>에서는 같은 상황을 인지하고 <code>cf08096</code>("Update Finalize L4G")에서 <code>.metadata</code>를 삭제했는데, <code>assignment/</code>에는 같은 정리를 적용하지 않았다.</p>
+      <p>외부 의존성 <code>project/IMF/lib/json-simple-1.1.1.jar</code>이 바이너리로 들어 있다. 2016년 학부 과제라는 맥락에서 빌드 도구 없이 JAR를 직접 넣는 것 자체는 이상하지 않지만, 라이선스 파일이나 출처 표기는 없다.</p>
+      <p>README는 4줄짜리 디렉터리 안내가 전부다. 빌드 방법도, 실행 방법도, "작은 축제는 DEJAVA"라는 이름 외에 무엇을 만들었는지도 없다. 그리고 그 이름조차 코드와 다르다 — README와 보고서는 DEJAVA, 클래스는 <code>TEJAVA</code>다.</p>
+    </div>
+  </section>
+
+  <!-- ============ 반복 패턴 ============ -->
+  <section>
+    <h2>반복되는 패턴</h2>
+    <ol class="rank">
+      <li><div><strong>계산한 것을 쓰지 않는다.</strong> <code>AddNum</code>이 <code>ret</code>을 채우고 <code>ary</code>를 반환한다(A2-2). <code>isIn</code>이 <code>dist</code>를 계산하고 버린 뒤 같은 함수를 다시 부른다(A6). <code>validate()</code>가 검사 결과를 삼키고 <code>true</code>를 반환한다(nimf). <code>parse()</code>가 파싱 결과를 지역 변수에 넣고 끝낸다(nimf). 네 경우 모두 "제대로 계산하는 코드"가 먼저 있고, 그 결과가 밖으로 나가는 마지막 한 줄에서 끊긴다.</div></li>
+      <li><div><strong>인자 하나가 전체 로직을 상수로 만든다.</strong> DEJAVA의 감염자 이동이 <code>expRev = 0</code>과 <code>mapPrefer = false</code>의 조합으로 항상 <code>Left</code>가 된다. 이런 종류의 붕괴는 한 번만 돌려 보면 즉시 보이므로, 작성한 코드 경로 중 실행해 보지 않은 것이 있다는 직접 증거다. <code>TimerEvent</code>의 확정 NPE도 같은 증거다.</div></li>
+      <li><div><strong>예외를 진단이 아니라 제어 흐름으로 쓴다.</strong> 저자 코드에 빈 <code>catch</code>가 9곳, <code>printStackTrace</code>만 하는 것이 5곳이다. <code>SpriteObject.invisible()</code>의 catch는 <code>null</code> 검사 대신이고, <code>ResourceManager.validate()</code>는 자기가 던진 예외를 자기가 잡는다. <code>ProcessManager.loop()</code>는 프레임 전체를 하나로 묶어 삼킨다 — 무엇이 언제 실패했는지 알 방법이 프로그램 안에 없다.</div></li>
+      <li><div><strong>행과 열을 일관되게 다루지 않는다.</strong> <code>isValidPoint(Column, Raw)</code>를 <code>TEJAVA.java:345</code>에서는 맞게, <code>:420</code>에서는 뒤집어 부른다. <code>expect[CORP][nowX][nowY]</code>(380행)는 전치 접근이고, <code>:414</code>는 행 루프를 <code>WIDTH</code>로 돈다. 맵이 13×13 정사각이라 전부 잠복 상태로 남았다 — 즉 테스트가 우연히 이 계열 버그를 전부 가려 주었다.</div></li>
+      <li><div><strong>문서가 코드보다 앞선다.</strong> <code>IMF명세서.md</code>는 8개 이벤트를 정의하지만 열거자는 4개 값만 쓴다. <code>attribute</code> 조건은 구현이 없다. 예제로 실린 XML 한 줄은 엔진을 크래시시킨다. 보고서는 "시체 확률이 낮은 쪽으로 이동"을 설명하지만 코드는 그 판단을 하지 않는다. 제안서는 6스테이지를 약속했고 맵은 2개다. 모든 경우에 <em>설계 문서는 정확하고 구체적</em>이며, 어긋난 것은 구현이다.</div></li>
+      <li><div><strong>정리(teardown)를 습관적으로 빠뜨린다.</strong> <code>Scanner</code>(A1-1), <code>FileOutputStream</code>(TEST), <code>BufferedReader</code>(SettingParser), 비데몬 <code>Timer</code> 두 개(Physics, Interaction), 무한 증가하는 <code>layer.children</code>(A6). 여는 코드는 늘 있고 닫는 코드는 성공 경로에만 있거나 아예 없다.</div></li>
+    </ol>
+  </section>
+
+  <!-- ============ 권고 ============ -->
+  <section>
+    <h2>지금 손본다면</h2>
+    <ol class="rank">
+      <li><div><strong>master를 제출본 상태로 되돌리거나, 재작성을 브랜치로 옮겨라.</strong> 지금 이 레포를 여는 사람은 동작하지 않는 큰 축제를 본다. <code>git checkout -b nimf-rewrite</code> 후 master를 <code>5d8f226</code> 기준으로 복원하면 5분이고, 레포의 인상이 "미완성 재작성"에서 "완성된 팀 프로젝트 + 진행 중인 개인 실험"으로 바뀐다.</div></li>
+      <li><div><strong><code>.metadata</code>와 <code>.class</code>를 히스토리에서 제거하라.</strong> <code>git filter-repo --path assignment/.metadata --path assignment/.recommenders --invert-paths</code>로 174개 파일과 25 MB 단일 파일이 사라진다. <code>*.class</code> 385개도 같다. 클론 시간이 아니라 신뢰의 문제다 — IDE 워크스페이스를 통째로 커밋한 레포는 그 자체로 판정을 내리게 한다.</div></li>
+      <li><div><strong>동급생 147명의 파일을 지워라.</strong> <code>**/customplayers/</code>에서 본인 <code>TEJAVA.java</code>만 남기면 된다. 개인정보(실명·학번) 문제이자, 남의 코드 101개가 본인 작업으로 오인될 여지를 없애는 일이다. README에 "봇 소스는 TEJAVA.java 하나"라고 한 줄 적으면 더 좋다.</div></li>
+      <li><div><strong>DEJAVA의 <code>Infected_Move</code> 한 줄을 고쳐라.</strong> <code>getDirectionNotExp(expect[CORP], 0, false)</code>에서 <code>expRev</code>를 <code>EXPCONST[CORP]</code>로, <code>mapPrefer</code>를 <code>true</code>로 바꾸면 보고서가 설명한 동작이 실제로 나온다. 그리고 203–211행 람다에 <code>isValidPoint</code>를 한 줄 넣으면 가장자리 크래시가 사라진다. 이 봇은 두 줄 차이로 완성작이 될 수 있었다.</div></li>
+      <li><div><strong>빈 <code>catch</code>를 전부 <code>throw</code> 또는 로그로 바꿔라.</strong> 최소한 <code>ProcessManager.loop()</code>만이라도. 지금 구조에서는 어느 처리기가 어느 프레임에 죽었는지 알 수 없고, 그래서 위 버그들이 개발 중에 드러나지 않았다. 진단 가능성이 없는 코드는 고칠 수 없는 코드다.</div></li>
+      <li><div><strong><code>IProcess.finalize()</code>를 <code>dispose()</code>로 개명하고 <code>timer.cancel()</code>을 넣어라.</strong> 이름 하나와 호출 두 개로 GC 훅 오염과 비데몬 스레드 누수가 동시에 없어진다. 리팩터링 비용은 거의 0이다.</div></li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>평가 대상: <code>github.com/jiunbae/ITE2037</code> · 커밋 117개(배지운 90개, 이영수 23개, 기타 4개) · 2016-03-04 ~ 2016-07-10 · 브랜치는 <code>master</code> 하나</p>
+    <p>검증 방식: 저자가 쓴 <code>.java</code> 76개 약 5,500줄 전량 정독. 인용한 경로·행 번호·코드는 모두 실제 파일 내용이며 <code>grep -n</code>으로 재확인했다. CP949로 인코딩된 파일은 <code>iconv</code>로 변환해 읽었다.</p>
+    <p>실행 검증: <strong>컴파일하지 못했다.</strong> 이 환경에는 JDK가 없다(<code>javac -version</code> → <code>Unable to locate a Java Runtime</code>, <code>/usr/libexec/java_home -V</code> 동일, <code>/Library/Java/JavaVirtualMachines/</code> 비어 있음). 따라서 컴파일 오류 유무와 런타임 동작은 미검증이며, 위의 모든 실행 관련 주장은 코드 정독에 근거한다. 다만 순수 수치 주장 세 건은 동일 로직을 Python으로 재현해 확인했다 — <code>Window.isIn</code>의 π 추정치 3.2304(정정 시 3.1393), <code>PiCalculator</code>의 3.1373, <code>Assignment1_2.Say</code>의 100 → "십십" / 110 → 인덱스 초과. git 히스토리 주장(<code>5d8f226</code>의 정상 <code>Update()</code>, <code>da4cfe1</code>의 주석 처리)은 <code>git show</code>로 직접 확인했다.</p>
+  </footer>
+
+</div>
